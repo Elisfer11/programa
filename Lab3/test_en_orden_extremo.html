@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test con Reinicio</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            text-align: center;
+        }
+        img {
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 10px;
+        }
+        #resultado {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Identifica la Imagen (Reinicio si fallas)</h2>
+    <img id="imagenTest" src="" alt="Imagen de prueba">
+    <br>
+    <input type="text" id="respuesta" placeholder="Escribe el nombre aquí" onkeypress="if(event.key === 'Enter') verificarRespuesta()">
+    <br><br>
+    <button onclick="verificarRespuesta()">Enviar</button>
+    <h3 id="resultado"></h3>
+    <br>
+    <button onclick="window.location.href='/programa/index.html'">Volver al Menú Principal</button>
+
+    <script>
+        const imagenes = {
+            "Clonorchis": "/programa/Lab3/imagenes/Clonorchis.jpg",
+            "Duelas": "/programa/Lab3/imagenes/Duelas.jpg",
+            "Dugesia": "/programa/Lab3/imagenes/Dugesia.jpg",
+            "Echinococus": "/programa/Lab3/imagenes/Echinococus.jpg",
+            "Fasciola hepatica": "/programa/Lab3/imagenes/Fasciola hepatica.jpg",
+            "Gastrotricha": "/programa/Lab3/imagenes/Gastrotricha.jpg",
+            "Geoplanidae": "/programa/Lab3/imagenes/Geoplanidae.jpg",
+            "Metacercaria": "/programa/Lab3/imagenes/Metacercaria.jpg",
+            "Paragonimus": "/programa/Lab3/imagenes/Paragonimus.jpg",
+            "Planaria": "/programa/Lab3/imagenes/Planaria.jpg",
+            "Polycladida": "/programa/Lab3/imagenes/Polycladida.jpg",
+            "Solitarias": "/programa/Lab3/imagenes/Solitarias.jpg",
+            "Temnocephala": "/programa/Lab3/imagenes/Temnocephala.jpg"
+
+        };
+
+        const nombresOrdenados = Object.keys(imagenes).sort();
+        let indiceActual = 0;
+
+        function nuevaPregunta() {
+            if (indiceActual >= nombresOrdenados.length) {
+                document.getElementById("resultado").innerText = "¡Test completado sin errores!";
+                document.getElementById("imagenTest").style.display = "none";
+                document.getElementById("respuesta").style.display = "none";
+                document.querySelector("button").style.display = "none";
+                return;
+            }
+            document.getElementById("resultado").innerText = "";
+            const nombreCorrecto = nombresOrdenados[indiceActual];
+            document.getElementById("imagenTest").src = imagenes[nombreCorrecto];
+            document.getElementById("imagenTest").alt = nombreCorrecto;
+            document.getElementById("respuesta").value = "";
+        }
+
+        function verificarRespuesta() {
+            const nombreCorrecto = nombresOrdenados[indiceActual];
+            const respuestaUsuario = document.getElementById("respuesta").value.trim();
+            const resultado = document.getElementById("resultado");
+
+            if (respuestaUsuario.toLowerCase() === nombreCorrecto.toLowerCase()) {
+                resultado.innerText = "¡Correcto!";
+                resultado.style.color = "green";
+                indiceActual++;
+                setTimeout(nuevaPregunta, 1000);
+            } else {
+                resultado.innerHTML = `❌ Incorrecto.<br>✅ La respuesta correcta era: <span style="color: blue; font-size: 1.4em;">${nombreCorrecto}</span><br>Reiniciando el test...`;
+                resultado.style.color = "red";
+                indiceActual = 0;
+                setTimeout(nuevaPregunta, 3000);
+            }
+        }
+
+        nuevaPregunta();
+    </script>
+</body>
+</html>

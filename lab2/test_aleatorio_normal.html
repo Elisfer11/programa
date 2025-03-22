@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test de Identificación</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            text-align: center;
+        }
+        img {
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Identifica la Imagen</h2>
+    <img id="imagenTest" src="" alt="Imagen de prueba">
+    <br>
+    <input type="text" id="respuesta" placeholder="Escribe el nombre aquí" onkeypress="if(event.key === 'Enter') verificarRespuesta()">
+    <br><br>
+    <button onclick="verificarRespuesta()">Enviar</button>
+    <h3 id="resultado"></h3>
+    <br>
+    <button onclick="window.location.href='/programa/index.html'">Volver al Menú Principal</button>
+
+    <script>
+        const imagenes = {
+            "Acropora": "/programa/Lab2/imagenes/Acropora.jpg",
+            "Agaricia": "/programa/Lab2/imagenes/Agaricia.jpg",
+            "Antozoarios": "/programa/Lab2/imagenes/Antozoarios.jpg",
+            "Anémonas Metridium": "/programa/Lab2/imagenes/Anémonas_Metridium.jpg",
+            "Anémonas Solitarias": "/programa/Lab2/imagenes/Anémonas_Solitarias.jpg",
+            "Ceriantharia": "/programa/Lab2/imagenes/Ceriantharia.jpg",
+            "Chiropsalmus": "/programa/Lab2/imagenes/Chiropsalmus.jpg",
+            "Ctenophora": "/programa/Lab2/imagenes/Ctenophora.jpg",
+            "Esponjas calcáreas perforadas": "/programa/Lab2/imagenes/Esponjas_caláreas_perforadas.jpg",
+            "Esponjas verdaderas": "/programa/Lab2/imagenes/Esponjas_verdaderas.jpg",
+            "Euplectella": "/programa/Lab2/imagenes/Euplectella.jpg",
+            "Gorgonia": "/programa/Lab2/imagenes/Gorgonia.jpg",
+            "Leptogorgia": "/programa/Lab2/imagenes/Leptogorgia.jpg",
+            "Leucosolenia": "/programa/Lab2/imagenes/leucosolenia.jpg",
+            "Meandrina": "/programa/Lab2/imagenes/Meandrina.jpg",
+            "Millepora": "/programa/Lab2/imagenes/Millepora.jpg",
+            "Myriopathes": "/programa/Lab2/imagenes/Myriopathes.jpg",
+            "Nematocistos": "/programa/Lab2/imagenes/Nematocistos.jpg",
+            "Obelia": "/programa/Lab2/imagenes/Obelia.jpg",
+            "Pacifigorgia": "/programa/Lab2/imagenes/Pacifigorgia.jpg",
+            "Pennaria": "/programa/Lab2/imagenes/Pennaria.jpg",
+            "Physalia": "/programa/Lab2/imagenes/Physalia.jpg",
+            "Pluma de mar": "/programa/Lab2/imagenes/Pluma_de_mar.jpg",
+            "Pocilopora": "/programa/Lab2/imagenes/Pocilopora.jpg",
+            "Porites": "/programa/Lab2/imagenes/Porites.jpg",
+            "Renilla": "/programa/Lab2/imagenes/Renilla.jpg",
+            "Rhodactis": "/programa/Lab2/imagenes/Rhodactis.jpg",
+            "Rhodolitica": "/programa/Lab2/imagenes/Rhodolitica.jpg",
+            "Stomolophus": "/programa/Lab2/imagenes/Stomolophus.jpg",
+            "Stylaster": "/programa/Lab2/imagenes/Stylaster.jpg",
+            "Sycon Grantia": "/programa/Lab2/imagenes/Sycon_Grantia.jpg",
+            "Tubastrea": "/programa/Lab2/imagenes/Tubastrea.jpg",
+            "Tubipora": "/programa/Lab2/imagenes/Tubipora.jpg",
+            "Tubularia": "/programa/Lab2/imagenes/Tubularia.jpg",
+            "Velella": "/programa/Lab2/imagenes/Velella.jpg"
+        };
+
+        let nombres = Object.keys(imagenes);
+        let nombresRestantes = [...nombres];
+        let nombreCorrecto;
+
+        function nuevaPregunta() {
+            if (nombresRestantes.length === 0) {
+                document.getElementById("resultado").innerText = "¡Test completado!";
+                document.getElementById("imagenTest").style.display = "none";
+                document.getElementById("respuesta").style.display = "none";
+                document.querySelector("button").style.display = "none";
+                return;
+            }
+            document.getElementById("resultado").innerText = "";
+            let indice = Math.floor(Math.random() * nombresRestantes.length);
+            nombreCorrecto = nombresRestantes.splice(indice, 1)[0];
+            document.getElementById("imagenTest").src = imagenes[nombreCorrecto];
+            document.getElementById("respuesta").value = "";
+        }
+
+        function verificarRespuesta() {
+            let respuestaUsuario = document.getElementById("respuesta").value.trim();
+            let resultado = document.getElementById("resultado");
+            if (respuestaUsuario.toLowerCase() === nombreCorrecto.toLowerCase()) {
+                resultado.innerText = "¡Correcto!";
+                resultado.style.color = "green";
+                setTimeout(nuevaPregunta, 1000);
+            } else {
+                resultado.innerText = "Incorrecto. Inténtalo de nuevo.";
+                resultado.style.color = "red";
+            }
+        }
+
+        nuevaPregunta();
+    </script>
+</body>
+</html>
