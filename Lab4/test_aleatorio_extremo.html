@@ -61,7 +61,7 @@
   <div id="contador">Pregunta 0/16</div>
   <img id="imagen" src="" alt="Imagen de prueba">
   <div>
-    <input type="text" id="respuesta" placeholder="Escribe el nombre...">
+    <input type="text" id="respuesta" placeholder="Escribe el nombre..." onkeypress="if(event.key === 'Enter') verificarRespuesta()">
     <br>
     <button onclick="verificarRespuesta()">Enviar</button>
   </div>
@@ -89,6 +89,8 @@
 
     let actual = 0;
     let correctas = 0;
+    let resumen = [];
+    let puntos = 0;
 
     function normalizar(texto) {
       return texto
@@ -103,13 +105,27 @@
 
     function mostrarPregunta() {
       if (actual >= preguntas.length) {
-        document.getElementById("resultado").innerText = `✅ Resultado final: ${correctas}/16`;
+        let tablaResumen = '<h3>Resumen Final</h3><table style="margin: 10px auto; border-collapse: collapse;">';
+        tablaResumen += '<tr><th style="padding:5px;border:1px solid #ccc;">Imagen</th><th style="padding:5px;border:1px solid #ccc;">Respuesta</th><th style="padding:5px;border:1px solid #ccc;">Tu Respuesta</th><th style="padding:5px;border:1px solid #ccc;">Resultado</th></tr>';
+        resumen.forEach(r => {
+          tablaResumen += `<tr>
+            <td style='border:1px solid #ccc;padding:5px;'><img src="${r.imagen}" alt="" width="60"></td>
+            <td style='border:1px solid #ccc;padding:5px;'>${r.respuesta}</td>
+            <td style='border:1px solid #ccc;padding:5px;'>${r.ingreso}</td>
+            <td style='border:1px solid #ccc;padding:5px;'>${r.correcto ? '✔️' : '❌'}</td>
+          </tr>`;
+        });
+        tablaResumen += '</table>';
+        document.getElementById("resultado").innerHTML = `✅ Resultado final: ${puntos}/16` + tablaResumen;
         document.getElementById("imagen").style.display = "none";
         document.getElementById("respuesta").style.display = "none";
         return;
       }
       document.getElementById("imagen").src = preguntas[actual].imagen;
       document.getElementById("contador").innerText = `Pregunta ${actual + 1}/16`;
+      const respuestaEsperada = preguntas[actual].respuesta;
+      const tipo = respuestaEsperada.includes(" ") ? "Sólo el género" : (respuestaEsperada.match(/^[A-Z][a-z]+$/) ? "Sólo el género" : "Sólo la clase");
+      document.getElementById("respuesta").placeholder = `Escribe el nombre... (${tipo})`;
       document.getElementById("respuesta").value = "";
       document.getElementById("resultado").innerText = "";
       document.getElementById("infoTaxonomica").innerHTML = generarTablaTaxonomica(preguntas[actual]);
@@ -117,10 +133,20 @@
 
     function verificarRespuesta() {
       const userInput = normalizar(document.getElementById("respuesta").value);
-      const correcta = normalizar(preguntas[actual].respuesta);
+      let correcta = normalizar(preguntas[actual].respuesta);
+      let especieCompleta = null;
+      if (preguntas[actual].respuesta.includes(" ")) {
+        especieCompleta = normalizar(preguntas[actual].respuesta);
+        correcta = especieCompleta.split(" ")[0];
+      }
 
-      if (userInput === correcta) {
-        correctas++;
+      if (userInput === correcta || userInput.startsWith(correcta)) {
+      correctas++;
+      if (especieCompleta && userInput === especieCompleta) {
+        puntos += 2; // 1 punto extra por especie completa
+      } else {
+        puntos += 1;
+      }
         document.getElementById("resultado").innerText = "✔️ Correcto!";
         document.getElementById("resultado").style.color = "green";
       } else {
@@ -129,6 +155,12 @@
       }
 
       actual++;
+      resumen.push({
+        imagen: preguntas[actual].imagen,
+        respuesta: preguntas[actual].respuesta,
+        ingreso: document.getElementById("respuesta").value,
+        correcto: (userInput === correcta || userInput.startsWith(correcta))
+      });
       setTimeout(mostrarPregunta, 1500);
     }
 
