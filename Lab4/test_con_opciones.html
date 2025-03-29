@@ -207,8 +207,10 @@
         let preguntasRespondidas = 0;
         let timer;
 
+        let preguntasSeleccionadas = [];
+
         function iniciarJuego() {
-            const preguntasSeleccionadas = taxonomia.sort(() => 0.5 - Math.random()).slice(0, 20);
+            preguntasSeleccionadas = taxonomia.sort(() => 0.5 - Math.random()).slice(0, 20);
             totalPreguntas = preguntasSeleccionadas.length;
             preguntasRespondidas = 0;
             actualizarProgreso();
