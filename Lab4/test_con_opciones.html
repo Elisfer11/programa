@@ -6,45 +6,88 @@
     <title>Test con Opciones, Vidas y Tiempo</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            max-width: 600px;
-            margin: 20px auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 10px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to bottom right, #1e3c72, #2a5298);
+            color: #fff;
+            max-width: 700px;
+            margin: 30px auto;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
             text-align: center;
+        }
+        h2 {
+            margin-bottom: 20px;
         }
         img {
             width: 100%;
-            max-width: 400px;
-            margin-bottom: 10px;
+            max-width: 450px;
+            margin: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
         }
-        #resultado {
-            font-size: 1.5em;
-            font-weight: bold;
-            margin-top: 15px;
+        #infoTaxonomica {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            font-size: 1em;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+        #infoTaxonomica span {
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 5px 10px;
+            border-radius: 5px;
+            display: inline-block;
         }
         .opciones button {
             display: block;
             margin: 10px auto;
-            padding: 10px 20px;
+            padding: 12px 24px;
             font-size: 1em;
+            border: none;
+            border-radius: 8px;
+            background-color: #fff;
+            color: #333;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .opciones button:hover {
+            background-color: #ddd;
         }
         #vidas, #tiempo {
             font-size: 1.2em;
             margin: 10px;
         }
         .incorrecto {
-            background-color: #f44336;
-            color: white;
+            background-color: #f44336 !important;
+            color: white !important;
+        }
+        #resultado {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+        button[onclick] {
+            margin-top: 30px;
+            background-color: transparent;
+            border: 1px solid #fff;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 8px;
         }
     </style>
 </head>
 <body>
     <h2>Identifica el Elemento (3 Vidas, Opciones y Cronómetro)</h2>
     <div id="vidas">Vidas: ❤️❤️❤️</div>
-    <div id="tiempo">Tiempo: 0s</div>
-    <img id="imagenTest" src="" alt="Imagen de prueba">
+    $1
+    <div id="progreso">Progreso: 0/0</div>
+    $1
+    <div id="infoTaxonomica"></div>
     <div id="preguntaTexto"></div>
     <div class="opciones" id="opciones"></div>
     <h3 id="resultado"></h3>
@@ -160,9 +203,14 @@
 
         let vidas = 3;
         let tiempo = 0;
+        let totalPreguntas = 0;
+        let preguntasRespondidas = 0;
         let timer;
 
         function iniciarJuego() {
+            totalPreguntas = 100;
+            preguntasRespondidas = 0;
+            actualizarProgreso();
             vidas = 3;
             tiempo = 0;
             actualizarVidas();
@@ -183,6 +231,8 @@
         }
 
         function siguientePregunta() {
+            preguntasRespondidas++;
+            actualizarProgreso();
             document.getElementById("resultado").innerText = "";
             let datos;
             let nivel;
@@ -212,6 +262,15 @@
             const articulo = nivel === 'especie' ? 'la' : 'el';
             document.getElementById("preguntaTexto").innerText = `¿Cuál es ${articulo} ${nivel.toUpperCase()} de esta imagen?`;
 
+            let info = [];
+            if (nivel !== 'filo' && datos.filo) info.push(`Filo: ${datos.filo}`);
+            if (nivel !== 'clase' && datos.clase) info.push(`Clase: ${datos.clase}`);
+            if (nivel !== 'subclase' && datos.subclase) info.push(`Subclase: ${datos.subclase}`);
+            if (nivel !== 'familia' && datos.familia) info.push(`Familia: ${datos.familia}`);
+            if (nivel !== 'genero' && datos.genero) info.push(`Género: ${datos.genero}`);
+            if (nivel !== 'especie' && datos.especie) info.push(`Especie: ${datos.especie}`);
+            document.getElementById("infoTaxonomica").innerHTML = info.map(item => `<span>${item}</span>`).join('');
+
             const contenedor = document.getElementById("opciones");
             contenedor.innerHTML = "";
             opcionesArray.forEach(op => {
@@ -239,6 +298,10 @@
                 if (boton) boton.classList.add('incorrecto');
                 if (vidas <= 0) terminarJuego("☠️ Te has quedado sin vidas.");
             }
+        }
+
+        function actualizarProgreso() {
+            document.getElementById("progreso").innerText = `Progreso: ${preguntasRespondidas}/${totalPreguntas}`;
         }
 
         function terminarJuego(mensaje) {
