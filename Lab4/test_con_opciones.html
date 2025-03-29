@@ -84,6 +84,7 @@
 <body>
     <h2>Identifica el Elemento (3 Vidas, Opciones y Cronómetro)</h2>
     <div id="vidas">Vidas: ❤️❤️❤️</div>
+    <div id="tiempo">Tiempo: 0s</div>
     <div id="imagenContainer"><img id="imagenTest" src="" alt="Imagen de prueba"></div>
     <div id="progreso">Progreso: 0/0</div>
     <div id="infoTaxonomica"></div>
@@ -207,7 +208,8 @@
         let timer;
 
         function iniciarJuego() {
-            totalPreguntas = taxonomia.length;
+            const preguntasSeleccionadas = taxonomia.sort(() => 0.5 - Math.random()).slice(0, 20);
+            totalPreguntas = preguntasSeleccionadas.length;
             preguntasRespondidas = 0;
             actualizarProgreso();
             vidas = 3;
@@ -231,6 +233,10 @@
 
         function siguientePregunta() {
             preguntasRespondidas++;
+            if (preguntasRespondidas > totalPreguntas) {
+                terminarJuego("🎉 ¡Has completado el test!");
+                return;
+            }
             actualizarProgreso();
             document.getElementById("resultado").innerText = "";
             let datos;
@@ -238,7 +244,7 @@
             const niveles = ["genero", "especie", "clase", "subclase", "familia", "filo"];
             let intentos = 0;
             do {
-                datos = taxonomia[Math.floor(Math.random() * taxonomia.length)];
+                datos = preguntasSeleccionadas[preguntasRespondidas % totalPreguntas];
                 nivel = niveles[Math.floor(Math.random() * niveles.length)];
                 intentos++;
             } while (!datos[nivel] && intentos < 10);
