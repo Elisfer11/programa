@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test con Reinicio Aleatorio</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            text-align: center;
+        }
+        img {
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 10px;
+        }
+        #resultado {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Identifica la Imagen (Aleatorio y Reinicio si fallas)</h2>
+    <img id="imagenTest" src="" alt="Imagen de prueba">
+    <br>
+    <input type="text" id="respuesta" placeholder="Escribe el nombre aquí" onkeypress="if(event.key === 'Enter') verificarRespuesta()">
+    <br><br>
+    <button onclick="verificarRespuesta()">Enviar</button>
+    <h3 id="resultado"></h3>
+    <br>
+    <button onclick="window.location.href='/programa/index.html'">Volver al Menú Principal</button>
+
+    <script>
+        const imagenes = {
+            "Rotaria citrina": "/programa/Lab4/imagenes/Filo_Rotifera-Clase_Hemirotatoria-subclase_Bdelloidea-Familia_Philodinidae-Rotaria_citrina.jpg",
+            "Macracanthorhynchus hirudinaceus": "/programa/Lab4/imagenes/Filo_Rotifera-Clase_Hemirotatoria-subclase_Acanthocephala-Macracanthorhynchus_hirudinaceus.jpg",
+            "Brachionus": "/programa/Lab4/imagenes/Filo_Rotifera-Clase_Eurotatoria-Subclase_Monogonta-Familia_Brachionidae-Brachionus.jpg",
+            "Asplanchna": "/programa/Lab4/imagenes/Filo_Rotifera-Clase_Eurotatoria-Subclase_Monogonta-Familia_Asplanchnidae-Asplanchna.jpg",
+            "Plumatella": "/programa/Lab4/imagenes/Filo_Bryozoa-Phylactolaemata-Plumatella.jpg",
+            "Estatoblasto de Plumatella": "/programa/Lab4/imagenes/Filo_Bryozoa-Phylactolaemata-Estatoblasto_de_Plumatella.jpg",
+            "Pectinatella": "/programa/Lab4/imagenes/Filo_Bryozoa-Phylactolaemata-Pectinatella.jpg",
+            "Estatoblasto de Pectinatella": "/programa/Lab4/imagenes/Filo_Bryozoa-Phylactolaemata-Estatoblasto_de_Pectinatella.jpg",
+            "Bugula": "/programa/Lab4/imagenes/Filo_Bryozoa-Chelistomata-Bugula.jpg",
+            "Phoronopsis": "/programa/Lab4/imagenes/Filo_Phoronida-Familia_Phoronidae-Phoronopsis.jpg",
+            "Glottidea audebartii": "/programa/Lab4/imagenes/Filo_Brachiopoda-Clase_Lingulata-Familia_Lingulidae-Glottidea_audebartii.jpg",
+            "Discradisca strigata": "/programa/Lab4/imagenes/Filo_Brachiopoda-Clase_Lingulata-Familia_Discinidae-Discradisca_strigata.jpg",
+            "Terebratalia transversa": "/programa/Lab4/imagenes/Filo_Brachiopoda-Clase_Rhynchonollata-Terebratalia_transversa.jpg",
+            "Laqueus californionus": "/programa/Lab4/imagenes/Filo_Brachiopoda-Clase_Rhynchonollata-Laqueus_californionus.jpg",
+            "Heteronemertea": "/programa/Lab4/imagenes/Filo_Nemertea-Heteronemertea.jpg",
+            "Hoplonemertea": "/programa/Lab4/imagenes/Filo_Nemertea-Hoplonemertea.jpg"
+        };
+
+        let nombresRestantes = shuffleArray(Object.keys(imagenes));
+        let indiceActual = 0;
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function nuevaPregunta() {
+            if (indiceActual >= nombresRestantes.length) {
+                document.getElementById("resultado").innerText = "¡Test completado sin errores!";
+                document.getElementById("imagenTest").style.display = "none";
+                document.getElementById("respuesta").style.display = "none";
+                document.querySelector("button").style.display = "none";
+                return;
+            }
+            document.getElementById("resultado").innerText = "";
+            const nombreCorrecto = nombresRestantes[indiceActual];
+            document.getElementById("imagenTest").src = imagenes[nombreCorrecto];
+            document.getElementById("imagenTest").alt = nombreCorrecto;
+            document.getElementById("respuesta").value = "";
+        }
+
+        function verificarRespuesta() {
+            const nombreCorrecto = nombresRestantes[indiceActual];
+            const respuestaUsuario = document.getElementById("respuesta").value.trim();
+            const resultado = document.getElementById("resultado");
+
+            if (respuestaUsuario.toLowerCase() === nombreCorrecto.toLowerCase()) {
+                resultado.innerText = "¡Correcto!";
+                resultado.style.color = "green";
+                indiceActual++;
+                setTimeout(nuevaPregunta, 1000);
+            } else {
+                resultado.innerHTML = `❌ Incorrecto.<br>✅ La respuesta correcta era: <span style="color: blue; font-size: 1.4em;">${nombreCorrecto}</span><br>Reiniciando el test...`;
+                resultado.style.color = "red";
+                indiceActual = 0;
+                nombresRestantes = shuffleArray(Object.keys(imagenes));
+                setTimeout(nuevaPregunta, 3000);
+            }
+        }
+
+        nuevaPregunta();
+    </script>
+</body>
+</html>
