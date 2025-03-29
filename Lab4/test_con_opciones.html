@@ -34,6 +34,10 @@
             font-size: 1.2em;
             margin: 10px;
         }
+        .incorrecto {
+            background-color: #f44336;
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -50,7 +54,7 @@
     <script>
         const taxonomia = [
     {
-        nombre: "Rotaria citrina",
+        especie: "Rotaria citrina",
         imagen: "/programa/Lab4/imagenes/Filo_Rotifera-Clase_Hemirotatoria-subclase_Bdelloidea-Familia_Philodinidae-Rotaria_citrina.jpg",
         filo: "Rotifera",
         clase: "Hemirotatoria",
@@ -58,14 +62,14 @@
         familia: "Philodinidae"
     },
     {
-        nombre: "Macracanthorhynchus hirudinaceus",
+        especie: "Macracanthorhynchus hirudinaceus",
         imagen: "/programa/Lab4/imagenes/Filo_Rotifera-Clase_Hemirotatoria-subclase_Acanthocephala-Macracanthorhynchus_hirudinaceus.jpg",
         filo: "Rotifera",
         clase: "Hemirotatoria",
         subclase: "Acanthocephala"
     },
     {
-        nombre: "Brachionus",
+        genero: "Brachionus",
         imagen: "/programa/Lab4/imagenes/Filo_Rotifera-Clase_Eurotatoria-Subclase_Monogonta-Familia_Brachionidae-Brachionus.jpg",
         filo: "Rotifera",
         clase: "Eurotatoria",
@@ -73,7 +77,7 @@
         familia: "Brachionidae"
     },
     {
-        nombre: "Asplanchna",
+        genero: "Asplanchna",
         imagen: "/programa/Lab4/imagenes/Filo_Rotifera-Clase_Eurotatoria-Subclase_Monogonta-Familia_Asplanchnidae-Asplanchna.jpg",
         filo: "Rotifera",
         clase: "Eurotatoria",
@@ -81,7 +85,7 @@
         familia: "Asplanchnidae"
     },
     {
-        nombre: "Plumatella",
+        genero: "Plumatella",
         imagen: "/programa/Lab4/imagenes/Filo_Bryozoa-Phylactolaemata-Plumatella.jpg",
         filo: "Bryozoa",
         clase: "Phylactolaemata"
@@ -93,7 +97,7 @@
         clase: "Phylactolaemata"
     },
     {
-        nombre: "Pectinatella",
+        genero: "Pectinatella",
         imagen: "/programa/Lab4/imagenes/Filo_Bryozoa-Phylactolaemata-Pectinatella.jpg",
         filo: "Bryozoa",
         clase: "Phylactolaemata"
@@ -105,7 +109,7 @@
         clase: "Phylactolaemata"
     },
     {
-        nombre: "Bugula",
+        genero: "Bugula",
         imagen: "/programa/Lab4/imagenes/Filo_Bryozoa-Chelistomata-Bugula.jpg",
         filo: "Bryozoa",
         clase: "Chelistomata"
@@ -117,42 +121,40 @@
         familia: "Phoronidae"
     },
     {
-        nombre: "Glottidea audebartii",
+        especie: "Glottidea audebartii",
         imagen: "/programa/Lab4/imagenes/Filo_Brachiopoda-Clase_Lingulata-Familia_Lingulidae-Glottidea_audebartii.jpg",
         filo: "Brachiopoda",
         clase: "Lingulata",
         familia: "Lingulidae"
     },
     {
-        nombre: "Discradisca strigata",
+        especie: "Discradisca strigata",
         imagen: "/programa/Lab4/imagenes/Filo_Brachiopoda-Clase_Lingulata-Familia_Discinidae-Discradisca_strigata.jpg",
         filo: "Brachiopoda",
         clase: "Lingulata",
         familia: "Discinidae"
     },
     {
-        nombre: "Terebratalia transversa",
+        especie: "Terebratalia transversa",
         imagen: "/programa/Lab4/imagenes/Filo_Brachiopoda-Clase_Rhynchonollata-Terebratalia_transversa.jpg",
         filo: "Brachiopoda",
         clase: "Rhynchonollata"
     },
     {
-        nombre: "Laqueus californionus",
+        especie: "Laqueus californionus",
         imagen: "/programa/Lab4/imagenes/Filo_Brachiopoda-Clase_Rhynchonollata-Laqueus_californionus.jpg",
         filo: "Brachiopoda",
         clase: "Rhynchonollata"
     },
     {
-        nombre: "Heteronemertea",
+        clase: "Heteronemertea",
         imagen: "/programa/Lab4/imagenes/Filo_Nemertea-Heteronemertea.jpg",
-        filo: "Nemertea",
-        clase: "Heteronemertea"
+        filo: "Nemertea"
     },
     {
-        nombre: "Hoplonemertea",
+        clase: "Hoplonemertea",
         imagen: "/programa/Lab4/imagenes/Filo_Nemertea-Hoplonemertea.jpg",
-        filo: "Nemertea",
-        clase: "Hoplonemertea"
+        filo: "Nemertea"
     }
 ];
 
@@ -184,7 +186,7 @@
             document.getElementById("resultado").innerText = "";
             let datos;
             let nivel;
-            const niveles = ["nombre", "filo", "clase", "subclase", "familia"];
+            const niveles = ["genero", "especie", "clase", "subclase", "familia", "filo"];
             let intentos = 0;
             do {
                 datos = taxonomia[Math.floor(Math.random() * taxonomia.length)];
@@ -206,20 +208,23 @@
 
             const opcionesArray = Array.from(opciones).sort(() => Math.random() - 0.5);
             document.getElementById("imagenTest").src = datos.imagen;
-            document.getElementById("imagenTest").alt = datos.nombre;
-            document.getElementById("preguntaTexto").innerText = `¿Cuál es el ${nivel.toUpperCase()} de esta imagen?`;
+            document.getElementById("imagenTest").alt = datos[nivel];
+            const articulo = nivel === 'especie' ? 'la' : 'el';
+            document.getElementById("preguntaTexto").innerText = `¿Cuál es ${articulo} ${nivel.toUpperCase()} de esta imagen?`;
 
             const contenedor = document.getElementById("opciones");
             contenedor.innerHTML = "";
             opcionesArray.forEach(op => {
                 const btn = document.createElement("button");
                 btn.innerText = op;
-                btn.onclick = () => verificar(op, correcta);
+                btn.onclick = () => {
+                    if (!btn.classList.contains('incorrecto')) verificar(op, correcta, btn);
+                };
                 contenedor.appendChild(btn);
             });
         }
 
-        function verificar(seleccion, correcto) {
+        function verificar(seleccion, correcto, boton) {
             const resultado = document.getElementById("resultado");
             if (seleccion === correcto) {
                 resultado.innerText = "✔️ Correcto!";
@@ -229,10 +234,10 @@
                 vidas--;
                 tiempo += 3;
                 actualizarVidas();
-                resultado.innerText = `❌ Incorrecto. La respuesta era: ${correcto}`;
+                resultado.innerText = `❌ Incorrecto. Intenta de nuevo.`;
                 resultado.style.color = "red";
+                if (boton) boton.classList.add('incorrecto');
                 if (vidas <= 0) terminarJuego("☠️ Te has quedado sin vidas.");
-                else setTimeout(siguientePregunta, 2000);
             }
         }
 
