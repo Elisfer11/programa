@@ -132,34 +132,37 @@
 
     function verificarRespuesta() {
       const userInput = normalizar(document.getElementById("respuesta").value);
-      let correcta = normalizar(preguntas[actual].respuesta);
-      let especieCompleta = null;
-      if (preguntas[actual].respuesta.includes(" ")) {
-        especieCompleta = normalizar(preguntas[actual].respuesta);
-        correcta = especieCompleta.split(" ")[0];
+      const original = preguntas[actual].respuesta;
+      const especieCompleta = original.includes(" ") ? normalizar(original) : null;
+      const generoEsperado = especieCompleta ? especieCompleta.split(" ")[0] : normalizar(original);
+
+      let correcto = false;
+
+      if (especieCompleta && userInput === especieCompleta) {
+        puntos += 2;
+        correcto = true;
+      } else if (userInput === generoEsperado) {
+        puntos += 1;
+        correcto = true;
       }
 
-      if (userInput === correcta || userInput === especieCompleta) {
-      correctas++;
-      if (especieCompleta && userInput === especieCompleta) {
-        puntos += 2; // 1 punto extra por especie completa
-      } else {
-        puntos += 1;
-      }
+      if (correcto) {
+        correctas++;
         document.getElementById("resultado").innerText = "✔️ Correcto!";
         document.getElementById("resultado").style.color = "green";
       } else {
-        document.getElementById("resultado").innerText = `❌ Incorrecto. Era: ${preguntas[actual].respuesta}`;
+        document.getElementById("resultado").innerText = `❌ Incorrecto. Era: ${original}`;
         document.getElementById("resultado").style.color = "red";
       }
 
       resumen.push({
-      imagen: preguntas[actual].imagen,
-      respuesta: preguntas[actual].respuesta,
-      ingreso: document.getElementById("respuesta").value,
-      correcto: (userInput === correcta || userInput === especieCompleta)
-    });
-    actual++;
+        imagen: preguntas[actual].imagen,
+        respuesta: original,
+        ingreso: document.getElementById("respuesta").value,
+        correcto: correcto
+      });
+
+      actual++;
       setTimeout(mostrarPregunta, 1500);
     }
 
