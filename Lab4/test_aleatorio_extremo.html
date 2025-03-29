@@ -69,23 +69,23 @@
   <div id="resultado"></div>
   <script>
     const preguntas = [
-      { imagen: "/programa/Lab4/imagenes/Filo_Rotifera-Clase_Hemirotatoria-subclase_Bdelloidea-Familia_Philodinidae-Rotaria_citrina.jpg", respuesta: "Rotaria" },
-      { imagen: "/programa/Lab4/imagenes/Filo_Rotifera-Clase_Eurotatoria-Subclase_Monogonta-Familia_Brachionidae-Brachionus.jpg", respuesta: "Brachionus" },
-      { imagen: "/programa/Lab4/imagenes/Filo_Rotifera-Clase_Hemirotatoria-subclase_Acanthocephala-Macracanthorhynchus_hirudinaceus.jpg", respuesta: "Macracanthorhynchus hirudinaceus" },
-      { imagen: "/programa/Lab4/imagenes/Filo_Rotifera-Clase_Eurotatoria-Subclase_Monogonta-Familia_Asplanchnidae-Asplanchna.jpg", respuesta: "Asplanchna" },
-      { imagen: "/programa/Lab4/imagenes/Filo_Bryozoa-Phylactolaemata-Plumatella.jpg", respuesta: "Plumatella" },
-      { imagen: "/programa/Lab4/imagenes/Filo_Bryozoa-Phylactolaemata-Pectinatella.jpg", respuesta: "Pectinatella" },
-      { imagen: "/programa/Lab4/imagenes/Filo_Bryozoa-Chelistomata-Bugula.jpg", respuesta: "Bugula" },
-      { imagen: "/programa/Lab4/imagenes/Filo_Phoronida-Familia_Phoronidae-Phoronopsis.jpg", respuesta: "Phoronopsis" },
-      { imagen: "/programa/Lab4/imagenes/Filo_Brachiopoda-Clase_Lingulata-Familia_Lingulidae-Glottidea_audebartii.jpg", respuesta: "Glottidea audebartii" },
-      { imagen: "/programa/Lab4/imagenes/Filo_Brachiopoda-Clase_Lingulata-Familia_Discinidae-Discradisca_strigata.jpg", respuesta: "Discradisca strigata" },
-      { imagen: "/programa/Lab4/imagenes/Filo_Brachiopoda-Clase_Rhynchonollata-Terebratalia_transversa.jpg", respuesta: "Terebratalia transversa" },
-      { imagen: "/programa/Lab4/imagenes/Filo_Brachiopoda-Clase_Rhynchonollata-Laqueus_californionus.jpg", respuesta: "Laqueus californionus" },
-      { imagen: "/programa/Lab4/imagenes/Filo_Nemertea-Heteronemertea.jpg", respuesta: "Heteronemertea" },
-      { imagen: "/programa/Lab4/imagenes/Filo_Nemertea-Hoplonemertea.jpg", respuesta: "Hoplonemertea" },
-      { imagen: "/programa/Lab4/imagenes/Filo_Bryozoa-Phylactolaemata-Estatoblasto_de_Plumatella.jpg", respuesta: "Philodinidae" },
-      { imagen: "/programa/Lab4/imagenes/Filo_Brachiopoda-Clase_Lingulata-Familia_Lingulidae-Glottidea_audebartii.jpg", respuesta: "Lingulidae" }
-    ];
+  { imagen: "/programa/Lab4/imagenes/Filo_Rotifera-Clase_Hemirotatoria-subclase_Bdelloidea-Familia_Philodinidae-Rotaria_citrina.jpg", respuesta: "Rotaria citrina" },
+  { imagen: "/programa/Lab4/imagenes/Filo_Rotifera-Clase_Hemirotatoria-subclase_Acanthocephala-Macracanthorhynchus_hirudinaceus.jpg", respuesta: "Macracanthorhynchus hirudinaceus" },
+  { imagen: "/programa/Lab4/imagenes/Filo_Rotifera-Clase_Eurotatoria-Subclase_Monogonta-Familia_Brachionidae-Brachionus.jpg", respuesta: "Brachionus" },
+  { imagen: "/programa/Lab4/imagenes/Filo_Rotifera-Clase_Eurotatoria-Subclase_Monogonta-Familia_Asplanchnidae-Asplanchna.jpg", respuesta: "Asplanchna" },
+  { imagen: "/programa/Lab4/imagenes/Filo_Bryozoa-Phylactolaemata-Plumatella.jpg", respuesta: "Plumatella" },
+  { imagen: "/programa/Lab4/imagenes/Filo_Bryozoa-Phylactolaemata-Estatoblasto_de_Plumatella.jpg", respuesta: "Estatoblasto de Plumatella" },
+  { imagen: "/programa/Lab4/imagenes/Filo_Bryozoa-Phylactolaemata-Pectinatella.jpg", respuesta: "Pectinatella" },
+  { imagen: "/programa/Lab4/imagenes/Filo_Bryozoa-Phylactolaemata-Estatoblasto_de_Pectinatella.jpg", respuesta: "Estatoblasto de Pectinatella" },
+  { imagen: "/programa/Lab4/imagenes/Filo_Bryozoa-Chelistomata-Bugula.jpg", respuesta: "Bugula" },
+  { imagen: "/programa/Lab4/imagenes/Filo_Phoronida-Familia_Phoronidae-Phoronopsis.jpg", respuesta: "Phoronopsis" },
+  { imagen: "/programa/Lab4/imagenes/Filo_Brachiopoda-Clase_Lingulata-Familia_Lingulidae-Glottidea_audebartii.jpg", respuesta: "Glottidea audebartii" },
+  { imagen: "/programa/Lab4/imagenes/Filo_Brachiopoda-Clase_Lingulata-Familia_Discinidae-Discradisca_strigata.jpg", respuesta: "Discradisca strigata" },
+  { imagen: "/programa/Lab4/imagenes/Filo_Brachiopoda-Clase_Rhynchonollata-Terebratalia_transversa.jpg", respuesta: "Terebratalia transversa" },
+  { imagen: "/programa/Lab4/imagenes/Filo_Brachiopoda-Clase_Rhynchonollata-Laqueus_californionus.jpg", respuesta: "Laqueus californionus" },
+  { imagen: "/programa/Lab4/imagenes/Filo_Nemertea-Heteronemertea.jpg", respuesta: "Heteronemertea" },
+  { imagen: "/programa/Lab4/imagenes/Filo_Nemertea-Hoplonemertea.jpg", respuesta: "Hoplonemertea" }
+];
 
     let actual = 0;
     let correctas = 0;
@@ -106,13 +106,13 @@
     function mostrarPregunta() {
       if (actual >= preguntas.length) {
         let tablaResumen = '<h3>Resumen Final</h3><table style="margin: 10px auto; border-collapse: collapse;">';
-        tablaResumen += '<tr><th style="padding:5px;border:1px solid #ccc;">Imagen</th><th style="padding:5px;border:1px solid #ccc;">Respuesta</th><th style="padding:5px;border:1px solid #ccc;">Tu Respuesta</th><th style="padding:5px;border:1px solid #ccc;">Resultado</th></tr>';
+        tablaResumen += '<tr><th style="padding:5px;border:1px solid #ccc;">Imagen</th><th style="padding:5px;border:1px solid #ccc;">Respuesta</th><th style="padding:5px;border:1px solid #ccc;">Tu Respuesta</th><th style="padding:5px;border:1px solid #ccc;">Resultado</th><th style="padding:5px;border:1px solid #ccc;">Puntos</th></tr>';
         resumen.forEach(r => {
           tablaResumen += `<tr>
             <td style='border:1px solid #ccc;padding:5px;'><img src="${r.imagen}" alt="" width="60"></td>
             <td style='border:1px solid #ccc;padding:5px;'>${r.respuesta}</td>
             <td style='border:1px solid #ccc;padding:5px;'>${r.ingreso}</td>
-            <td style='border:1px solid #ccc;padding:5px;'>${r.correcto ? '✔️' : '❌'}</td>
+            <td style='border:1px solid #ccc;padding:5px;'>${r.correcto ? '✔️' : '❌'}</td><td style='border:1px solid #ccc;padding:5px;'>${r.puntos}</td>
           </tr>`;
         });
         tablaResumen += '</table>';
@@ -133,22 +133,26 @@
     function verificarRespuesta() {
       const userInput = normalizar(document.getElementById("respuesta").value);
       const original = preguntas[actual].respuesta;
-      const especieCompleta = original.includes(" ") ? normalizar(original) : null;
-      const generoEsperado = especieCompleta ? especieCompleta.split(" ")[0] : normalizar(original);
+      const normalizada = normalizar(original);
+      const tieneEspecie = original.includes(" ");
+      const genero = tieneEspecie ? normalizada.split(" ")[0] : normalizada;
 
       let correcto = false;
+      let puntosGanados = 0;
 
-      if (especieCompleta && userInput === especieCompleta) {
+      if (userInput === normalizada) {
         puntos += 2;
+        puntosGanados = 2;
         correcto = true;
-      } else if (userInput === generoEsperado) {
+      } else if (userInput === genero) {
         puntos += 1;
+        puntosGanados = 1;
         correcto = true;
       }
 
       if (correcto) {
         correctas++;
-        document.getElementById("resultado").innerText = "✔️ Correcto!";
+        document.getElementById("resultado").innerText = `✔️ Correcto! (${puntosGanados} punto${puntosGanados > 1 ? 's' : ''})`;
         document.getElementById("resultado").style.color = "green";
       } else {
         document.getElementById("resultado").innerText = `❌ Incorrecto. Era: ${original}`;
@@ -159,7 +163,8 @@
         imagen: preguntas[actual].imagen,
         respuesta: original,
         ingreso: document.getElementById("respuesta").value,
-        correcto: correcto
+        correcto: correcto,
+        puntos: puntosGanados
       });
 
       actual++;
