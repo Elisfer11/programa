@@ -93,233 +93,230 @@
     <h3 id="resultado"></h3>
     <br>
     <button onclick="window.location.href='/programa/index.html'">Volver al Menú Principal</button>
+<script>
+    const taxonomia = [
+        {
+            especie: "Rotaria citrina",
+            imagen: "/programa/Lab4/imagenes/Filo_Rotifera-Clase_Hemirotatoria-subclase_Bdelloidea-Familia_Philodinidae-Rotaria_citrina.jpg",
+            filo: "Rotifera",
+            clase: "Hemirotatoria",
+            subclase: "Bdelloidea",
+            familia: "Philodinidae"
+        },
+        {
+            especie: "Macracanthorhynchus hirudinaceus",
+            imagen: "/programa/Lab4/imagenes/Filo_Rotifera-Clase_Hemirotatoria-subclase_Acanthocephala-Macracanthorhynchus_hirudinaceus.jpg",
+            filo: "Rotifera",
+            clase: "Hemirotatoria",
+            subclase: "Acanthocephala"
+        },
+        {
+            genero: "Brachionus",
+            imagen: "/programa/Lab4/imagenes/Filo_Rotifera-Clase_Eurotatoria-Subclase_Monogonta-Familia_Brachionidae-Brachionus.jpg",
+            filo: "Rotifera",
+            clase: "Eurotatoria",
+            subclase: "Monogonta",
+            familia: "Brachionidae"
+        },
+        {
+            genero: "Asplanchna",
+            imagen: "/programa/Lab4/imagenes/Filo_Rotifera-Clase_Eurotatoria-Subclase_Monogonta-Familia_Asplanchnidae-Asplanchna.jpg",
+            filo: "Rotifera",
+            clase: "Eurotatoria",
+            subclase: "Monogonta",
+            familia: "Asplanchnidae"
+        },
+        {
+            genero: "Plumatella",
+            imagen: "/programa/Lab4/imagenes/Filo_Bryozoa-Phylactolaemata-Plumatella.jpg",
+            filo: "Bryozoa",
+            clase: "Phylactolaemata"
+        },
+        {
+            genero: "Pectinatella",
+            imagen: "/programa/Lab4/imagenes/Filo_Bryozoa-Phylactolaemata-Pectinatella.jpg",
+            filo: "Bryozoa",
+            clase: "Phylactolaemata"
+        },
+        {
+            genero: "Bugula",
+            imagen: "/programa/Lab4/imagenes/Filo_Bryozoa-Chelistomata-Bugula.jpg",
+            filo: "Bryozoa",
+            clase: "Chelistomata"
+        },
+        {
+            genero: "Phoronopsis",
+            imagen: "/programa/Lab4/imagenes/Filo_Phoronida-Familia_Phoronidae-Phoronopsis.jpg",
+            filo: "Phoronida",
+            familia: "Phoronidae"
+        },
+        {
+            especie: "Glottidea audebartii",
+            imagen: "/programa/Lab4/imagenes/Filo_Brachiopoda-Clase_Lingulata-Familia_Lingulidae-Glottidea_audebartii.jpg",
+            filo: "Brachiopoda",
+            clase: "Lingulata",
+            familia: "Lingulidae"
+        },
+        {
+            especie: "Discradisca strigata",
+            imagen: "/programa/Lab4/imagenes/Filo_Brachiopoda-Clase_Lingulata-Familia_Discinidae-Discradisca_strigata.jpg",
+            filo: "Brachiopoda",
+            clase: "Lingulata",
+            familia: "Discinidae"
+        },
+        {
+            especie: "Terebratalia transversa",
+            imagen: "/programa/Lab4/imagenes/Filo_Brachiopoda-Clase_Rhynchonollata-Terebratalia_transversa.jpg",
+            filo: "Brachiopoda",
+            clase: "Rhynchonollata"
+        },
+        {
+            especie: "Laqueus californionus",
+            imagen: "/programa/Lab4/imagenes/Filo_Brachiopoda-Clase_Rhynchonollata-Laqueus_californionus.jpg",
+            filo: "Brachiopoda",
+            clase: "Rhynchonollata"
+        },
+        {
+            clase: "Heteronemertea",
+            imagen: "/programa/Lab4/imagenes/Filo_Nemertea-Heteronemertea.jpg",
+            filo: "Nemertea"
+        },
+        {
+            clase: "Hoplonemertea",
+            imagen: "/programa/Lab4/imagenes/Filo_Nemertea-Hoplonemertea.jpg",
+            filo: "Nemertea"
+        }
+    ];
 
-    <script>
-        const taxonomia = [
-    {
-        especie: "Rotaria citrina",
-        imagen: "/programa/Lab4/imagenes/Filo_Rotifera-Clase_Hemirotatoria-subclase_Bdelloidea-Familia_Philodinidae-Rotaria_citrina.jpg",
-        filo: "Rotifera",
-        clase: "Hemirotatoria",
-        subclase: "Bdelloidea",
-        familia: "Philodinidae"
-    },
-    {
-        especie: "Macracanthorhynchus hirudinaceus",
-        imagen: "/programa/Lab4/imagenes/Filo_Rotifera-Clase_Hemirotatoria-subclase_Acanthocephala-Macracanthorhynchus_hirudinaceus.jpg",
-        filo: "Rotifera",
-        clase: "Hemirotatoria",
-        subclase: "Acanthocephala"
-    },
-    {
-        genero: "Brachionus",
-        imagen: "/programa/Lab4/imagenes/Filo_Rotifera-Clase_Eurotatoria-Subclase_Monogonta-Familia_Brachionidae-Brachionus.jpg",
-        filo: "Rotifera",
-        clase: "Eurotatoria",
-        subclase: "Monogonta",
-        familia: "Brachionidae"
-    },
-    {
-        genero: "Asplanchna",
-        imagen: "/programa/Lab4/imagenes/Filo_Rotifera-Clase_Eurotatoria-Subclase_Monogonta-Familia_Asplanchnidae-Asplanchna.jpg",
-        filo: "Rotifera",
-        clase: "Eurotatoria",
-        subclase: "Monogonta",
-        familia: "Asplanchnidae"
-    },
-    {
-        genero: "Plumatella",
-        imagen: "/programa/Lab4/imagenes/Filo_Bryozoa-Phylactolaemata-Plumatella.jpg",
-        filo: "Bryozoa",
-        clase: "Phylactolaemata"
-    },
-    {
-        nombre: "Estatoblasto de Plumatella",
-        imagen: "/programa/Lab4/imagenes/Filo_Bryozoa-Phylactolaemata-Estatoblasto_de_Plumatella.jpg",
-        filo: "Bryozoa",
-        clase: "Phylactolaemata"
-    },
-    {
-        genero: "Pectinatella",
-        imagen: "/programa/Lab4/imagenes/Filo_Bryozoa-Phylactolaemata-Pectinatella.jpg",
-        filo: "Bryozoa",
-        clase: "Phylactolaemata"
-    },
-    {
-        nombre: "Estatoblasto de Pectinatella",
-        imagen: "/programa/Lab4/imagenes/Filo_Bryozoa-Phylactolaemata-Estatoblasto_de_Pectinatella.jpg",
-        filo: "Bryozoa",
-        clase: "Phylactolaemata"
-    },
-    {
-        genero: "Bugula",
-        imagen: "/programa/Lab4/imagenes/Filo_Bryozoa-Chelistomata-Bugula.jpg",
-        filo: "Bryozoa",
-        clase: "Chelistomata"
-    },
-    {
-        nombre: "Phoronopsis",
-        imagen: "/programa/Lab4/imagenes/Filo_Phoronida-Familia_Phoronidae-Phoronopsis.jpg",
-        filo: "Phoronida",
-        familia: "Phoronidae"
-    },
-    {
-        especie: "Glottidea audebartii",
-        imagen: "/programa/Lab4/imagenes/Filo_Brachiopoda-Clase_Lingulata-Familia_Lingulidae-Glottidea_audebartii.jpg",
-        filo: "Brachiopoda",
-        clase: "Lingulata",
-        familia: "Lingulidae"
-    },
-    {
-        especie: "Discradisca strigata",
-        imagen: "/programa/Lab4/imagenes/Filo_Brachiopoda-Clase_Lingulata-Familia_Discinidae-Discradisca_strigata.jpg",
-        filo: "Brachiopoda",
-        clase: "Lingulata",
-        familia: "Discinidae"
-    },
-    {
-        especie: "Terebratalia transversa",
-        imagen: "/programa/Lab4/imagenes/Filo_Brachiopoda-Clase_Rhynchonollata-Terebratalia_transversa.jpg",
-        filo: "Brachiopoda",
-        clase: "Rhynchonollata"
-    },
-    {
-        especie: "Laqueus californionus",
-        imagen: "/programa/Lab4/imagenes/Filo_Brachiopoda-Clase_Rhynchonollata-Laqueus_californionus.jpg",
-        filo: "Brachiopoda",
-        clase: "Rhynchonollata"
-    },
-    {
-        clase: "Heteronemertea",
-        imagen: "/programa/Lab4/imagenes/Filo_Nemertea-Heteronemertea.jpg",
-        filo: "Nemertea"
-    },
-    {
-        clase: "Hoplonemertea",
-        imagen: "/programa/Lab4/imagenes/Filo_Nemertea-Hoplonemertea.jpg",
-        filo: "Nemertea"
+    let vidas = 3;
+    let tiempo = 0;
+    let totalPreguntas = 0;
+    let preguntasRespondidas = 0;
+    let timer;
+    let preguntasSeleccionadas = [];
+
+    function iniciarJuego() {
+        preguntasSeleccionadas = [];
+        const niveles = ["genero", "especie", "clase", "subclase", "familia", "filo"];
+        let posibles = [];
+        taxonomia.forEach(item => {
+            const disponibles = niveles.filter(n => item[n]);
+            const usados = new Set();
+            while (usados.size < Math.min(2, disponibles.length)) {
+                const nivel = disponibles[Math.floor(Math.random() * disponibles.length)];
+                if (!usados.has(nivel)) {
+                    posibles.push({ item, nivel });
+                    usados.add(nivel);
+                }
+            }
+        });
+        // duplicar aleatoriamente hasta llegar a 20 si es necesario
+        while (posibles.length < 20) {
+            const copia = posibles[Math.floor(Math.random() * posibles.length)];
+            // evitar más de 2 preguntas por individuo
+            const count = posibles.filter(p => p.item === copia.item).length;
+            if (count < 2) {
+                posibles.push(copia);
+            }
+        }
+        preguntasSeleccionadas = posibles.sort(() => Math.random() - 0.5).slice(0, 20);
+        totalPreguntas = preguntasSeleccionadas.length;
+        preguntasRespondidas = 0;
+        vidas = 3;
+        tiempo = 0;
+        actualizarVidas();
+        actualizarProgreso();
+        siguientePregunta();
+        iniciarCronometro();
     }
-];
 
-        let vidas = 3;
-        let tiempo = 0;
-        let totalPreguntas = 0;
-        let preguntasRespondidas = 0;
-        let timer;
+    function actualizarVidas() {
+        document.getElementById("vidas").innerText = "Vidas: " + "❤️".repeat(vidas);
+    }
 
-        let preguntasSeleccionadas = [];
+    function iniciarCronometro() {
+        clearInterval(timer);
+        timer = setInterval(() => {
+            tiempo++;
+            document.getElementById("tiempo").innerText = `Tiempo: ${tiempo}s`;
+        }, 1000);
+    }
 
-        function iniciarJuego() {
-            preguntasSeleccionadas = taxonomia.sort(() => 0.5 - Math.random()).slice(0, 20);
-            totalPreguntas = preguntasSeleccionadas.length;
-            preguntasRespondidas = 0;
-            actualizarProgreso();
-            vidas = 3;
-            tiempo = 0;
-            actualizarVidas();
-            siguientePregunta();
-            iniciarCronometro();
+    function siguientePregunta() {
+        if (preguntasRespondidas >= totalPreguntas) {
+            terminarJuego("🎉 ¡Has completado el test!");
+            return;
+        }
+        document.getElementById("resultado").innerText = "";
+        const seleccion = preguntasSeleccionadas[preguntasRespondidas];
+        const datos = seleccion.item;
+        const nivel = seleccion.nivel;
+        const correcta = datos[nivel];
+
+        let opciones = new Set([correcta]);
+        while (opciones.size < 4) {
+            const aleatorio = taxonomia[Math.floor(Math.random() * taxonomia.length)];
+            if (aleatorio[nivel]) opciones.add(aleatorio[nivel]);
         }
 
-        function actualizarVidas() {
-            document.getElementById("vidas").innerText = "Vidas: " + "❤️".repeat(vidas);
-        }
+        const opcionesArray = Array.from(opciones).sort(() => Math.random() - 0.5);
+        document.getElementById("imagenTest").src = datos.imagen;
+        document.getElementById("imagenTest").alt = datos[nivel];
+        const articulo = nivel === 'especie' ? 'la' : 'el';
+        document.getElementById("preguntaTexto").innerText = `¿Cuál es ${articulo} ${nivel.toUpperCase()} de esta imagen?`;
 
-        function iniciarCronometro() {
-            clearInterval(timer);
-            timer = setInterval(() => {
-                tiempo++;
-                document.getElementById("tiempo").innerText = `Tiempo: ${tiempo}s`;
-            }, 1000);
-        }
+        const info = [];
+        if (nivel !== 'filo' && datos.filo) info.push(`Filo: ${datos.filo}`);
+        if (nivel !== 'clase' && datos.clase) info.push(`Clase: ${datos.clase}`);
+        if (nivel !== 'subclase' && datos.subclase) info.push(`Subclase: ${datos.subclase}`);
+        if (nivel !== 'familia' && datos.familia) info.push(`Familia: ${datos.familia}`);
+        if (nivel !== 'genero' && datos.genero) info.push(`Género: ${datos.genero}`);
+        if (nivel !== 'especie' && datos.especie) info.push(`Especie: ${datos.especie}`);
+        document.getElementById("infoTaxonomica").innerHTML = info.map(i => `<span>${i}</span>`).join('');
 
-        function siguientePregunta() {
+        const contenedor = document.getElementById("opciones");
+        contenedor.innerHTML = "";
+        opcionesArray.forEach(op => {
+            const btn = document.createElement("button");
+            btn.innerText = op;
+            btn.onclick = () => {
+                if (!btn.classList.contains('incorrecto')) verificar(op, correcta, btn);
+            };
+            contenedor.appendChild(btn);
+        });
+    }
+
+    function verificar(seleccion, correcto, boton) {
+        const resultado = document.getElementById("resultado");
+        if (seleccion === correcto) {
+            resultado.innerText = "✔️ Correcto!";
+            resultado.style.color = "green";
             preguntasRespondidas++;
-            if (preguntasRespondidas > totalPreguntas) {
-                terminarJuego("🎉 ¡Has completado el test!");
-                return;
-            }
-            actualizarProgreso();
-            document.getElementById("resultado").innerText = "";
-            let datos;
-            let nivel;
-            const niveles = ["genero", "especie", "clase", "subclase", "familia", "filo"];
-            let intentos = 0;
-            do {
-                datos = preguntasSeleccionadas[preguntasRespondidas % totalPreguntas];
-                nivel = niveles[Math.floor(Math.random() * niveles.length)];
-                intentos++;
-            } while (!datos[nivel] && intentos < 10);
-
-            if (!datos[nivel]) {
-                siguientePregunta();
-                return;
-            }
-
-            const correcta = datos[nivel];
-            let opciones = new Set([correcta]);
-            while (opciones.size < 4) {
-                const aleatorio = taxonomia[Math.floor(Math.random() * taxonomia.length)];
-                if (aleatorio[nivel]) opciones.add(aleatorio[nivel]);
-            }
-
-            const opcionesArray = Array.from(opciones).sort(() => Math.random() - 0.5);
-            document.getElementById("imagenTest").src = datos.imagen;
-            document.getElementById("imagenTest").alt = datos[nivel];
-            const articulo = nivel === 'especie' ? 'la' : 'el';
-            document.getElementById("preguntaTexto").innerText = `¿Cuál es ${articulo} ${nivel.toUpperCase()} de esta imagen?`;
-
-            let info = [];
-            if (nivel !== 'filo' && datos.filo) info.push(`Filo: ${datos.filo}`);
-            if (nivel !== 'clase' && datos.clase) info.push(`Clase: ${datos.clase}`);
-            if (nivel !== 'subclase' && datos.subclase) info.push(`Subclase: ${datos.subclase}`);
-            if (nivel !== 'familia' && datos.familia) info.push(`Familia: ${datos.familia}`);
-            if (nivel !== 'genero' && datos.genero) info.push(`Género: ${datos.genero}`);
-            if (nivel !== 'especie' && datos.especie) info.push(`Especie: ${datos.especie}`);
-            document.getElementById("infoTaxonomica").innerHTML = info.map(item => `<span>${item}</span>`).join('');
-
-            const contenedor = document.getElementById("opciones");
-            contenedor.innerHTML = "";
-            opcionesArray.forEach(op => {
-                const btn = document.createElement("button");
-                btn.innerText = op;
-                btn.onclick = () => {
-                    if (!btn.classList.contains('incorrecto')) verificar(op, correcta, btn);
-                };
-                contenedor.appendChild(btn);
-            });
+            setTimeout(siguientePregunta, 1000);
+        } else {
+            vidas--;
+            tiempo += 3;
+            actualizarVidas();
+            resultado.innerText = `❌ Incorrecto. Intenta de nuevo.`;
+            resultado.style.color = "red";
+            if (boton) boton.classList.add('incorrecto');
+            if (vidas <= 0) terminarJuego("☠️ Te has quedado sin vidas.");
         }
+    }
 
-        function verificar(seleccion, correcto, boton) {
-            const resultado = document.getElementById("resultado");
-            if (seleccion === correcto) {
-                resultado.innerText = "✔️ Correcto!";
-                resultado.style.color = "green";
-                setTimeout(siguientePregunta, 1000);
-            } else {
-                vidas--;
-                tiempo += 3;
-                actualizarVidas();
-                resultado.innerText = `❌ Incorrecto. Intenta de nuevo.`;
-                resultado.style.color = "red";
-                if (boton) boton.classList.add('incorrecto');
-                if (vidas <= 0) terminarJuego("☠️ Te has quedado sin vidas.");
-            }
-        }
+    function actualizarProgreso() {
+        document.getElementById("progreso").innerText = `Progreso: ${preguntasRespondidas}/${totalPreguntas}`;
+    }
 
-        function actualizarProgreso() {
-            document.getElementById("progreso").innerText = `Progreso: ${preguntasRespondidas}/${totalPreguntas}`;
-        }
+    function terminarJuego(mensaje) {
+        clearInterval(timer);
+        document.getElementById("resultado").innerText = mensaje;
+        document.getElementById("imagenTest").style.display = "none";
+        document.getElementById("opciones").innerHTML = "";
+        document.getElementById("preguntaTexto").innerText = "";
+    }
 
-        function terminarJuego(mensaje) {
-            clearInterval(timer);
-            document.getElementById("resultado").innerText = mensaje;
-            document.getElementById("imagenTest").style.display = "none";
-            document.getElementById("opciones").innerHTML = "";
-            document.getElementById("preguntaTexto").innerText = "";
-        }
-
-        iniciarJuego();
-    </script>
+    iniciarJuego();
+</script>
 </body>
 </html>
