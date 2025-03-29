@@ -90,8 +90,8 @@
     <div id="infoTaxonomica"></div>
     <div id="preguntaTexto"></div>
     <div class="opciones" id="opciones"></div>
-    $1
-        <br>
+    <h3 id="resultado"></h3>
+    <br>
     <button onclick="window.location.href='/programa/index.html'">Volver al Menú Principal</button>
 
     <script>
@@ -202,33 +202,15 @@
 ];
 
         let vidas = 3;
-                    let tiempo = 0;
+        let tiempo = 0;
         let totalPreguntas = 0;
         let preguntasRespondidas = 0;
         let timer;
 
         let preguntasSeleccionadas = [];
-            const niveles = ["genero", "especie", "clase", "subclase", "familia", "filo"];
-            let posibles = [];
-            taxonomia.forEach(item => {
-                const nivelesDisponibles = niveles.filter(n => item[n]);
-                const usados = new Set();
-                while (usados.size < Math.min(2, nivelesDisponibles.length)) {
-                    const nivel = nivelesDisponibles[Math.floor(Math.random() * nivelesDisponibles.length)];
-                    if (!usados.has(nivel)) {
-                        posibles.push({ item, nivel });
-                        usados.add(nivel);
-                    }
-                }
-            });
-            preguntasSeleccionadas = posibles.sort(() => Math.random() - 0.5).slice(0, 20);
-                        usados.add(nivel);
-                    }
-                }
-            });
-                });
-            });
-            preguntasSeleccionadas = posibles.sort(() => 0.5 - Math.random()).slice(0, 20);
+
+        function iniciarJuego() {
+            preguntasSeleccionadas = taxonomia.sort(() => 0.5 - Math.random()).slice(0, 20);
             totalPreguntas = preguntasSeleccionadas.length;
             preguntasRespondidas = 0;
             actualizarProgreso();
@@ -264,9 +246,8 @@
             const niveles = ["genero", "especie", "clase", "subclase", "familia", "filo"];
             let intentos = 0;
             do {
-                let seleccion = preguntasSeleccionadas[preguntasRespondidas];
-            datos = seleccion.item;
-            nivel = seleccion.nivel;
+                datos = preguntasSeleccionadas[preguntasRespondidas % totalPreguntas];
+                nivel = niveles[Math.floor(Math.random() * niveles.length)];
                 intentos++;
             } while (!datos[nivel] && intentos < 10);
 
@@ -336,7 +317,7 @@
             document.getElementById("imagenTest").style.display = "none";
             document.getElementById("opciones").innerHTML = "";
             document.getElementById("preguntaTexto").innerText = "";
-                    }
+        }
 
         iniciarJuego();
     </script>
