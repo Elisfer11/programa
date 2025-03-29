@@ -135,12 +135,20 @@
       const original = preguntas[actual].respuesta;
       const normalizada = normalizar(original);
       const tieneEspecie = original.includes(" ");
-      const genero = tieneEspecie ? normalizada.split(" ")[0] : normalizada;
+
+      let genero = normalizada;
+      let especieCompleta = null;
+
+      if (tieneEspecie) {
+        const partes = normalizada.split(" ");
+        genero = partes[0];
+        especieCompleta = normalizada;
+      }
 
       let correcto = false;
       let puntosGanados = 0;
 
-      if (userInput === normalizada) {
+      if (especieCompleta && userInput === especieCompleta) {
         puntos += 2;
         puntosGanados = 2;
         correcto = true;
