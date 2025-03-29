@@ -134,12 +134,11 @@
       const userInput = normalizar(document.getElementById("respuesta").value);
       const original = preguntas[actual].respuesta;
       const normalizada = normalizar(original);
-      const tieneEspecie = original.includes(" ");
 
       let genero = normalizada;
       let especieCompleta = null;
 
-      if (tieneEspecie) {
+      if (original.includes(" ")) {
         const partes = normalizada.split(" ");
         genero = partes[0];
         especieCompleta = normalizada;
@@ -153,6 +152,10 @@
         puntosGanados = 2;
         correcto = true;
       } else if (userInput === genero) {
+        puntos += 1;
+        puntosGanados = 1;
+        correcto = true;
+      } else if (!especieCompleta && userInput === normalizada) { // caso solo género
         puntos += 1;
         puntosGanados = 1;
         correcto = true;
@@ -178,7 +181,6 @@
       actual++;
       setTimeout(mostrarPregunta, 1500);
     }
-
     mostrarPregunta();
   function generarTablaTaxonomica(pregunta) {
       const nombre = pregunta.respuesta.toLowerCase();
