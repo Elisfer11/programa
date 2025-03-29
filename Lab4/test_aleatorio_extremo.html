@@ -116,7 +116,7 @@
           </tr>`;
         });
         tablaResumen += '</table>';
-        document.getElementById("resultado").innerHTML = `✅ Resultado final: ${puntos}/16` + tablaResumen;
+        document.getElementById("resultado").innerHTML = `✅ Resultado final: ${correctas}/16` + tablaResumen;
         document.getElementById("imagen").style.display = "none";
         document.getElementById("respuesta").style.display = "none";
         return;
@@ -135,31 +135,12 @@
       const original = preguntas[actual].respuesta;
       const normalizada = normalizar(original);
 
-      let genero = normalizada;
-      let especieCompleta = null;
-
-      if (original.includes(" ")) {
-        const partes = normalizada.split(" ");
-        genero = partes[0];
-        especieCompleta = normalizada;
-      }
-
-      let correcto = false;
-      let puntosGanados = 0;
-
-      if (especieCompleta && userInput === especieCompleta) {
-        puntos += 2;
-        puntosGanados = 2;
-        correcto = true;
-      } else if (userInput === genero) {
-        puntos += 1;
-        puntosGanados = 1;
-        correcto = true;
-      } 
+      const generoCorrecto = normalizada.includes(" ") ? normalizada.split(" ")[0] : normalizada;
+      let correcto = compararConMargen(userInput, generoCorrecto) || compararConMargen(userInput, normalizada);
 
       if (correcto) {
         correctas++;
-        document.getElementById("resultado").innerText = `✔️ Correcto! (${puntosGanados} punto${puntosGanados > 1 ? 's' : ''})`;
+        document.getElementById("resultado").innerText = "✔️ Correcto!";
         document.getElementById("resultado").style.color = "green";
       } else {
         document.getElementById("resultado").innerText = `❌ Incorrecto. Era: ${original}`;
@@ -171,12 +152,34 @@
         respuesta: original,
         ingreso: document.getElementById("respuesta").value,
         correcto: correcto,
-        puntos: puntosGanados
+        puntos: correcto ? 1 : 0
       });
 
       actual++;
       setTimeout(mostrarPregunta, 1500);
     }
+    function compararConMargen(a, b) {
+      const distancia = levenshtein(a, b);
+      const largoMax = Math.max(a.length, b.length);
+      return distancia <= 1 && largoMax > 3; // permite 1 error si el nombre tiene más de 3 letras
+    }
+
+    function levenshtein(a, b) {
+      const dp = Array.from({ length: a.length + 1 }, () => Array(b.length + 1).fill(0));
+      for (let i = 0; i <= a.length; i++) dp[i][0] = i;
+      for (let j = 0; j <= b.length; j++) dp[0][j] = j;
+      for (let i = 1; i <= a.length; i++) {
+        for (let j = 1; j <= b.length; j++) {
+          dp[i][j] = Math.min(
+            dp[i - 1][j] + 1,
+            dp[i][j - 1] + 1,
+            dp[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)
+          );
+        }
+      }
+      return dp[a.length][b.length];
+    }
+
     mostrarPregunta();
   function generarTablaTaxonomica(pregunta) {
       const nombre = pregunta.respuesta.toLowerCase();
