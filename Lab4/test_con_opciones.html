@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test con Opciones, Vidas y Tiempo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            text-align: center;
+        }
+        img {
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 10px;
+        }
+        #resultado {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+        .opciones button {
+            display: block;
+            margin: 10px auto;
+            padding: 10px 20px;
+            font-size: 1em;
+        }
+        #vidas, #tiempo {
+            font-size: 1.2em;
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Identifica el Elemento (3 Vidas, Opciones y Cronómetro)</h2>
+    <div id="vidas">Vidas: ❤️❤️❤️</div>
+    <div id="tiempo">Tiempo: 0s</div>
+    <img id="imagenTest" src="" alt="Imagen de prueba">
+    <div id="preguntaTexto"></div>
+    <div class="opciones" id="opciones"></div>
+    <h3 id="resultado"></h3>
+    <br>
+    <button onclick="window.location.href='/programa/index.html'">Volver al Menú Principal</button>
+
+    <script>
+        const taxonomia = [
+    {
+        nombre: "Rotaria citrina",
+        imagen: "/programa/Lab4/imagenes/Filo_Rotifera-Clase_Hemirotatoria-subclase_Bdelloidea-Familia_Philodinidae-Rotaria_citrina.jpg",
+        filo: "Rotifera",
+        clase: "Hemirotatoria",
+        subclase: "Bdelloidea",
+        familia: "Philodinidae"
+    },
+    {
+        nombre: "Macracanthorhynchus hirudinaceus",
+        imagen: "/programa/Lab4/imagenes/Filo_Rotifera-Clase_Hemirotatoria-subclase_Acanthocephala-Macracanthorhynchus_hirudinaceus.jpg",
+        filo: "Rotifera",
+        clase: "Hemirotatoria",
+        subclase: "Acanthocephala"
+    },
+    {
+        nombre: "Brachionus",
+        imagen: "/programa/Lab4/imagenes/Filo_Rotifera-Clase_Eurotatoria-Subclase_Monogonta-Familia_Brachionidae-Brachionus.jpg",
+        filo: "Rotifera",
+        clase: "Eurotatoria",
+        subclase: "Monogonta",
+        familia: "Brachionidae"
+    },
+    {
+        nombre: "Asplanchna",
+        imagen: "/programa/Lab4/imagenes/Filo_Rotifera-Clase_Eurotatoria-Subclase_Monogonta-Familia_Asplanchnidae-Asplanchna.jpg",
+        filo: "Rotifera",
+        clase: "Eurotatoria",
+        subclase: "Monogonta",
+        familia: "Asplanchnidae"
+    },
+    {
+        nombre: "Plumatella",
+        imagen: "/programa/Lab4/imagenes/Filo_Bryozoa-Phylactolaemata-Plumatella.jpg",
+        filo: "Bryozoa",
+        clase: "Phylactolaemata"
+    },
+    {
+        nombre: "Estatoblasto de Plumatella",
+        imagen: "/programa/Lab4/imagenes/Filo_Bryozoa-Phylactolaemata-Estatoblasto_de_Plumatella.jpg",
+        filo: "Bryozoa",
+        clase: "Phylactolaemata"
+    },
+    {
+        nombre: "Pectinatella",
+        imagen: "/programa/Lab4/imagenes/Filo_Bryozoa-Phylactolaemata-Pectinatella.jpg",
+        filo: "Bryozoa",
+        clase: "Phylactolaemata"
+    },
+    {
+        nombre: "Estatoblasto de Pectinatella",
+        imagen: "/programa/Lab4/imagenes/Filo_Bryozoa-Phylactolaemata-Estatoblasto_de_Pectinatella.jpg",
+        filo: "Bryozoa",
+        clase: "Phylactolaemata"
+    },
+    {
+        nombre: "Bugula",
+        imagen: "/programa/Lab4/imagenes/Filo_Bryozoa-Chelistomata-Bugula.jpg",
+        filo: "Bryozoa",
+        clase: "Chelistomata"
+    },
+    {
+        nombre: "Phoronopsis",
+        imagen: "/programa/Lab4/imagenes/Filo_Phoronida-Familia_Phoronidae-Phoronopsis.jpg",
+        filo: "Phoronida",
+        familia: "Phoronidae"
+    },
+    {
+        nombre: "Glottidea audebartii",
+        imagen: "/programa/Lab4/imagenes/Filo_Brachiopoda-Clase_Lingulata-Familia_Lingulidae-Glottidea_audebartii.jpg",
+        filo: "Brachiopoda",
+        clase: "Lingulata",
+        familia: "Lingulidae"
+    },
+    {
+        nombre: "Discradisca strigata",
+        imagen: "/programa/Lab4/imagenes/Filo_Brachiopoda-Clase_Lingulata-Familia_Discinidae-Discradisca_strigata.jpg",
+        filo: "Brachiopoda",
+        clase: "Lingulata",
+        familia: "Discinidae"
+    },
+    {
+        nombre: "Terebratalia transversa",
+        imagen: "/programa/Lab4/imagenes/Filo_Brachiopoda-Clase_Rhynchonollata-Terebratalia_transversa.jpg",
+        filo: "Brachiopoda",
+        clase: "Rhynchonollata"
+    },
+    {
+        nombre: "Laqueus californionus",
+        imagen: "/programa/Lab4/imagenes/Filo_Brachiopoda-Clase_Rhynchonollata-Laqueus_californionus.jpg",
+        filo: "Brachiopoda",
+        clase: "Rhynchonollata"
+    },
+    {
+        nombre: "Heteronemertea",
+        imagen: "/programa/Lab4/imagenes/Filo_Nemertea-Heteronemertea.jpg",
+        filo: "Nemertea",
+        clase: "Heteronemertea"
+    },
+    {
+        nombre: "Hoplonemertea",
+        imagen: "/programa/Lab4/imagenes/Filo_Nemertea-Hoplonemertea.jpg",
+        filo: "Nemertea",
+        clase: "Hoplonemertea"
+    }
+];
+
+        let vidas = 3;
+        let tiempo = 0;
+        let timer;
+
+        function iniciarJuego() {
+            vidas = 3;
+            tiempo = 0;
+            actualizarVidas();
+            siguientePregunta();
+            iniciarCronometro();
+        }
+
+        function actualizarVidas() {
+            document.getElementById("vidas").innerText = "Vidas: " + "❤️".repeat(vidas);
+        }
+
+        function iniciarCronometro() {
+            clearInterval(timer);
+            timer = setInterval(() => {
+                tiempo++;
+                document.getElementById("tiempo").innerText = `Tiempo: ${tiempo}s`;
+            }, 1000);
+        }
+
+        function siguientePregunta() {
+            document.getElementById("resultado").innerText = "";
+            let datos;
+            let nivel;
+            const niveles = ["nombre", "filo", "clase", "subclase", "familia"];
+            let intentos = 0;
+            do {
+                datos = taxonomia[Math.floor(Math.random() * taxonomia.length)];
+                nivel = niveles[Math.floor(Math.random() * niveles.length)];
+                intentos++;
+            } while (!datos[nivel] && intentos < 10);
+
+            if (!datos[nivel]) {
+                siguientePregunta();
+                return;
+            }
+
+            const correcta = datos[nivel];
+            let opciones = new Set([correcta]);
+            while (opciones.size < 4) {
+                const aleatorio = taxonomia[Math.floor(Math.random() * taxonomia.length)];
+                if (aleatorio[nivel]) opciones.add(aleatorio[nivel]);
+            }
+
+            const opcionesArray = Array.from(opciones).sort(() => Math.random() - 0.5);
+            document.getElementById("imagenTest").src = datos.imagen;
+            document.getElementById("imagenTest").alt = datos.nombre;
+            document.getElementById("preguntaTexto").innerText = `¿Cuál es el ${nivel.toUpperCase()} de esta imagen?`;
+
+            const contenedor = document.getElementById("opciones");
+            contenedor.innerHTML = "";
+            opcionesArray.forEach(op => {
+                const btn = document.createElement("button");
+                btn.innerText = op;
+                btn.onclick = () => verificar(op, correcta);
+                contenedor.appendChild(btn);
+            });
+        }
+
+        function verificar(seleccion, correcto) {
+            const resultado = document.getElementById("resultado");
+            if (seleccion === correcto) {
+                resultado.innerText = "✔️ Correcto!";
+                resultado.style.color = "green";
+                setTimeout(siguientePregunta, 1000);
+            } else {
+                vidas--;
+                tiempo += 3;
+                actualizarVidas();
+                resultado.innerText = `❌ Incorrecto. La respuesta era: ${correcto}`;
+                resultado.style.color = "red";
+                if (vidas <= 0) terminarJuego("☠️ Te has quedado sin vidas.");
+                else setTimeout(siguientePregunta, 2000);
+            }
+        }
+
+        function terminarJuego(mensaje) {
+            clearInterval(timer);
+            document.getElementById("resultado").innerText = mensaje;
+            document.getElementById("imagenTest").style.display = "none";
+            document.getElementById("opciones").innerHTML = "";
+            document.getElementById("preguntaTexto").innerText = "";
+        }
+
+        iniciarJuego();
+    </script>
+</body>
+</html>
