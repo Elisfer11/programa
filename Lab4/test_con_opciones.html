@@ -292,6 +292,7 @@
             resultado.innerText = "✔️ Correcto!";
             resultado.style.color = "green";
             preguntasRespondidas++;
+        actualizarProgreso();
             setTimeout(siguientePregunta, 1000);
         } else {
             vidas--;
