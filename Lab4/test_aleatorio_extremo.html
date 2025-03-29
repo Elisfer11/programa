@@ -124,8 +124,7 @@
       document.getElementById("imagen").src = preguntas[actual].imagen;
       document.getElementById("contador").innerText = `Pregunta ${actual + 1}/16`;
       const respuestaEsperada = preguntas[actual].respuesta;
-      const tipo = respuestaEsperada.includes(" ") ? "Sólo el género" : (respuestaEsperada.match(/^[A-Z][a-z]+$/) ? "Sólo el género" : "Sólo la clase");
-      document.getElementById("respuesta").placeholder = `Escribe el nombre... (${tipo})`;
+            document.getElementById("respuesta").placeholder = "Escribe el nombre...";
       document.getElementById("respuesta").value = "";
       document.getElementById("resultado").innerText = "";
       document.getElementById("infoTaxonomica").innerHTML = generarTablaTaxonomica(preguntas[actual]);
@@ -140,7 +139,7 @@
         correcta = especieCompleta.split(" ")[0];
       }
 
-      if (userInput === correcta || userInput.startsWith(correcta)) {
+      if (userInput === correcta || userInput === especieCompleta) {
       correctas++;
       if (especieCompleta && userInput === especieCompleta) {
         puntos += 2; // 1 punto extra por especie completa
@@ -154,13 +153,13 @@
         document.getElementById("resultado").style.color = "red";
       }
 
-      actual++;
       resumen.push({
-        imagen: preguntas[actual].imagen,
-        respuesta: preguntas[actual].respuesta,
-        ingreso: document.getElementById("respuesta").value,
-        correcto: (userInput === correcta || userInput.startsWith(correcta))
-      });
+      imagen: preguntas[actual].imagen,
+      respuesta: preguntas[actual].respuesta,
+      ingreso: document.getElementById("respuesta").value,
+      correcto: (userInput === correcta || userInput === especieCompleta)
+    });
+    actual++;
       setTimeout(mostrarPregunta, 1500);
     }
 
