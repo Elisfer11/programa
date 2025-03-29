@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f4f4f4; color: #333;
+            background: #f4f4f4; color: #000;
             color: #333;
             max-width: 700px;
             margin: 30px auto;
@@ -50,7 +50,7 @@
             font-size: 1em;
             border: none;
             border-radius: 8px;
-            background-color: #333;
+            background-color: #eee;
             color: #333;
             cursor: pointer;
             transition: 0.3s;
@@ -86,7 +86,6 @@
     <div id="vidas">Vidas: ❤️❤️❤️</div>
     <div id="imagenContainer"><img id="imagenTest" src="" alt="Imagen de prueba"></div>
     <div id="progreso">Progreso: 0/0</div>
-    $1
     <div id="infoTaxonomica"></div>
     <div id="preguntaTexto"></div>
     <div class="opciones" id="opciones"></div>
@@ -208,7 +207,7 @@
         let timer;
 
         function iniciarJuego() {
-            totalPreguntas = 100;
+            totalPreguntas = taxonomia.length;
             preguntasRespondidas = 0;
             actualizarProgreso();
             vidas = 3;
