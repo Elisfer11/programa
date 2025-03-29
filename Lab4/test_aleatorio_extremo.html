@@ -1,108 +1,156 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test con Reinicio Aleatorio</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 600px;
-            margin: 20px auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            text-align: center;
-        }
-        img {
-            width: 100%;
-            max-width: 400px;
-            margin-bottom: 10px;
-        }
-        #resultado {
-            font-size: 1.5em;
-            font-weight: bold;
-            margin-top: 15px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test de Géneros o Especies</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f4f4; color: #000;
+      max-width: 700px;
+      margin: 30px auto;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      text-align: center;
+    }
+    h2 {
+      margin-bottom: 20px;
+    }
+    img {
+      width: 100%;
+      max-width: 450px;
+      margin: 20px 0;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    input[type="text"] {
+      padding: 10px;
+      font-size: 1em;
+      width: 80%;
+      margin-bottom: 15px;
+    }
+    button {
+      margin-top: 10px;
+      padding: 12px 24px;
+      font-size: 1em;
+      border: none;
+      border-radius: 8px;
+      background-color: #eee;
+      color: #333;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background-color: #ddd;
+    }
+    #resultado {
+      margin-top: 20px;
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+    #contador {
+      margin: 10px;
+      font-size: 1.2em;
+    }
+  </style>
 </head>
 <body>
-    <h2>Identifica la Imagen (Aleatorio y Reinicio si fallas)</h2>
-    <img id="imagenTest" src="" alt="Imagen de prueba">
+  <h2>Test de Géneros o Especies</h2>
+  <div id="contador">Pregunta 0/16</div>
+  <img id="imagen" src="" alt="Imagen de prueba">
+  <div>
+    <input type="text" id="respuesta" placeholder="Escribe el nombre...">
     <br>
-    <input type="text" id="respuesta" placeholder="Escribe el nombre aquí" onkeypress="if(event.key === 'Enter') verificarRespuesta()">
-    <br><br>
     <button onclick="verificarRespuesta()">Enviar</button>
-    <h3 id="resultado"></h3>
-    <br>
-    <button onclick="window.location.href='/programa/index.html'">Volver al Menú Principal</button>
+  </div>
+  <div id="infoTaxonomica"></div>
+  <div id="resultado"></div>
+  <script>
+    const preguntas = [
+      { imagen: "/programa/Lab4/imagenes/Filo_Rotifera-Clase_Hemirotatoria-subclase_Bdelloidea-Familia_Philodinidae-Rotaria_citrina.jpg", respuesta: "Rotaria" },
+      { imagen: "/programa/Lab4/imagenes/Filo_Rotifera-Clase_Eurotatoria-Subclase_Monogonta-Familia_Brachionidae-Brachionus.jpg", respuesta: "Brachionus" },
+      { imagen: "/programa/Lab4/imagenes/Filo_Rotifera-Clase_Hemirotatoria-subclase_Acanthocephala-Macracanthorhynchus_hirudinaceus.jpg", respuesta: "Macracanthorhynchus hirudinaceus" },
+      { imagen: "/programa/Lab4/imagenes/Filo_Rotifera-Clase_Eurotatoria-Subclase_Monogonta-Familia_Asplanchnidae-Asplanchna.jpg", respuesta: "Asplanchna" },
+      { imagen: "/programa/Lab4/imagenes/Filo_Bryozoa-Phylactolaemata-Plumatella.jpg", respuesta: "Plumatella" },
+      { imagen: "/programa/Lab4/imagenes/Filo_Bryozoa-Phylactolaemata-Pectinatella.jpg", respuesta: "Pectinatella" },
+      { imagen: "/programa/Lab4/imagenes/Filo_Bryozoa-Chelistomata-Bugula.jpg", respuesta: "Bugula" },
+      { imagen: "/programa/Lab4/imagenes/Filo_Phoronida-Familia_Phoronidae-Phoronopsis.jpg", respuesta: "Phoronopsis" },
+      { imagen: "/programa/Lab4/imagenes/Filo_Brachiopoda-Clase_Lingulata-Familia_Lingulidae-Glottidea_audebartii.jpg", respuesta: "Glottidea audebartii" },
+      { imagen: "/programa/Lab4/imagenes/Filo_Brachiopoda-Clase_Lingulata-Familia_Discinidae-Discradisca_strigata.jpg", respuesta: "Discradisca strigata" },
+      { imagen: "/programa/Lab4/imagenes/Filo_Brachiopoda-Clase_Rhynchonollata-Terebratalia_transversa.jpg", respuesta: "Terebratalia transversa" },
+      { imagen: "/programa/Lab4/imagenes/Filo_Brachiopoda-Clase_Rhynchonollata-Laqueus_californionus.jpg", respuesta: "Laqueus californionus" },
+      { imagen: "/programa/Lab4/imagenes/Filo_Nemertea-Heteronemertea.jpg", respuesta: "Heteronemertea" },
+      { imagen: "/programa/Lab4/imagenes/Filo_Nemertea-Hoplonemertea.jpg", respuesta: "Hoplonemertea" },
+      { imagen: "/programa/Lab4/imagenes/Filo_Bryozoa-Phylactolaemata-Estatoblasto_de_Plumatella.jpg", respuesta: "Philodinidae" },
+      { imagen: "/programa/Lab4/imagenes/Filo_Brachiopoda-Clase_Lingulata-Familia_Lingulidae-Glottidea_audebartii.jpg", respuesta: "Lingulidae" }
+    ];
 
-    <script>
-        const imagenes = {
-            "Rotaria citrina": "/programa/Lab4/imagenes/Filo_Rotifera-Clase_Hemirotatoria-subclase_Bdelloidea-Familia_Philodinidae-Rotaria_citrina.jpg",
-            "Macracanthorhynchus hirudinaceus": "/programa/Lab4/imagenes/Filo_Rotifera-Clase_Hemirotatoria-subclase_Acanthocephala-Macracanthorhynchus_hirudinaceus.jpg",
-            "Brachionus": "/programa/Lab4/imagenes/Filo_Rotifera-Clase_Eurotatoria-Subclase_Monogonta-Familia_Brachionidae-Brachionus.jpg",
-            "Asplanchna": "/programa/Lab4/imagenes/Filo_Rotifera-Clase_Eurotatoria-Subclase_Monogonta-Familia_Asplanchnidae-Asplanchna.jpg",
-            "Plumatella": "/programa/Lab4/imagenes/Filo_Bryozoa-Phylactolaemata-Plumatella.jpg",
-            "Estatoblasto de Plumatella": "/programa/Lab4/imagenes/Filo_Bryozoa-Phylactolaemata-Estatoblasto_de_Plumatella.jpg",
-            "Pectinatella": "/programa/Lab4/imagenes/Filo_Bryozoa-Phylactolaemata-Pectinatella.jpg",
-            "Estatoblasto de Pectinatella": "/programa/Lab4/imagenes/Filo_Bryozoa-Phylactolaemata-Estatoblasto_de_Pectinatella.jpg",
-            "Bugula": "/programa/Lab4/imagenes/Filo_Bryozoa-Chelistomata-Bugula.jpg",
-            "Phoronopsis": "/programa/Lab4/imagenes/Filo_Phoronida-Familia_Phoronidae-Phoronopsis.jpg",
-            "Glottidea audebartii": "/programa/Lab4/imagenes/Filo_Brachiopoda-Clase_Lingulata-Familia_Lingulidae-Glottidea_audebartii.jpg",
-            "Discradisca strigata": "/programa/Lab4/imagenes/Filo_Brachiopoda-Clase_Lingulata-Familia_Discinidae-Discradisca_strigata.jpg",
-            "Terebratalia transversa": "/programa/Lab4/imagenes/Filo_Brachiopoda-Clase_Rhynchonollata-Terebratalia_transversa.jpg",
-            "Laqueus californionus": "/programa/Lab4/imagenes/Filo_Brachiopoda-Clase_Rhynchonollata-Laqueus_californionus.jpg",
-            "Heteronemertea": "/programa/Lab4/imagenes/Filo_Nemertea-Heteronemertea.jpg",
-            "Hoplonemertea": "/programa/Lab4/imagenes/Filo_Nemertea-Hoplonemertea.jpg"
-        };
+    let actual = 0;
+    let correctas = 0;
 
-        let nombresRestantes = shuffleArray(Object.keys(imagenes));
-        let indiceActual = 0;
+    function normalizar(texto) {
+      return texto
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/\p{Diacritic}/gu, "")
+        .replace(/ph/g, "f")
+        .replace(/y/g, "i")
+        .replace(/s$/g, "")
+        .trim();
+    }
 
-        function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-            return array;
-        }
+    function mostrarPregunta() {
+      if (actual >= preguntas.length) {
+        document.getElementById("resultado").innerText = `✅ Resultado final: ${correctas}/16`;
+        document.getElementById("imagen").style.display = "none";
+        document.getElementById("respuesta").style.display = "none";
+        return;
+      }
+      document.getElementById("imagen").src = preguntas[actual].imagen;
+      document.getElementById("contador").innerText = `Pregunta ${actual + 1}/16`;
+      document.getElementById("respuesta").value = "";
+      document.getElementById("resultado").innerText = "";
+      document.getElementById("infoTaxonomica").innerHTML = generarTablaTaxonomica(preguntas[actual]);
+    }
 
-        function nuevaPregunta() {
-            if (indiceActual >= nombresRestantes.length) {
-                document.getElementById("resultado").innerText = "¡Test completado sin errores!";
-                document.getElementById("imagenTest").style.display = "none";
-                document.getElementById("respuesta").style.display = "none";
-                document.querySelector("button").style.display = "none";
-                return;
-            }
-            document.getElementById("resultado").innerText = "";
-            const nombreCorrecto = nombresRestantes[indiceActual];
-            document.getElementById("imagenTest").src = imagenes[nombreCorrecto];
-            document.getElementById("imagenTest").alt = nombreCorrecto;
-            document.getElementById("respuesta").value = "";
-        }
+    function verificarRespuesta() {
+      const userInput = normalizar(document.getElementById("respuesta").value);
+      const correcta = normalizar(preguntas[actual].respuesta);
 
-        function verificarRespuesta() {
-            const nombreCorrecto = nombresRestantes[indiceActual];
-            const respuestaUsuario = document.getElementById("respuesta").value.trim();
-            const resultado = document.getElementById("resultado");
+      if (userInput === correcta) {
+        correctas++;
+        document.getElementById("resultado").innerText = "✔️ Correcto!";
+        document.getElementById("resultado").style.color = "green";
+      } else {
+        document.getElementById("resultado").innerText = `❌ Incorrecto. Era: ${preguntas[actual].respuesta}`;
+        document.getElementById("resultado").style.color = "red";
+      }
 
-            if (respuestaUsuario.toLowerCase() === nombreCorrecto.toLowerCase()) {
-                resultado.innerText = "¡Correcto!";
-                resultado.style.color = "green";
-                indiceActual++;
-                setTimeout(nuevaPregunta, 1000);
-            } else {
-                resultado.innerHTML = `❌ Incorrecto.<br>✅ La respuesta correcta era: <span style="color: blue; font-size: 1.4em;">${nombreCorrecto}</span><br>Reiniciando el test...`;
-                resultado.style.color = "red";
-                indiceActual = 0;
-                nombresRestantes = shuffleArray(Object.keys(imagenes));
-                setTimeout(nuevaPregunta, 3000);
-            }
-        }
+      actual++;
+      setTimeout(mostrarPregunta, 1500);
+    }
 
-        nuevaPregunta();
-    </script>
+    mostrarPregunta();
+  function generarTablaTaxonomica(pregunta) {
+      const nombre = pregunta.respuesta.toLowerCase();
+      const niveles = ["filo", "clase", "subclase", "familia"];
+      const extraidos = {};
+
+      niveles.forEach(nivel => {
+        const match = pregunta.imagen.match(new RegExp(`${nivel.charAt(0).toUpperCase() + nivel.slice(1)}_([^-/]+)`));
+        if (match) extraidos[nivel] = match[1].replace(/_/g, ' ');
+      });
+
+      let html = '<table style="margin: 10px auto; border-collapse: collapse;">';
+      for (const [nivel, valor] of Object.entries(extraidos)) {
+        html += `<tr><td style='border:1px solid #ccc;padding:5px;'>${nivel.charAt(0).toUpperCase() + nivel.slice(1)}</td><td style='border:1px solid #ccc;padding:5px;'>${valor}</td></tr>`;
+      }
+      html += '</table>';
+      return html;
+    }
+
+</script>
 </body>
 </html>
