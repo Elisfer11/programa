@@ -86,6 +86,14 @@
     </style>
 </head>
 <body>
+    <script>
+        const usuario = localStorage.getItem("usuario");
+        if (!usuario || usuario.includes("Invitado")) {
+          alert("Debes iniciar sesión para acceder al modo competitivo.");
+          window.location.href = "/index.html";
+        }
+    </script>
+      
     <h2>Identifica el Elemento</h2>
     <div class="top-bar">
         <div id="vidas">Vidas: ❤️❤️❤️</div>
