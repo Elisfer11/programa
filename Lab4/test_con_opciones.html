@@ -384,26 +384,32 @@
   }
 
   function verificar(seleccion, correcto, boton) {
-    const resultado = document.getElementById("resultado");
-    if (seleccion === correcto) {
-      resultado.innerText = "✔️ Correcto!";
-      resultado.style.color = "green";
-      preguntasRespondidas++;
-      actualizarProgreso();
-      setTimeout(() => {
-        siguientePregunta();
-      }, 600);
-    } else {
-      vidas--;
-      tiempo += 3;
-      actualizarVidas();
-      resultado.innerText = "❌ Incorrecto. Intenta de nuevo.";
-      resultado.style.color = "red";
-      boton.classList.add('incorrecto');
-      boton.disabled = true;
-      if (vidas <= 0) terminarJuego("☠️ Te has quedado sin vidas.");
-    }
+  const resultado = document.getElementById("resultado");
+
+  if (seleccion === correcto) {
+    resultado.innerText = "✔️ Correcto!";
+    resultado.style.color = "green";
+    preguntasRespondidas++;
+    actualizarProgreso();
+
+    // Desactivar todos los botones tras respuesta correcta
+    document.querySelectorAll("#opciones button").forEach(btn => btn.disabled = true);
+
+    setTimeout(siguientePregunta, 1000);
+  } else {
+    vidas--;
+    tiempo += 3;
+    actualizarVidas();
+
+    resultado.innerText = "❌ Incorrecto. Intenta de nuevo.";
+    resultado.style.color = "red";
+    boton.classList.add('incorrecto');
+    boton.disabled = true;
+
+    if (vidas <= 0) terminarJuego("☠️ Te has quedado sin vidas.");
   }
+}
+
 
   function terminarJuego(mensaje) {
     clearInterval(timer);
