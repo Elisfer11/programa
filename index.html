@@ -1,100 +1,142 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menú Principal</title>
-    <style>
-        body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background: linear-gradient(to bottom right, #e0f7fa, #ffffff);
-        margin: 0;
-        padding: 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        min-height: 100vh;
-        color: #333;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menú Principal</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to bottom right, #e0f7fa, #ffffff);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      color: #333;
+    }
 
-        .container {
-        background-color: white;
-        margin-top: 60px;
-        padding: 30px;
-        border-radius: 20px;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-        max-width: 600px;
-        width: 90%;
-        text-align: center;
-        }
+    .container {
+      background-color: white;
+      margin-top: 60px;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+      max-width: 600px;
+      width: 90%;
+      text-align: center;
+    }
 
-        h2 {
-        font-size: 2rem;
-        margin-bottom: 20px;
-        color: #00796b;
-        }
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      color: #00796b;
+    }
 
-        img {
-        max-width: 100%;
-        height: auto;
-        border-radius: 12px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        margin-bottom: 20px;
-        }
+    .hidden {
+      display: none;
+    }
 
-        input[type="text"] {
-        width: 80%;
-        padding: 12px;
-        font-size: 1rem;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        margin-bottom: 20px;
-        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
-        }
+    button {
+      background-color: #00796b;
+      color: white;
+      padding: 12px 20px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin: 10px;
+    }
 
-        button {
-        background-color: #00796b;
-        color: white;
-        padding: 12px 20px;
-        font-size: 1rem;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-        margin: 10px;
-        }
+    button:hover {
+      background-color: #004d40;
+    }
 
-        button:hover {
-        background-color: #004d40;
-        }
+    input {
+      width: 80%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
 
-        #resultado {
-        font-size: 1.4rem;
-        font-weight: bold;
-        margin-top: 20px;
-        }
-
-        @media (max-width: 500px) {
-        .container {
-            padding: 20px;
-        }
-
-        input[type="text"] {
-            width: 100%;
-        }
-
-        button {
-            width: 100%;
-        }
-        }
-    </style>
+    #usuarioActivo {
+      font-weight: bold;
+      margin: 10px;
+    }
+  </style>
 </head>
 <body>
-    <h1>Menú Principal</h1>
-    <div class="menu">
-        <button onclick="window.location.href='/programa/Lab2/menu_lab2.html'">Laboratorio 2 (Profera, Cnidaria y Ctenophora)</button>
-        <button onclick="window.location.href='/programa/Lab3/menu_lab3.html'">Laboratorio 3 (Platelmintos y Gastrotricha)</button>
-        <button onclick="window.location.href='/programa/Lab4/menu_lab4.html'">Laboratorio 3 (Rotifera, Bryozoa, Phoronida, Brachiopoda y Nemertea)</button>
-    </div>
+  <div class="container" id="loginContainer">
+    <h2>Iniciar Sesión</h2>
+    <input type="text" id="username" placeholder="Usuario"><br>
+    <input type="password" id="password" placeholder="Contraseña"><br>
+    <label><input type="checkbox" id="recordar"> Mantener conectado</label><br>
+    <button onclick="login()">Ingresar</button>
+    <button onclick="registrar()">Registrarse</button>
+    <button onclick="continuarInvitado()">Ingresar como Invitado</button>
+    <div id="mensajeLogin"></div>
+  </div>
+
+  <div class="container hidden" id="menuContainer">
+    <h2>Menú Principal</h2>
+    <div id="usuarioActivo"></div>
+    <button onclick="window.location.href='/programa/Lab2/menu_lab2.html'">Laboratorio 2</button>
+    <button onclick="window.location.href='/programa/Lab3/menu_lab3.html'">Laboratorio 3</button>
+    <button onclick="window.location.href='/programa/Lab4/menu_lab4.html'">Laboratorio 4</button>
+    <button onclick="cerrarSesion()">Cerrar Sesión</button>
+  </div>
+
+  <script>
+    function login() {
+      const user = document.getElementById("username").value;
+      const pass = document.getElementById("password").value;
+      const recordar = document.getElementById("recordar").checked;
+      // Simulación (reemplazar con llamada real al backend)
+      if (user && pass) {
+        localStorage.setItem("usuario", user);
+        if (recordar) localStorage.setItem("mantener", "true");
+        mostrarMenu(user);
+      } else {
+        document.getElementById("mensajeLogin").innerText = "Debe completar ambos campos";
+      }
+    }
+
+    function registrar() {
+      const user = document.getElementById("username").value;
+      const pass = document.getElementById("password").value;
+      if (user && pass) {
+        alert("Usuario registrado (simulado)");
+      } else {
+        document.getElementById("mensajeLogin").innerText = "Debe completar ambos campos";
+      }
+    }
+
+    function continuarInvitado() {
+      mostrarMenu("Invitado (sin ranking)");
+    }
+
+    function cerrarSesion() {
+      localStorage.removeItem("usuario");
+      localStorage.removeItem("mantener");
+      document.getElementById("menuContainer").classList.add("hidden");
+      document.getElementById("loginContainer").classList.remove("hidden");
+    }
+
+    function mostrarMenu(nombre) {
+      document.getElementById("loginContainer").classList.add("hidden");
+      document.getElementById("menuContainer").classList.remove("hidden");
+      document.getElementById("usuarioActivo").innerText = `Usuario: ${nombre}`;
+    }
+
+    // Verificar si ya hay sesión activa
+    window.onload = () => {
+      const user = localStorage.getItem("usuario");
+      const mantener = localStorage.getItem("mantener") === "true";
+      if (user && mantener) mostrarMenu(user);
+    };
+  </script>
 </body>
 </html>
