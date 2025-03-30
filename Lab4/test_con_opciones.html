@@ -113,13 +113,21 @@
 <script>
 
 // 🔒 Verificación de login obligatorio
-const usuario = localStorage.getItem("usuario");
-const mantener = localStorage.getItem("mantener") === "true";
-
-if (!usuario || usuario === "Invitado" || !mantener) {
-  sessionStorage.setItem("destino", window.location.pathname);
-  window.location.href = "/programa/login.html";
+localStorage.setItem("usuario", user);
+if (recordar) {
+  localStorage.setItem("mantener", "true");
+} else {
+  localStorage.setItem("mantener", "false");
 }
+
+const destino = sessionStorage.getItem("destino");
+if (destino) {
+  sessionStorage.removeItem("destino");
+  window.location.href = destino;
+} else {
+  window.location.href = "/programa/index.html";
+}
+
 const API_URL = 'https://quiz-backend-5lu1.onrender.com';
 
 const taxonomia = [ 
