@@ -183,6 +183,10 @@
 
 <script>
   const API_URL = 'https://quiz-backend-5lu1.onrender.com';
+  const usuario = localStorage.getItem("usuario") || "undefined";
+
+  let vidas = 3, tiempo = 0, totalPreguntas = 0, preguntasRespondidas = 0;
+  let preguntasSeleccionadas = [], timer;
     const taxonomia = [
         {
             especie: "Rotaria citrina",
@@ -277,14 +281,26 @@
         }
     ];
 
-  let vidas = 3, tiempo = 0, totalPreguntas = 0, preguntasRespondidas = 0;
-  let preguntasSeleccionadas = [], timer;
+    function iniciarJuego() {
+    preguntasSeleccionadas = generarPreguntas();
+    totalPreguntas = preguntasSeleccionadas.length;
+    preguntasRespondidas = 0;
+    vidas = 3;
+    tiempo = 0;
 
-  function iniciarJuego() {
-    preguntasSeleccionadas = [];
+    actualizarVidas();
+    actualizarProgreso();
+    document.getElementById("ranking").innerHTML = "";
+    document.getElementById("resultado").innerText = "";
+    document.getElementById("botonReiniciar").style.display = "none";
+    document.getElementById("imagenTest").style.display = "block";
+    siguientePregunta();
+    iniciarCronometro();
+  }
+
+  function generarPreguntas() {
     const niveles = ["genero", "especie", "clase", "subclase", "familia", "filo"];
     let posibles = [];
-
     taxonomia.forEach(item => {
       const disponibles = niveles.filter(n => item[n]);
       const usados = new Set();
@@ -296,28 +312,21 @@
         }
       }
     });
-
     while (posibles.length < 20) {
       const copia = posibles[Math.floor(Math.random() * posibles.length)];
       if (posibles.filter(p => p.item === copia.item).length < 2) {
         posibles.push(copia);
       }
     }
-
-    preguntasSeleccionadas = posibles.sort(() => Math.random() - 0.5).slice(0, 20);
-    totalPreguntas = preguntasSeleccionadas.length;
-    preguntasRespondidas = 0;
-    vidas = 3;
-    tiempo = 0;
-
-    actualizarVidas();
-    actualizarProgreso();
-    siguientePregunta();
-    iniciarCronometro();
+    return posibles.sort(() => Math.random() - 0.5).slice(0, 20);
   }
 
   function actualizarVidas() {
     document.getElementById("vidas").innerText = "Vidas: " + "❤️".repeat(vidas);
+  }
+
+  function actualizarProgreso() {
+    document.getElementById("progreso").innerText = `Progreso: ${preguntasRespondidas}/${totalPreguntas}`;
   }
 
   function iniciarCronometro() {
@@ -330,13 +339,10 @@
 
   function siguientePregunta() {
     document.getElementById("resultado").innerText = "";
-    if (preguntasRespondidas >= totalPreguntas) {
-      terminarJuego("🎉 ¡Has completado el test!");
-      return;
-    }
+    if (preguntasRespondidas >= totalPreguntas) return terminarJuego("🎉 ¡Has completado el test!");
 
-    const { item: datos, nivel } = preguntasSeleccionadas[preguntasRespondidas];
-    const correcta = datos[nivel];
+    const { item, nivel } = preguntasSeleccionadas[preguntasRespondidas];
+    const correcta = item[nivel];
 
     const opciones = new Set([correcta]);
     while (opciones.size < 4) {
@@ -345,28 +351,36 @@
     }
 
     const opcionesArray = Array.from(opciones).sort(() => Math.random() - 0.5);
-    document.getElementById("imagenTest").src = datos.imagen;
-    document.getElementById("preguntaTexto").innerText = `¿Cuál es ${nivel.toUpperCase()} de esta imagen?`;
+    const img = document.getElementById("imagenTest");
+    img.src = item.imagen;
+    img.alt = correcta;
 
     const info = [];
-    if (nivel !== 'filo' && datos.filo) info.push(`Filo: ${datos.filo}`);
-    if (nivel !== 'clase' && datos.clase) info.push(`Clase: ${datos.clase}`);
-    if (nivel !== 'subclase' && datos.subclase) info.push(`Subclase: ${datos.subclase}`);
-    if (nivel !== 'familia' && datos.familia) info.push(`Familia: ${datos.familia}`);
-    if (nivel !== 'genero' && datos.genero) info.push(`Género: ${datos.genero}`);
-    if (nivel !== 'especie' && datos.especie) info.push(`Especie: ${datos.especie}`);
+    if (nivel !== 'filo' && item.filo) info.push(`Filo: ${item.filo}`);
+    if (nivel !== 'clase' && item.clase) info.push(`Clase: ${item.clase}`);
+    if (nivel !== 'subclase' && item.subclase) info.push(`Subclase: ${item.subclase}`);
+    if (nivel !== 'familia' && item.familia) info.push(`Familia: ${item.familia}`);
+    if (nivel !== 'genero' && item.genero) info.push(`Género: ${item.genero}`);
+    if (nivel !== 'especie' && item.especie) info.push(`Especie: ${item.especie}`);
     document.getElementById("infoTaxonomica").innerHTML = info.map(i => `<span>${i}</span>`).join("");
 
-    const contenedor = document.getElementById("opciones");
-    contenedor.innerHTML = "";
+    document.getElementById("preguntaTexto").innerText = `¿Cuál es ${nivel.toUpperCase()} de esta imagen?`;
+    const opcionesCont = document.getElementById("opciones");
+    opcionesCont.innerHTML = "";
+
     opcionesArray.forEach(op => {
       const btn = document.createElement("button");
       btn.innerText = op;
       btn.onclick = () => {
-        if (!btn.classList.contains('incorrecto')) verificar(op, correcta, btn);
+        desactivarBotones();
+        verificar(op, correcta, btn);
       };
-      contenedor.appendChild(btn);
+      opcionesCont.appendChild(btn);
     });
+  }
+
+  function desactivarBotones() {
+    document.querySelectorAll("#opciones button").forEach(btn => btn.disabled = true);
   }
 
   function verificar(seleccion, correcto, boton) {
@@ -376,99 +390,80 @@
       resultado.style.color = "green";
       preguntasRespondidas++;
       actualizarProgreso();
-      setTimeout(siguientePregunta, 1000);
+      setTimeout(() => {
+        siguientePregunta();
+      }, 600);
     } else {
       vidas--;
       tiempo += 3;
       actualizarVidas();
       resultado.innerText = "❌ Incorrecto. Intenta de nuevo.";
       resultado.style.color = "red";
-      if (boton) boton.classList.add('incorrecto');
+      boton.classList.add('incorrecto');
+      boton.disabled = true;
       if (vidas <= 0) terminarJuego("☠️ Te has quedado sin vidas.");
     }
   }
 
-  function actualizarProgreso() {
-    document.getElementById("progreso").innerText = `Progreso: ${preguntasRespondidas}/${totalPreguntas}`;
-  }
-
   function terminarJuego(mensaje) {
     clearInterval(timer);
-    const puntajeFinal = Math.round((preguntasRespondidas * 1000) / (tiempo + 1));
-    const usuario = localStorage.getItem("usuario") || "undefined";
-
+    const puntaje = Math.round((preguntasRespondidas * 1000) / (tiempo + 1));
     document.getElementById("resultado").innerHTML = `
-        ${mensaje}<br>
-        ⏱ Tiempo: ${tiempo}s<br>
-        ✅ Resultado: ${preguntasRespondidas}/${totalPreguntas}<br>
-        🏆 Puntaje final: <strong>${puntajeFinal}</strong><br>
-        <span id="estadoEnvio">Enviando puntaje...</span>
+      ${mensaje}<br>
+      ⏱ Tiempo: ${tiempo}s<br>
+      ✅ Resultado: ${preguntasRespondidas}/${totalPreguntas}<br>
+      🏆 Puntaje final: <strong>${puntaje}</strong><br>
+      <span id="estadoEnvio">Enviando puntaje...</span>
     `;
-
     document.getElementById("imagenTest").style.display = "none";
     document.getElementById("opciones").innerHTML = "";
     document.getElementById("preguntaTexto").innerText = "";
 
-    fetch('https://quiz-backend-5lu1.onrender.com/api/puntajes', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nombre: usuario, puntaje: puntajeFinal, tiempo: `${tiempo}s` })
+    fetch(`${API_URL}/api/puntajes`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nombre: usuario, puntaje, tiempo: `${tiempo}s` })
     })
     .then(() => {
-        document.getElementById("estadoEnvio").innerText = "✅ Puntaje guardado";
-        mostrarRanking(puntajeFinal, usuario);
+      document.getElementById("estadoEnvio").innerText = "✅ Puntaje guardado";
+      mostrarRanking(puntaje, usuario);
     })
     .catch(() => {
-        document.getElementById("estadoEnvio").innerText = "❌ Error al guardar puntaje";
+      document.getElementById("estadoEnvio").innerText = "❌ Error al guardar puntaje";
     });
 
     document.getElementById("botonReiniciar").style.display = "block";
-}
+  }
 
-function mostrarRanking(puntajeUsuario, nombreUsuario) {
-    fetch('https://quiz-backend-5lu1.onrender.com/api/puntajes')
+  function mostrarRanking(puntajeUsuario, nombreUsuario) {
+    fetch(`${API_URL}/api/puntajes`)
     .then(res => res.json())
     .then(data => {
-        const tabla = document.createElement("table");
-        tabla.style.margin = "20px auto";
-        tabla.style.borderCollapse = "collapse";
-
-        tabla.innerHTML = `
-            <tr><th>Puesto</th><th>Usuario</th><th>Puntaje</th><th>Tiempo</th></tr>
-            ${data.map((p, i) => `
-              <tr>
-                <td>${i + 1}</td>
-                <td>${p.nombre}</td>
-                <td>${p.puntaje}</td>
-                <td>${p.tiempo}</td>
-              </tr>
-            `).join("")}
-        `;
-        tabla.querySelectorAll("th, td").forEach(cell => {
-            cell.style.border = "1px solid #888";
-            cell.style.padding = "4px 8px";
-        });
-
-        const posicion = data.findIndex(p => p.nombre === nombreUsuario);
-        const mensajePosicion = posicion >= 0
-          ? `📈 Estás en el puesto <strong>${posicion + 1}</strong>`
-          : "📉 Estás fuera del top 10";
-
-        document.getElementById("resultado").innerHTML += `
-          <p>${mensajePosicion}</p>
-          <h3>🏅 Top 10</h3>
-        `;
-        document.getElementById("resultado").appendChild(tabla);
+      const tabla = document.createElement("table");
+      tabla.innerHTML = `
+        <tr><th>Puesto</th><th>Usuario</th><th>Puntaje</th><th>Tiempo</th></tr>
+        ${data.map((p, i) => `
+          <tr>
+            <td>${i + 1}</td>
+            <td>${p.nombre}</td>
+            <td>${p.puntaje}</td>
+            <td>${p.tiempo}</td>
+          </tr>
+        `).join("")}
+      `;
+      document.getElementById("ranking").innerHTML = `
+        <h3>🏅 Top 10</h3>
+        <p>${data.findIndex(p => p.nombre === nombreUsuario) + 1 <= 0 
+            ? "📉 Estás fuera del top 10"
+            : `📈 Estás en el puesto <strong>${data.findIndex(p => p.nombre === nombreUsuario) + 1}</strong>`}</p>
+      `;
+      document.getElementById("ranking").appendChild(tabla);
     });
-}
+  }
 
-function reiniciarJuego() {
-    document.getElementById("botonReiniciar").style.display = "none";
-    document.getElementById("imagenTest").style.display = "block";
-    document.getElementById("ranking").innerHTML = "";
+  function reiniciarJuego() {
     iniciarJuego();
-}
+  }
+
   iniciarJuego();
 </script>
-</body>
-</html>
