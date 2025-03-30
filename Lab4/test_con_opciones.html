@@ -323,7 +323,14 @@
 
     function terminarJuego(mensaje) {
         clearInterval(timer);
-        document.getElementById("resultado").innerText = mensaje;
+        const puntajeFinal = Math.round((preguntasRespondidas * 1000) / (tiempo + 1));
+
+        document.getElementById("resultado").innerHTML = `
+            ${mensaje}<br>
+            ⏱ Tiempo: ${tiempo}s<br>
+            ✅ Resultado: ${preguntasRespondidas}/${totalPreguntas}<br>
+            🏆 Puntaje final: <strong>${puntajeFinal}</strong>
+        `;
         document.getElementById("imagenTest").style.display = "none";
         document.getElementById("opciones").innerHTML = "";
         document.getElementById("preguntaTexto").innerText = "";
