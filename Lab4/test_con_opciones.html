@@ -196,7 +196,7 @@
         }
     ];
 
-    let vidas = 3, tiempo = 0, totalPreguntas = 0, preguntasRespondidas = 0;
+  let vidas = 3, tiempo = 0, totalPreguntas = 0, preguntasRespondidas = 0;
   let preguntasSeleccionadas = [], timer;
 
   function iniciarJuego() {
@@ -310,62 +310,81 @@
     document.getElementById("progreso").innerText = `Progreso: ${preguntasRespondidas}/${totalPreguntas}`;
   }
 
-  async function terminarJuego(mensaje) {
+  function terminarJuego(mensaje) {
     clearInterval(timer);
-    const puntaje = Math.round((preguntasRespondidas * 1000) / (tiempo + 1));
+    const puntajeFinal = Math.round((preguntasRespondidas * 1000) / (tiempo + 1));
+    const usuario = localStorage.getItem("usuario") || "undefined";
+
+    document.getElementById("resultado").innerHTML = `
+        ${mensaje}<br>
+        ⏱ Tiempo: ${tiempo}s<br>
+        ✅ Resultado: ${preguntasRespondidas}/${totalPreguntas}<br>
+        🏆 Puntaje final: <strong>${puntajeFinal}</strong><br>
+        <span id="estadoEnvio">Enviando puntaje...</span>
+    `;
 
     document.getElementById("imagenTest").style.display = "none";
     document.getElementById("opciones").innerHTML = "";
     document.getElementById("preguntaTexto").innerText = "";
 
-    document.getElementById("resultado").innerHTML = `
-      ${mensaje}<br>
-      ⏱ Tiempo: ${tiempo}s<br>
-      ✅ Resultado: ${preguntasRespondidas}/${totalPreguntas}<br>
-      🏆 Puntaje final: <strong>${puntaje}</strong><br>
-      Enviando puntaje...
-    `;
-
-    try {
-      await fetch(`${API_URL}/api/puntajes`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username: usuario, puntaje, tiempo })
-      });
-
-      const res = await fetch(`${API_URL}/api/puntajes/top10`);
-      const ranking = await res.json();
-
-      const puesto = ranking.findIndex(p => p.username === usuario && p.puntaje === puntaje) + 1;
-      const rankingHTML = `
-        <p>📈 Estás en el puesto <strong>${puesto > 0 ? puesto : "fuera del top 10"}</strong></p>
-        <h3>🏅 Top 10</h3>
-        <table>
-          <tr><th>Puesto</th><th>Usuario</th><th>Puntaje</th><th>Tiempo</th></tr>
-          ${ranking.map((p, i) => `
-            <tr>
-              <td>${i + 1}</td>
-              <td>${p.username}</td>
-              <td>${p.puntaje}</td>
-              <td>${p.tiempo}s</td>
-            </tr>`).join("")}
-        </table>`;
-      document.getElementById("ranking").innerHTML = rankingHTML;
-    } catch (err) {
-      document.getElementById("ranking").innerText = "⚠️ Error al obtener el ranking.";
-    }
+    fetch('https://quiz-backend-5lu1.onrender.com/api/puntajes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nombre: usuario, puntaje: puntajeFinal, tiempo: `${tiempo}s` })
+    })
+    .then(() => {
+        document.getElementById("estadoEnvio").innerText = "✅ Puntaje guardado";
+        mostrarRanking(puntajeFinal, usuario);
+    })
+    .catch(() => {
+        document.getElementById("estadoEnvio").innerText = "❌ Error al guardar puntaje";
+    });
 
     document.getElementById("botonReiniciar").style.display = "block";
-  }
+}
 
-  function reiniciarJuego() {
-    document.getElementById("imagenTest").style.display = "block";
-    document.getElementById("ranking").innerHTML = "";
-    document.getElementById("resultado").innerText = "";
+function mostrarRanking(puntajeUsuario, nombreUsuario) {
+    fetch('https://quiz-backend-5lu1.onrender.com/api/puntajes')
+    .then(res => res.json())
+    .then(data => {
+        const tabla = document.createElement("table");
+        tabla.style.margin = "20px auto";
+        tabla.style.borderCollapse = "collapse";
+
+        tabla.innerHTML = `
+            <tr><th>Puesto</th><th>Usuario</th><th>Puntaje</th><th>Tiempo</th></tr>
+            ${data.map((p, i) => `
+              <tr>
+                <td>${i + 1}</td>
+                <td>${p.nombre}</td>
+                <td>${p.puntaje}</td>
+                <td>${p.tiempo}</td>
+              </tr>
+            `).join("")}
+        `;
+        tabla.querySelectorAll("th, td").forEach(cell => {
+            cell.style.border = "1px solid #888";
+            cell.style.padding = "4px 8px";
+        });
+
+        const posicion = data.findIndex(p => p.nombre === nombreUsuario);
+        const mensajePosicion = posicion >= 0
+          ? `📈 Estás en el puesto <strong>${posicion + 1}</strong>`
+          : "📉 Estás fuera del top 10";
+
+        document.getElementById("resultado").innerHTML += `
+          <p>${mensajePosicion}</p>
+          <h3>🏅 Top 10</h3>
+        `;
+        document.getElementById("resultado").appendChild(tabla);
+    });
+}
+
+function reiniciarJuego() {
     document.getElementById("botonReiniciar").style.display = "none";
+    document.getElementById("imagenTest").style.display = "block";
     iniciarJuego();
-  }
-
+}
   iniciarJuego();
 </script>
 </body>
