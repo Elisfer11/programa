@@ -111,8 +111,16 @@
 </div>
 
 <script>
+
+// 🔒 Verificación de login obligatorio
+const usuario = localStorage.getItem("usuario");
+const mantener = localStorage.getItem("mantener") === "true";
+
+if (!usuario || usuario === "Invitado" || !mantener) {
+  sessionStorage.setItem("destino", window.location.pathname);
+  window.location.href = "/programa/login.html";
+}
 const API_URL = 'https://quiz-backend-5lu1.onrender.com';
-const usuario = localStorage.getItem("usuario") || "undefined";
 
 const taxonomia = [ 
 {

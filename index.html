@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Menú Principal</title>
   <style>
     body {
@@ -34,10 +34,6 @@
       color: #00796b;
     }
 
-    .hidden {
-      display: none;
-    }
-
     button {
       background-color: #00796b;
       color: white;
@@ -54,14 +50,6 @@
       background-color: #004d40;
     }
 
-    input {
-      width: 80%;
-      padding: 10px;
-      margin: 10px 0;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-    }
-
     #usuarioActivo {
       font-weight: bold;
       margin: 10px;
@@ -71,44 +59,15 @@
       .container {
         padding: 20px;
       }
-
-      #imagenTest {
-        max-width: 90vw;
-        height: auto;
-      }
-
-      .top-bar {
-        flex-direction: column;
-        align-items: center;
-        gap: 5px;
-      }
-
-      .opciones button {
-        font-size: 0.95rem;
-        padding: 8px;
-      }
-
-      #ranking table {
-        font-size: 0.85rem;
-      }
     }
   </style>
 </head>
 <body>
-  <div class="container" id="loginContainer">
-    <h2>Iniciar Sesión</h2>
-    <input type="text" id="username" placeholder="Usuario"><br>
-    <input type="password" id="password" placeholder="Contraseña"><br>
-    <label><input type="checkbox" id="recordar"> Mantener conectado</label><br>
-    <button onclick="login()">Ingresar</button>
-    <button onclick="registrar()">Registrarse</button>
-    <button onclick="continuarInvitado()">Ingresar como Invitado</button>
-    <div id="mensajeLogin"></div>
-  </div>
-
-  <div class="container hidden" id="menuContainer">
+  <div class="container">
     <h2>Menú Principal</h2>
-    <div id="usuarioActivo"></div>
+    <div id="usuarioActivo">Cargando usuario...</div>
+    <button onclick="accederATest('/programa/competitivo1.html')">Modo Competitivo 1</button>
+    <button onclick="accederATest('/programa/competitivo2.html')">Modo Competitivo 2</button>
     <button onclick="window.location.href='/programa/Lab2/menu_lab2.html'">Laboratorio 2</button>
     <button onclick="window.location.href='/programa/Lab3/menu_lab3.html'">Laboratorio 3</button>
     <button onclick="window.location.href='/programa/Lab4/menu_lab4.html'">Laboratorio 4</button>
@@ -118,88 +77,36 @@
   <script>
     const API_URL = 'https://quiz-backend-5lu1.onrender.com';
 
-    async function login() {
-      const user = document.getElementById("username").value;
-      const pass = document.getElementById("password").value;
-      const recordar = document.getElementById("recordar").checked;
-      if (!user || !pass) {
-        document.getElementById("mensajeLogin").innerText = "Debe completar ambos campos";
-        return;
+    function accederATest(ruta) {
+      const usuario = localStorage.getItem("usuario");
+      if (!usuario || usuario === "Invitado") {
+        window.location.href = `/programa/login.html?redirect=${encodeURIComponent(ruta)}`;
+      } else {
+        window.location.href = ruta;
       }
-      try {
-        const res = await fetch(`${API_URL}/login`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username: user, password: pass })
-        });
-        const data = await res.json();
-        if (res.ok) {
-          localStorage.setItem("usuario", user);
-          if (recordar) localStorage.setItem("mantener", "true");
-          mostrarMenu(user);
-        } else {
-          document.getElementById("mensajeLogin").innerText = data.message || "Error de login";
-        }
-      } catch (err) {
-        document.getElementById("mensajeLogin").innerText = "Error de conexión con el servidor.";
-      }
-    }
-
-    async function registrar() {
-      const user = document.getElementById("username").value;
-      const pass = document.getElementById("password").value;
-      if (!user || !pass) {
-        document.getElementById("mensajeLogin").innerText = "Debe completar ambos campos";
-        return;
-      }
-      try {
-        const res = await fetch(`${API_URL}/register`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username: user, password: pass })
-        });
-        const data = await res.json();
-        if (res.ok) {
-          document.getElementById("mensajeLogin").innerText = "✅ Usuario registrado correctamente";
-        } else {
-          document.getElementById("mensajeLogin").innerText = data.message || "Error al registrar";
-        }
-      } catch (err) {
-        document.getElementById("mensajeLogin").innerText = "Error de conexión con el servidor.";
-      }
-    }
-
-    function continuarInvitado() {
-      localStorage.setItem("usuario", "Invitado");
-      localStorage.setItem("mantener", "false");
-      mostrarMenu("Invitado (sin ranking)");
     }
 
     function cerrarSesion() {
       localStorage.removeItem("usuario");
       localStorage.removeItem("mantener");
-      document.getElementById("menuContainer").classList.add("hidden");
-      document.getElementById("loginContainer").classList.remove("hidden");
+      location.reload();
     }
 
-    function mostrarMenu(nombre) {
-      document.getElementById("loginContainer").classList.add("hidden");
-      document.getElementById("menuContainer").classList.remove("hidden");
-      document.getElementById("usuarioActivo").innerText = `Usuario: ${nombre}`;
-    }
+    window.onload = () => {
+      const user = localStorage.getItem("usuario");
+      const mantener = localStorage.getItem("mantener") === "true";
+      const mensaje = user && mantener
+        ? `Usuario: ${user}`
+        : "Usuario: Invitado";
+      document.getElementById("usuarioActivo").innerText = mensaje;
+    };
 
     // 🔁 KEEP ALIVE cada 14 minutos
     setInterval(() => {
       fetch(`${API_URL}/`)
         .then(res => console.log("🟢 Keep-alive OK:", res.status))
         .catch(err => console.warn("🔴 Keep-alive error:", err));
-    }, 1000 * 60 * 14); // 14 minutos
-
-    window.onload = () => {
-      const user = localStorage.getItem("usuario");
-      const mantener = localStorage.getItem("mantener") === "true";
-      if (user && mantener) mostrarMenu(user);
-    };
+    }, 1000 * 60 * 14);
   </script>
 </body>
 </html>
