@@ -248,6 +248,7 @@
   }
 
   function siguientePregunta() {
+    document.getElementById("resultado").innerText = "";
     if (preguntasRespondidas >= totalPreguntas) {
       terminarJuego("🎉 ¡Has completado el test!");
       return;
@@ -383,6 +384,7 @@ function mostrarRanking(puntajeUsuario, nombreUsuario) {
 function reiniciarJuego() {
     document.getElementById("botonReiniciar").style.display = "none";
     document.getElementById("imagenTest").style.display = "block";
+    document.getElementById("ranking").innerHTML = "";
     iniciarJuego();
 }
   iniciarJuego();
