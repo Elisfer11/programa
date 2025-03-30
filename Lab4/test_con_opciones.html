@@ -5,38 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Modo Competitivo</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
+    * { box-sizing: border-box; }
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
-      padding: 0;
+      margin: 0; padding: 0;
       background: linear-gradient(to bottom right, #e0f7fa, #ffffff);
       color: #333;
       display: flex;
       justify-content: center;
       min-height: 100vh;
     }
-
     .container {
       background-color: white;
-      margin: 30px 0;
-      padding: 30px 20px;
+      margin: 30px 0; padding: 30px 20px;
       border-radius: 20px;
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.15);
       max-width: 600px;
       width: 90%;
       text-align: center;
     }
-
-    h2 {
-      font-size: 1.8rem;
-      color: #00796b;
-      margin-bottom: 15px;
-    }
-
+    h2 { font-size: 1.8rem; color: #00796b; margin-bottom: 15px; }
     .top-bar {
       display: flex;
       justify-content: space-around;
@@ -45,147 +33,89 @@
       margin-bottom: 20px;
       font-size: 1.1em;
     }
-
     #imagenTest {
-      width: 100%;
-      max-width: 350px;
-      border-radius: 10px;
-      margin: 10px auto;
+      width: 100%; max-width: 350px;
+      border-radius: 10px; margin: 10px auto;
     }
-
     #infoTaxonomica {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 5px;
+      display: flex; flex-wrap: wrap;
+      justify-content: center; gap: 5px;
       margin: 10px 0;
     }
-
     #infoTaxonomica span {
-      background: #e0f2f1;
-      padding: 5px 10px;
-      border-radius: 15px;
-      font-size: 0.9em;
+      background: #e0f2f1; padding: 5px 10px;
+      border-radius: 15px; font-size: 0.9em;
     }
-
     #preguntaTexto {
-      font-weight: bold;
-      margin: 15px 0;
-      font-size: 1.1em;
+      font-weight: bold; margin: 15px 0; font-size: 1.1em;
     }
-
     .opciones {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+      display: flex; flex-direction: column; gap: 10px;
       margin-bottom: 20px;
     }
-
     .opciones button {
-      background-color: #f0f0f0;
-      color: #333;
-      padding: 12px;
-      border: none;
-      border-radius: 10px;
-      font-size: 1em;
-      cursor: pointer;
+      background-color: #f0f0f0; color: #333;
+      padding: 12px; border: none; border-radius: 10px;
+      font-size: 1em; cursor: pointer;
       transition: background-color 0.3s;
     }
-
-    .opciones button:hover {
-      background-color: #dcedc8;
-    }
-
-    .incorrecto {
-      background-color: #f44336 !important;
-      color: white !important;
-    }
-
-    #resultado {
-      font-size: 1.1em;
-      margin: 15px 0;
-    }
-
-    #ranking {
-      margin-top: 20px;
-    }
-
+    .opciones button:hover { background-color: #dcedc8; }
+    .incorrecto { background-color: #f44336 !important; color: white !important; }
+    #resultado { font-size: 1.1em; margin: 15px 0; }
+    #ranking { margin-top: 20px; }
     #ranking table {
       border-collapse: collapse;
-      width: 100%;
-      max-width: 100%;
+      width: 100%; max-width: 100%;
     }
-
     #ranking th, #ranking td {
-      border: 1px solid #ccc;
-      padding: 6px;
+      border: 1px solid #ccc; padding: 6px;
       text-align: center;
     }
-
     #ranking th {
-      background-color: #00796b;
-      color: white;
+      background-color: #00796b; color: white;
     }
-
-    #botonReiniciar {
-      margin-top: 20px;
-    }
-
+    #botonReiniciar { margin-top: 20px; }
     #botonReiniciar button {
-      background-color: #00796b;
-      color: white;
-      padding: 10px 20px;
-      font-size: 1rem;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
+      background-color: #00796b; color: white;
+      padding: 10px 20px; font-size: 1rem;
+      border: none; border-radius: 8px;
+      cursor: pointer; transition: background-color 0.3s ease;
     }
-
     #botonReiniciar button:hover {
       background-color: #004d40;
     }
-
     @media (max-width: 480px) {
-      .container {
-        padding: 20px;
-      }
-
-      .opciones button {
-        font-size: 0.95rem;
-        padding: 10px;
-      }
-
-      #ranking table {
-        font-size: 0.85rem;
-      }
+      .container { padding: 20px; }
+      .opciones button { font-size: 0.95rem; padding: 10px; }
+      #ranking table { font-size: 0.85rem; }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h2>Identifica el Elemento</h2>
-    <div class="top-bar">
-      <div id="vidas">Vidas: ❤️❤️❤️</div>
-      <div id="tiempo">Tiempo: 0s</div>
-      <div id="progreso">Progreso: 0/0</div>
-    </div>
-    <img id="imagenTest" src="" alt="Imagen de prueba" />
-    <div id="infoTaxonomica"></div>
-    <div id="preguntaTexto"></div>
-    <div class="opciones" id="opciones"></div>
-    <div id="resultado"></div>
-    <div id="ranking"></div>
-    <div id="botonReiniciar" style="display: none;">
-      <button onclick="reiniciarJuego()">Volver a jugar</button>
-    </div>
+<div class="container">
+  <h2>Identifica el Elemento</h2>
+  <div class="top-bar">
+    <div id="vidas">Vidas: ❤️❤️❤️</div>
+    <div id="tiempo">Tiempo: 0s</div>
+    <div id="progreso">Progreso: 0/0</div>
   </div>
+  <img id="imagenTest" src="" alt="Imagen de prueba" />
+  <div id="infoTaxonomica"></div>
+  <div id="preguntaTexto"></div>
+  <div class="opciones" id="opciones"></div>
+  <div id="resultado"></div>
+  <div id="ranking"></div>
+  <div id="botonReiniciar" style="display: none;">
+    <button onclick="reiniciarJuego()">Volver a jugar</button>
+  </div>
+</div>
 
 <script>
 const API_URL = 'https://quiz-backend-5lu1.onrender.com';
 const usuario = localStorage.getItem("usuario") || "undefined";
-    const taxonomia = [
-        {
+
+const taxonomia = [ 
+{
             especie: "Rotaria citrina",
             imagen: "/programa/Lab4/imagenes/Filo_Rotifera-Clase_Hemirotatoria-subclase_Bdelloidea-Familia_Philodinidae-Rotaria_citrina.jpg",
             filo: "Rotifera",
@@ -278,7 +208,7 @@ const usuario = localStorage.getItem("usuario") || "undefined";
         }
     ];
 
-    let vidas = 3, tiempo = 0, preguntasRespondidas = 0, totalPreguntas = 20, timer;
+let vidas = 3, tiempo = 0, preguntasRespondidas = 0, totalPreguntas = 20, timer;
 let preguntasCompletas = [];
 
 function iniciarJuego() {
@@ -286,6 +216,12 @@ function iniciarJuego() {
   tiempo = 0;
   preguntasRespondidas = 0;
   preguntasCompletas = generarPreguntasCompletas();
+
+  if (!preguntasCompletas || preguntasCompletas.length < totalPreguntas) {
+    alert("❌ No se pudieron generar suficientes preguntas.");
+    return;
+  }
+
   actualizarVidas();
   actualizarProgreso();
   document.getElementById("ranking").innerHTML = "";
@@ -312,27 +248,28 @@ function generarPreguntasCompletas() {
     }
   });
 
-  while (posibles.length < 20) {
+  while (posibles.length < totalPreguntas) {
     const copia = posibles[Math.floor(Math.random() * posibles.length)];
     if (posibles.filter(p => p.item === copia.item).length < 2) {
       posibles.push(copia);
     }
+    if (posibles.length > 200) break; // evitar bucle infinito
   }
 
   return posibles
     .sort(() => Math.random() - 0.5)
-    .slice(0, 20)
+    .slice(0, totalPreguntas)
     .map(({ item, nivel }) => {
       const correcta = item[nivel];
       const opciones = new Set([correcta]);
-      while (opciones.size < 4) {
+      let intentos = 0;
+      while (opciones.size < 4 && intentos < 20) {
         const aleatorio = taxonomia[Math.floor(Math.random() * taxonomia.length)];
         if (aleatorio[nivel]) opciones.add(aleatorio[nivel]);
+        intentos++;
       }
       return {
-        item,
-        nivel,
-        correcta,
+        item, nivel, correcta,
         opciones: Array.from(opciones).sort(() => Math.random() - 0.5)
       };
     });
@@ -341,11 +278,9 @@ function generarPreguntasCompletas() {
 function actualizarVidas() {
   document.getElementById("vidas").innerText = "Vidas: " + "❤️".repeat(vidas);
 }
-
 function actualizarProgreso() {
   document.getElementById("progreso").innerText = `Progreso: ${preguntasRespondidas}/${totalPreguntas}`;
 }
-
 function iniciarCronometro() {
   clearInterval(timer);
   timer = setInterval(() => {
@@ -391,13 +326,12 @@ function desactivarBotones() {
 
 function verificar(seleccion, correcto, boton) {
   const resultado = document.getElementById("resultado");
-
   if (seleccion === correcto) {
     resultado.innerText = "✔️ Correcto!";
     resultado.style.color = "green";
     preguntasRespondidas++;
     actualizarProgreso();
-    setTimeout(siguientePregunta, 1000);
+    setTimeout(siguientePregunta, 800);
   } else {
     vidas--;
     tiempo += 3;
@@ -453,14 +387,15 @@ function mostrarRanking(puntajeUsuario, nombreUsuario) {
             <td>${p.nombre}</td>
             <td>${p.puntaje}</td>
             <td>${p.tiempo}</td>
-          </tr>
-        `).join("")}
+          </tr>`).join("")}
       `;
       document.getElementById("ranking").innerHTML = `
         <h3>🏅 Top 10</h3>
-        <p>${data.findIndex(p => p.nombre === nombreUsuario) + 1 <= 0 
+        <p>${
+          data.findIndex(p => p.nombre === nombreUsuario) + 1 <= 0
           ? "📉 Estás fuera del top 10"
-          : `📈 Estás en el puesto <strong>${data.findIndex(p => p.nombre === nombreUsuario) + 1}</strong>`}</p>
+          : `📈 Estás en el puesto <strong>${data.findIndex(p => p.nombre === nombreUsuario) + 1}</strong>`
+        }</p>
       `;
       document.getElementById("ranking").appendChild(tabla);
     });
