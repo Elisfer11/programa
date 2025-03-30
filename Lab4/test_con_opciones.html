@@ -313,12 +313,12 @@ function siguientePregunta() {
     const btn = document.createElement("button");
     btn.innerText = op;
     btn.onclick = () => {
-      desactivarBotones();
       verificar(op, correcta, btn);
     };
     contenedor.appendChild(btn);
   });
 }
+
 
 function desactivarBotones() {
   document.querySelectorAll("#opciones button").forEach(btn => btn.disabled = true);
@@ -326,12 +326,17 @@ function desactivarBotones() {
 
 function verificar(seleccion, correcto, boton) {
   const resultado = document.getElementById("resultado");
+
   if (seleccion === correcto) {
     resultado.innerText = "✔️ Correcto!";
     resultado.style.color = "green";
     preguntasRespondidas++;
     actualizarProgreso();
-    setTimeout(siguientePregunta, 800);
+
+    // ✅ Solo desactivar botones si es correcta
+    document.querySelectorAll("#opciones button").forEach(btn => btn.disabled = true);
+
+    setTimeout(siguientePregunta, 1000);
   } else {
     vidas--;
     tiempo += 3;
@@ -340,9 +345,11 @@ function verificar(seleccion, correcto, boton) {
     resultado.style.color = "red";
     boton.classList.add('incorrecto');
     boton.disabled = true;
+
     if (vidas <= 0) terminarJuego("☠️ Te has quedado sin vidas.");
   }
 }
+
 
 function terminarJuego(mensaje) {
   clearInterval(timer);
