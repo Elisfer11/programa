@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test de Filos</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f4f4;
+      max-width: 700px;
+      margin: 30px auto;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      text-align: center;
+    }
+    h2 {
+      margin-bottom: 20px;
+    }
+    img {
+      width: 100%;
+      max-width: 450px;
+      margin: 20px 0;
+      border-radius: 10px;
+    }
+    input[type="text"] {
+      padding: 10px;
+      font-size: 1em;
+      width: 80%;
+      margin-bottom: 15px;
+    }
+    button {
+      margin-top: 10px;
+      padding: 12px 24px;
+      font-size: 1em;
+      border: none;
+      border-radius: 8px;
+      background-color: #eee;
+      color: #333;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background-color: #ddd;
+    }
+    #resultado {
+      margin-top: 20px;
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+    #contador {
+      margin: 10px;
+      font-size: 1.2em;
+    }
+  </style>
+</head>
+<body>
+  <h2>Test de Filos</h2>
+  <div id="contador">Pregunta 0/0</div>
+  <img id="imagen" src="" alt="Imagen de prueba">
+  <div>
+    <input type="text" id="respuesta" placeholder="Escribe el filo..." onkeypress="if(event.key === 'Enter') verificarRespuesta()">
+    <br>
+    <button onclick="verificarRespuesta()">Enviar</button>
+  </div>
+  <div id="resultado"></div>
+  <script>
+    const preguntasBase = [
+      { imagen: "/programa/Lab4/imagenes/Filo_Rotifera-Clase_Hemirotatoria-subclase_Bdelloidea-Familia_Philodinidae-Rotaria_citrina.jpg", filo: "Rotifera" },
+      { imagen: "/programa/Lab4/imagenes/Filo_Rotifera-Clase_Hemirotatoria-subclase_Acanthocephala-Macracanthorhynchus_hirudinaceus.jpg", filo: "Rotifera" },
+      { imagen: "/programa/Lab4/imagenes/Filo_Rotifera-Clase_Eurotatoria-Subclase_Monogonta-Familia_Brachionidae-Brachionus.jpg", filo: "Rotifera" },
+      { imagen: "/programa/Lab4/imagenes/Filo_Rotifera-Clase_Eurotatoria-Subclase_Monogonta-Familia_Asplanchnidae-Asplanchna.jpg", filo: "Rotifera" },
+      { imagen: "/programa/Lab4/imagenes/Filo_Bryozoa-Phylactolaemata-Plumatella.jpg", filo: "Bryozoa" },
+      { imagen: "/programa/Lab4/imagenes/Filo_Bryozoa-Phylactolaemata-Estatoblasto_de_Plumatella.jpg", filo: "Bryozoa" },
+      { imagen: "/programa/Lab4/imagenes/Filo_Bryozoa-Phylactolaemata-Pectinatella.jpg", filo: "Bryozoa" },
+      { imagen: "/programa/Lab4/imagenes/Filo_Bryozoa-Phylactolaemata-Estatoblasto_de_Pectinatella.jpg", filo: "Bryozoa" },
+      { imagen: "/programa/Lab4/imagenes/Filo_Bryozoa-Chelistomata-Bugula.jpg", filo: "Bryozoa" },
+      { imagen: "/programa/Lab4/imagenes/Filo_Phoronida-Familia_Phoronidae-Phoronopsis.jpg", filo: "Phoronida" },
+      { imagen: "/programa/Lab4/imagenes/Filo_Brachiopoda-Clase_Lingulata-Familia_Lingulidae-Glottidea_audebartii.jpg", filo: "Brachiopoda" },
+      { imagen: "/programa/Lab4/imagenes/Filo_Brachiopoda-Clase_Lingulata-Familia_Discinidae-Discradisca_strigata.jpg", filo: "Brachiopoda" },
+      { imagen: "/programa/Lab4/imagenes/Filo_Brachiopoda-Clase_Rhynchonollata-Terebratalia_transversa.jpg", filo: "Brachiopoda" },
+      { imagen: "/programa/Lab4/imagenes/Filo_Brachiopoda-Clase_Rhynchonollata-Laqueus_californionus.jpg", filo: "Brachiopoda" },
+      { imagen: "/programa/Lab4/imagenes/Filo_Nemertea-Heteronemertea.jpg", filo: "Nemertea" },
+      { imagen: "/programa/Lab4/imagenes/Filo_Nemertea-Hoplonemertea.jpg", filo: "Nemertea" }
+    ];
+
+    const preguntas = preguntasBase.filter(p => p.filo).sort(() => Math.random() - 0.5);
+    let actual = 0;
+    let correctas = 0;
+
+    function normalizar(texto) {
+      return texto
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/\p{Diacritic}/gu, "")
+        .replace(/ph/g, "f")
+        .replace(/y/g, "i")
+        .replace(/s$/g, "")
+        .trim();
+    }
+
+    function mostrarPregunta() {
+      if (actual >= preguntas.length) {
+        document.getElementById("resultado").innerText = `✅ Resultado final: ${correctas}/${preguntas.length}`;
+        document.getElementById("imagen").style.display = "none";
+        document.getElementById("respuesta").style.display = "none";
+        return;
+      }
+      document.getElementById("imagen").src = preguntas[actual].imagen;
+      document.getElementById("contador").innerText = `Pregunta ${actual + 1}/${preguntas.length}`;
+      document.getElementById("respuesta").value = "";
+      document.getElementById("resultado").innerText = "";
+    }
+
+    function verificarRespuesta() {
+      const userInput = normalizar(document.getElementById("respuesta").value);
+      const correcta = normalizar(preguntas[actual].filo);
+      const correcto = compararConMargen(userInput, correcta);
+
+      if (correcto) {
+        correctas++;
+        document.getElementById("resultado").innerText = "✔️ Correcto!";
+        document.getElementById("resultado").style.color = "green";
+      } else {
+        document.getElementById("resultado").innerText = `❌ Incorrecto. Era: ${preguntas[actual].filo}`;
+        document.getElementById("resultado").style.color = "red";
+      }
+      actual++;
+      setTimeout(mostrarPregunta, 1500);
+    }
+
+    function compararConMargen(a, b) {
+      const distancia = levenshtein(a, b);
+      const largoMax = Math.max(a.length, b.length);
+      return distancia <= 1 && largoMax > 3;
+    }
+
+    function levenshtein(a, b) {
+      const dp = Array.from({ length: a.length + 1 }, () => Array(b.length + 1).fill(0));
+      for (let i = 0; i <= a.length; i++) dp[i][0] = i;
+      for (let j = 0; j <= b.length; j++) dp[0][j] = j;
+      for (let i = 1; i <= a.length; i++) {
+        for (let j = 1; j <= b.length; j++) {
+          dp[i][j] = Math.min(
+            dp[i - 1][j] + 1,
+            dp[i][j - 1] + 1,
+            dp[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)
+          );
+        }
+      }
+      return dp[a.length][b.length];
+    }
+
+    mostrarPregunta();
+  </script>
+</body>
+</html>
