@@ -1,111 +1,107 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test con Opciones, Vidas y Tiempo</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f4f4f4;
-            color: #000;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            height: 100vh;
-            box-sizing: border-box;
-        }
-        h2 {
-            margin-bottom: 10px;
-            text-align: center;
-        }
-        #vidas, #tiempo, #progreso {
-            font-size: 1.1em;
-            margin: 5px;
-        }
-        #imagenTest {
-            width: 100%;
-            max-width: 350px;
-            border-radius: 10px;
-            margin: 10px 0;
-        }
-        #infoTaxonomica {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 5px;
-            margin: 5px 0;
-        }
-        #infoTaxonomica span {
-            background: rgba(0,0,0,0.1);
-            padding: 4px 8px;
-            border-radius: 5px;
-            font-size: 0.9em;
-        }
-        #preguntaTexto {
-            margin: 10px 0;
-            font-weight: bold;
-        }
-        .opciones {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            max-width: 350px;
-        }
-        .opciones button {
-            margin: 5px 0;
-            padding: 10px;
-            border: none;
-            border-radius: 8px;
-            background-color: #eee;
-            color: #333;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .opciones button:hover {
-            background-color: #ddd;
-        }
-        .incorrecto {
-            background-color: #f44336 !important;
-            color: white !important;
-        }
-        #resultado {
-            font-size: 1.2em;
-            margin-top: 10px;
-        }
-        .top-bar {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            width: 100%;
-            max-width: 400px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Modo Competitivo</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f4f4;
+      color: #000;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+    }
+    h2 {
+      text-align: center;
+    }
+    .top-bar {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      max-width: 400px;
+      width: 100%;
+    }
+    #imagenTest {
+      max-width: 350px;
+      border-radius: 10px;
+      margin: 10px 0;
+    }
+    .opciones button {
+      margin: 5px 0;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      background-color: #eee;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .opciones button:hover {
+      background-color: #ddd;
+    }
+    .incorrecto {
+      background-color: #f44336 !important;
+      color: white !important;
+    }
+    #resultado {
+      font-size: 1.1em;
+      margin-top: 15px;
+      text-align: center;
+    }
+    #ranking {
+      margin-top: 20px;
+    }
+    #ranking table {
+      border-collapse: collapse;
+      width: 100%;
+      max-width: 400px;
+    }
+    #ranking th, #ranking td {
+      border: 1px solid #ccc;
+      padding: 6px;
+      text-align: center;
+    }
+    #ranking th {
+      background-color: #00796b;
+      color: white;
+    }
+    #botonReiniciar {
+      margin-top: 20px;
+    }
+  </style>
 </head>
 <body>
-    <script>
-        const usuario = localStorage.getItem("usuario");
-        if (!usuario || usuario.includes("Invitado")) {
-          alert("Debes iniciar sesión para acceder al modo competitivo.");
-          window.location.href = "/programa/index.html";
-        }
-    </script>
-      
-    <h2>Identifica el Elemento</h2>
-    <div class="top-bar">
-        <div id="vidas">Vidas: ❤️❤️❤️</div>
-        <div id="tiempo">Tiempo: 0s</div>
-        <div id="progreso">Progreso: 0/0</div>
-    </div>
-    <img id="imagenTest" src="" alt="Imagen de prueba">
-    <div id="infoTaxonomica"></div>
-    <div id="preguntaTexto"></div>
-    <div class="opciones" id="opciones"></div>
-    <div id="resultado"></div>
+  <script>
+    const usuario = localStorage.getItem("usuario");
+    if (!usuario || usuario.includes("Invitado")) {
+      alert("Debes iniciar sesión para acceder al modo competitivo.");
+      window.location.href = "/programa/index.html";
+    }
+  </script>
+
+  <h2>Identifica el Elemento</h2>
+  <div class="top-bar">
+    <div id="vidas">Vidas: ❤️❤️❤️</div>
+    <div id="tiempo">Tiempo: 0s</div>
+    <div id="progreso">Progreso: 0/0</div>
+  </div>
+  <img id="imagenTest" src="" alt="Imagen de prueba" />
+  <div id="infoTaxonomica"></div>
+  <div id="preguntaTexto"></div>
+  <div class="opciones" id="opciones"></div>
+  <div id="resultado"></div>
+  <div id="ranking"></div>
+  <div id="botonReiniciar" style="display: none;">
+    <button onclick="reiniciarJuego()">Volver a jugar</button>
+  </div>
+
 <script>
+  const API_URL = 'https://quiz-backend-5lu1.onrender.com';
     const taxonomia = [
         {
             especie: "Rotaria citrina",
@@ -200,143 +196,177 @@
         }
     ];
 
-    let vidas = 3;
-    let tiempo = 0;
-    let totalPreguntas = 0;
-    let preguntasRespondidas = 0;
-    let timer;
-    let preguntasSeleccionadas = [];
+    let vidas = 3, tiempo = 0, totalPreguntas = 0, preguntasRespondidas = 0;
+  let preguntasSeleccionadas = [], timer;
 
-    function iniciarJuego() {
-        preguntasSeleccionadas = [];
-        const niveles = ["genero", "especie", "clase", "subclase", "familia", "filo"];
-        let posibles = [];
-        taxonomia.forEach(item => {
-            const disponibles = niveles.filter(n => item[n]);
-            const usados = new Set();
-            while (usados.size < Math.min(2, disponibles.length)) {
-                const nivel = disponibles[Math.floor(Math.random() * disponibles.length)];
-                if (!usados.has(nivel)) {
-                    posibles.push({ item, nivel });
-                    usados.add(nivel);
-                }
-            }
-        });
-        // duplicar aleatoriamente hasta llegar a 20 si es necesario
-        while (posibles.length < 20) {
-            const copia = posibles[Math.floor(Math.random() * posibles.length)];
-            // evitar más de 2 preguntas por individuo
-            const count = posibles.filter(p => p.item === copia.item).length;
-            if (count < 2) {
-                posibles.push(copia);
-            }
+  function iniciarJuego() {
+    preguntasSeleccionadas = [];
+    const niveles = ["genero", "especie", "clase", "subclase", "familia", "filo"];
+    let posibles = [];
+
+    taxonomia.forEach(item => {
+      const disponibles = niveles.filter(n => item[n]);
+      const usados = new Set();
+      while (usados.size < Math.min(2, disponibles.length)) {
+        const nivel = disponibles[Math.floor(Math.random() * disponibles.length)];
+        if (!usados.has(nivel)) {
+          posibles.push({ item, nivel });
+          usados.add(nivel);
         }
-        preguntasSeleccionadas = posibles.sort(() => Math.random() - 0.5).slice(0, 20);
-        totalPreguntas = preguntasSeleccionadas.length;
-        preguntasRespondidas = 0;
-        vidas = 3;
-        tiempo = 0;
-        actualizarVidas();
-        actualizarProgreso();
-        siguientePregunta();
-        iniciarCronometro();
+      }
+    });
+
+    while (posibles.length < 20) {
+      const copia = posibles[Math.floor(Math.random() * posibles.length)];
+      if (posibles.filter(p => p.item === copia.item).length < 2) {
+        posibles.push(copia);
+      }
     }
 
-    function actualizarVidas() {
-        document.getElementById("vidas").innerText = "Vidas: " + "❤️".repeat(vidas);
+    preguntasSeleccionadas = posibles.sort(() => Math.random() - 0.5).slice(0, 20);
+    totalPreguntas = preguntasSeleccionadas.length;
+    preguntasRespondidas = 0;
+    vidas = 3;
+    tiempo = 0;
+
+    actualizarVidas();
+    actualizarProgreso();
+    siguientePregunta();
+    iniciarCronometro();
+  }
+
+  function actualizarVidas() {
+    document.getElementById("vidas").innerText = "Vidas: " + "❤️".repeat(vidas);
+  }
+
+  function iniciarCronometro() {
+    clearInterval(timer);
+    timer = setInterval(() => {
+      tiempo++;
+      document.getElementById("tiempo").innerText = `Tiempo: ${tiempo}s`;
+    }, 1000);
+  }
+
+  function siguientePregunta() {
+    if (preguntasRespondidas >= totalPreguntas) {
+      terminarJuego("🎉 ¡Has completado el test!");
+      return;
     }
 
-    function iniciarCronometro() {
-        clearInterval(timer);
-        timer = setInterval(() => {
-            tiempo++;
-            document.getElementById("tiempo").innerText = `Tiempo: ${tiempo}s`;
-        }, 1000);
+    const { item: datos, nivel } = preguntasSeleccionadas[preguntasRespondidas];
+    const correcta = datos[nivel];
+
+    const opciones = new Set([correcta]);
+    while (opciones.size < 4) {
+      const aleatorio = taxonomia[Math.floor(Math.random() * taxonomia.length)];
+      if (aleatorio[nivel]) opciones.add(aleatorio[nivel]);
     }
 
-    function siguientePregunta() {
-        if (preguntasRespondidas >= totalPreguntas) {
-            terminarJuego("🎉 ¡Has completado el test!");
-            return;
-        }
-        document.getElementById("resultado").innerText = "";
-        const seleccion = preguntasSeleccionadas[preguntasRespondidas];
-        const datos = seleccion.item;
-        const nivel = seleccion.nivel;
-        const correcta = datos[nivel];
+    const opcionesArray = Array.from(opciones).sort(() => Math.random() - 0.5);
+    document.getElementById("imagenTest").src = datos.imagen;
+    document.getElementById("preguntaTexto").innerText = `¿Cuál es ${nivel.toUpperCase()} de esta imagen?`;
 
-        let opciones = new Set([correcta]);
-        while (opciones.size < 4) {
-            const aleatorio = taxonomia[Math.floor(Math.random() * taxonomia.length)];
-            if (aleatorio[nivel]) opciones.add(aleatorio[nivel]);
-        }
+    const info = [];
+    if (nivel !== 'filo' && datos.filo) info.push(`Filo: ${datos.filo}`);
+    if (nivel !== 'clase' && datos.clase) info.push(`Clase: ${datos.clase}`);
+    if (nivel !== 'subclase' && datos.subclase) info.push(`Subclase: ${datos.subclase}`);
+    if (nivel !== 'familia' && datos.familia) info.push(`Familia: ${datos.familia}`);
+    if (nivel !== 'genero' && datos.genero) info.push(`Género: ${datos.genero}`);
+    if (nivel !== 'especie' && datos.especie) info.push(`Especie: ${datos.especie}`);
+    document.getElementById("infoTaxonomica").innerHTML = info.map(i => `<span>${i}</span>`).join("");
 
-        const opcionesArray = Array.from(opciones).sort(() => Math.random() - 0.5);
-        document.getElementById("imagenTest").src = datos.imagen;
-        document.getElementById("imagenTest").alt = datos[nivel];
-        const articulo = nivel === 'especie' ? 'la' : 'el';
-        document.getElementById("preguntaTexto").innerText = `¿Cuál es ${articulo} ${nivel.toUpperCase()} de esta imagen?`;
+    const contenedor = document.getElementById("opciones");
+    contenedor.innerHTML = "";
+    opcionesArray.forEach(op => {
+      const btn = document.createElement("button");
+      btn.innerText = op;
+      btn.onclick = () => {
+        if (!btn.classList.contains('incorrecto')) verificar(op, correcta, btn);
+      };
+      contenedor.appendChild(btn);
+    });
+  }
 
-        const info = [];
-        if (nivel !== 'filo' && datos.filo) info.push(`Filo: ${datos.filo}`);
-        if (nivel !== 'clase' && datos.clase) info.push(`Clase: ${datos.clase}`);
-        if (nivel !== 'subclase' && datos.subclase) info.push(`Subclase: ${datos.subclase}`);
-        if (nivel !== 'familia' && datos.familia) info.push(`Familia: ${datos.familia}`);
-        if (nivel !== 'genero' && datos.genero) info.push(`Género: ${datos.genero}`);
-        if (nivel !== 'especie' && datos.especie) info.push(`Especie: ${datos.especie}`);
-        document.getElementById("infoTaxonomica").innerHTML = info.map(i => `<span>${i}</span>`).join('');
+  function verificar(seleccion, correcto, boton) {
+    const resultado = document.getElementById("resultado");
+    if (seleccion === correcto) {
+      resultado.innerText = "✔️ Correcto!";
+      resultado.style.color = "green";
+      preguntasRespondidas++;
+      actualizarProgreso();
+      setTimeout(siguientePregunta, 1000);
+    } else {
+      vidas--;
+      tiempo += 3;
+      actualizarVidas();
+      resultado.innerText = "❌ Incorrecto. Intenta de nuevo.";
+      resultado.style.color = "red";
+      if (boton) boton.classList.add('incorrecto');
+      if (vidas <= 0) terminarJuego("☠️ Te has quedado sin vidas.");
+    }
+  }
 
-        const contenedor = document.getElementById("opciones");
-        contenedor.innerHTML = "";
-        opcionesArray.forEach(op => {
-            const btn = document.createElement("button");
-            btn.innerText = op;
-            btn.onclick = () => {
-                if (!btn.classList.contains('incorrecto')) verificar(op, correcta, btn);
-            };
-            contenedor.appendChild(btn);
-        });
+  function actualizarProgreso() {
+    document.getElementById("progreso").innerText = `Progreso: ${preguntasRespondidas}/${totalPreguntas}`;
+  }
+
+  async function terminarJuego(mensaje) {
+    clearInterval(timer);
+    const puntaje = Math.round((preguntasRespondidas * 1000) / (tiempo + 1));
+
+    document.getElementById("imagenTest").style.display = "none";
+    document.getElementById("opciones").innerHTML = "";
+    document.getElementById("preguntaTexto").innerText = "";
+
+    document.getElementById("resultado").innerHTML = `
+      ${mensaje}<br>
+      ⏱ Tiempo: ${tiempo}s<br>
+      ✅ Resultado: ${preguntasRespondidas}/${totalPreguntas}<br>
+      🏆 Puntaje final: <strong>${puntaje}</strong><br>
+      Enviando puntaje...
+    `;
+
+    try {
+      await fetch(`${API_URL}/api/puntajes`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: usuario, puntaje, tiempo })
+      });
+
+      const res = await fetch(`${API_URL}/api/puntajes/top10`);
+      const ranking = await res.json();
+
+      const puesto = ranking.findIndex(p => p.username === usuario && p.puntaje === puntaje) + 1;
+      const rankingHTML = `
+        <p>📈 Estás en el puesto <strong>${puesto > 0 ? puesto : "fuera del top 10"}</strong></p>
+        <h3>🏅 Top 10</h3>
+        <table>
+          <tr><th>Puesto</th><th>Usuario</th><th>Puntaje</th><th>Tiempo</th></tr>
+          ${ranking.map((p, i) => `
+            <tr>
+              <td>${i + 1}</td>
+              <td>${p.username}</td>
+              <td>${p.puntaje}</td>
+              <td>${p.tiempo}s</td>
+            </tr>`).join("")}
+        </table>`;
+      document.getElementById("ranking").innerHTML = rankingHTML;
+    } catch (err) {
+      document.getElementById("ranking").innerText = "⚠️ Error al obtener el ranking.";
     }
 
-    function verificar(seleccion, correcto, boton) {
-        const resultado = document.getElementById("resultado");
-        if (seleccion === correcto) {
-            resultado.innerText = "✔️ Correcto!";
-            resultado.style.color = "green";
-            preguntasRespondidas++;
-        actualizarProgreso();
-            setTimeout(siguientePregunta, 1000);
-        } else {
-            vidas--;
-            tiempo += 3;
-            actualizarVidas();
-            resultado.innerText = `❌ Incorrecto. Intenta de nuevo.`;
-            resultado.style.color = "red";
-            if (boton) boton.classList.add('incorrecto');
-            if (vidas <= 0) terminarJuego("☠️ Te has quedado sin vidas.");
-        }
-    }
+    document.getElementById("botonReiniciar").style.display = "block";
+  }
 
-    function actualizarProgreso() {
-        document.getElementById("progreso").innerText = `Progreso: ${preguntasRespondidas}/${totalPreguntas}`;
-    }
-
-    function terminarJuego(mensaje) {
-        clearInterval(timer);
-        const puntajeFinal = Math.round((preguntasRespondidas * 1000) / (tiempo + 1));
-
-        document.getElementById("resultado").innerHTML = `
-            ${mensaje}<br>
-            ⏱ Tiempo: ${tiempo}s<br>
-            ✅ Resultado: ${preguntasRespondidas}/${totalPreguntas}<br>
-            🏆 Puntaje final: <strong>${puntajeFinal}</strong>
-        `;
-        document.getElementById("imagenTest").style.display = "none";
-        document.getElementById("opciones").innerHTML = "";
-        document.getElementById("preguntaTexto").innerText = "";
-    }
-
+  function reiniciarJuego() {
+    document.getElementById("imagenTest").style.display = "block";
+    document.getElementById("ranking").innerHTML = "";
+    document.getElementById("resultado").innerText = "";
+    document.getElementById("botonReiniciar").style.display = "none";
     iniciarJuego();
+  }
+
+  iniciarJuego();
 </script>
 </body>
 </html>
