@@ -102,7 +102,6 @@
     <label><input type="checkbox" id="recordar"> Mantener conectado</label><br>
     <button onclick="login()">Ingresar</button>
     <button onclick="registrar()">Registrarse</button>
-    <button onclick="continuarInvitado()">Ingresar como Invitado</button>
     <div id="mensajeLogin"></div>
   </div>
 
@@ -169,12 +168,6 @@
       }
     }
 
-    function continuarInvitado() {
-      localStorage.setItem("usuario", "Invitado");
-      localStorage.setItem("mantener", "false");
-      mostrarMenu("Invitado (sin ranking)");
-    }
-
     function cerrarSesion() {
       localStorage.removeItem("usuario");
       localStorage.removeItem("mantener");
@@ -186,6 +179,12 @@
       document.getElementById("loginContainer").classList.add("hidden");
       document.getElementById("menuContainer").classList.remove("hidden");
       document.getElementById("usuarioActivo").innerText = `Usuario: ${nombre}`;
+
+      const destino = localStorage.getItem("redirigir_a");
+      if (destino) {
+        localStorage.removeItem("redirigir_a");
+        window.location.href = destino;
+      }
     }
 
     // 🔁 KEEP ALIVE cada 14 minutos

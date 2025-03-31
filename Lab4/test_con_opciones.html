@@ -92,28 +92,35 @@
   </style>
 </head>
 <body>
-<div class="container">
-  <h2>Identifica el Elemento</h2>
-  <div class="top-bar">
-    <div id="vidas">Vidas: ❤️❤️❤️</div>
-    <div id="tiempo">Tiempo: 0s</div>
-    <div id="progreso">Progreso: 0/0</div>
+  <div class="container">
+    <h2>Identifica el Elemento</h2>
+    <div class="top-bar">
+      <div id="vidas">Vidas: ❤️❤️❤️</div>
+      <div id="tiempo">Tiempo: 0s</div>
+      <div id="progreso">Progreso: 0/0</div>
+    </div>
+    <img id="imagenTest" src="" alt="Imagen de prueba" />
+    <div id="infoTaxonomica"></div>
+    <div id="preguntaTexto"></div>
+    <div class="opciones" id="opciones"></div>
+    <div id="resultado"></div>
+    <div id="ranking"></div>
+    <div id="botonReiniciar" style="display: none;">
+      <button onclick="reiniciarJuego()">Volver a jugar</button>
+    </div>
   </div>
-  <img id="imagenTest" src="" alt="Imagen de prueba" />
-  <div id="infoTaxonomica"></div>
-  <div id="preguntaTexto"></div>
-  <div class="opciones" id="opciones"></div>
-  <div id="resultado"></div>
-  <div id="ranking"></div>
-  <div id="botonReiniciar" style="display: none;">
-    <button onclick="reiniciarJuego()">Volver a jugar</button>
-  </div>
-</div>
-
-<script>
-
-const API_URL = 'https://quiz-backend-5lu1.onrender.com';
-const usuario = localStorage.getItem("usuario") || "undefined";
+  
+  <script>
+  const API_URL = 'https://quiz-backend-5lu1.onrender.com';
+  
+  // 🔐 Verificación de sesión
+  const usuario = localStorage.getItem("usuario");
+  const mantener = localStorage.getItem("mantener");
+  
+  if (!usuario || mantener !== "true") {
+    localStorage.setItem("redirigir_a", "/lab4/test_con_opciones.html");
+    window.location.href = "/index.html";
+  }
 
 const taxonomia = [ 
 {
@@ -355,32 +362,39 @@ function verificar(seleccion, correcto, boton) {
 function terminarJuego(mensaje) {
   clearInterval(timer);
   const puntaje = Math.round((preguntasRespondidas * 1000) / (tiempo + 1));
+  const esUsuarioValido = !!usuario;
+
+
   document.getElementById("resultado").innerHTML = `
     ${mensaje}<br>
     ⏱ Tiempo: ${tiempo}s<br>
     ✅ Resultado: ${preguntasRespondidas}/${totalPreguntas}<br>
     🏆 Puntaje final: <strong>${puntaje}</strong><br>
-    <span id="estadoEnvio">Enviando puntaje...</span>
+    ${esUsuarioValido ? '<span id="estadoEnvio">Enviando puntaje...</span>' : '❌ Puntaje no guardado (no logueado)'}
   `;
+
   document.getElementById("imagenTest").style.display = "none";
   document.getElementById("opciones").innerHTML = "";
   document.getElementById("preguntaTexto").innerText = "";
 
-  fetch(`${API_URL}/api/puntajes`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ nombre: usuario, puntaje, tiempo: `${tiempo}s` })
-  })
-  .then(() => {
-    document.getElementById("estadoEnvio").innerText = "✅ Puntaje guardado";
-    mostrarRanking(puntaje, usuario);
-  })
-  .catch(() => {
-    document.getElementById("estadoEnvio").innerText = "❌ Error al guardar puntaje";
-  });
+  if (esUsuarioValido) {
+    fetch(`${API_URL}/api/puntajes`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nombre: usuario, puntaje, tiempo: `${tiempo}s` })
+    })
+    .then(() => {
+      document.getElementById("estadoEnvio").innerText = "✅ Puntaje guardado";
+      mostrarRanking(puntaje, usuario);
+    })
+    .catch(() => {
+      document.getElementById("estadoEnvio").innerText = "❌ Error al guardar puntaje";
+    });
+  }
 
   document.getElementById("botonReiniciar").style.display = "block";
 }
+
 
 function mostrarRanking(puntajeUsuario, nombreUsuario) {
   fetch(`${API_URL}/api/puntajes`)
