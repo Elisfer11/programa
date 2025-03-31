@@ -139,11 +139,13 @@
       }
     }
 
-    // Redirigir automáticamente si ya está logueado y debe mantenerse conectado
+    // Redirige automáticamente si ya está logueado y se mantiene
     window.onload = () => {
       const user = localStorage.getItem("usuario");
       const mantener = localStorage.getItem("mantener") === "true";
-      if (user && mantener) redirigirDestino();
+      if (user && mantener) {
+        redirigirDestino();
+      }
     };
   </script>
 </body>
