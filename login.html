@@ -139,7 +139,7 @@
 
           const destino = localStorage.getItem("redirigir_a") || "/index.html";
           localStorage.removeItem("redirigir_a");
-          window.location.href = destino;
+          window.location.replace(destino);
         } else {
           document.getElementById("mensajeLogin").innerText = data.message || "Error de login";
         }
