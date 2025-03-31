@@ -56,17 +56,53 @@
       margin-top: 10px;
       font-weight: bold;
     }
+    #registroModal {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      z-index: 1000;
+      text-align: center;
+    }
+    #registroModal input {
+      width: 90%;
+      margin: 5px 0;
+    }
+    #overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+    }
   </style>
 </head>
 <body>
-  <div class="container">
+  <div class="container" id="loginContainer">
     <h2>Iniciar Sesión</h2>
     <input type="text" id="username" placeholder="Usuario"><br>
     <input type="password" id="password" placeholder="Contraseña"><br>
     <label><input type="checkbox" id="recordar"> Mantener conectado</label><br>
     <button onclick="login()">Ingresar</button>
-    <button onclick="registrar()">Registrarse</button>
+    <button onclick="mostrarRegistro()">Registrarse</button>
     <div id="mensajeLogin"></div>
+  </div>
+
+  <div id="overlay"></div>
+
+  <div id="registroModal">
+    <h2>Registro</h2>
+    <input type="text" id="nuevoUsuario" placeholder="Nuevo Usuario"><br>
+    <input type="password" id="nuevaClave" placeholder="Contraseña"><br>
+    <button onclick="registrar()">Crear cuenta</button>
+    <button onclick="cerrarRegistro()">Cancelar</button>
+    <div id="mensajeRegistro"></div>
   </div>
 
   <script>
@@ -94,7 +130,6 @@
           localStorage.setItem("usuario", user);
           if (recordar) localStorage.setItem("mantener", "true");
 
-          // Redirigir a donde el usuario quería ir antes de login
           const destino = localStorage.getItem("redirigir_a") || "/index.html";
           localStorage.removeItem("redirigir_a");
           window.location.href = destino;
@@ -107,11 +142,11 @@
     }
 
     async function registrar() {
-      const user = document.getElementById("username").value;
-      const pass = document.getElementById("password").value;
+      const user = document.getElementById("nuevoUsuario").value;
+      const pass = document.getElementById("nuevaClave").value;
 
       if (!user || !pass) {
-        document.getElementById("mensajeLogin").innerText = "Debe completar ambos campos";
+        document.getElementById("mensajeRegistro").innerText = "Debe completar ambos campos";
         return;
       }
 
@@ -124,13 +159,30 @@
         const data = await res.json();
 
         if (res.ok) {
-          document.getElementById("mensajeLogin").innerText = "✅ Usuario registrado correctamente";
+          document.getElementById("mensajeRegistro").innerText = "✅ Usuario registrado correctamente";
         } else {
-          document.getElementById("mensajeLogin").innerText = data.message || "Error al registrar";
+          document.getElementById("mensajeRegistro").innerText = data.message || "Error al registrar";
         }
       } catch (err) {
-        document.getElementById("mensajeLogin").innerText = "Error de conexión con el servidor.";
+        document.getElementById("mensajeRegistro").innerText = "Error de conexión con el servidor.";
       }
+    }
+
+    function mostrarRegistro() {
+      document.getElementById("overlay").style.display = "block";
+      document.getElementById("registroModal").style.display = "block";
+    }
+
+    function cerrarRegistro() {
+      document.getElementById("overlay").style.display = "none";
+      document.getElementById("registroModal").style.display = "none";
+    }
+
+    // Bloquear entrada directa si ya hay sesión activa
+    const usuario = localStorage.getItem("usuario");
+    if (usuario) {
+      const destino = localStorage.getItem("redirigir_a") || "/index.html";
+      window.location.href = destino;
     }
   </script>
 </body>
