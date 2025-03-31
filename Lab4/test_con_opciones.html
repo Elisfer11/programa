@@ -114,8 +114,21 @@
 const API_URL = 'https://quiz-backend-5lu1.onrender.com';
 let vidas = 3, tiempo = 0, preguntasRespondidas = 0, totalPreguntas = 20, timer;
 let preguntasCompletas = [];
-let usuario = localStorage.getItem("usuario");
+let usuario = null;
 
+// ✅ VERIFICACIÓN DE LOGIN
+window.addEventListener("DOMContentLoaded", () => {
+  const mantener = localStorage.getItem("mantener") === "true";
+  usuario = localStorage.getItem("usuario");
+
+  if (!usuario || usuario === "Invitado" || !mantener) {
+    const actual = window.location.pathname;
+    sessionStorage.setItem("destino", actual);
+    window.location.replace("/programa/login.html");
+  } else {
+    iniciarJuego();
+  }
+});
 const taxonomia = [ 
 {
             especie: "Rotaria citrina",
@@ -404,18 +417,7 @@ function reiniciarJuego() {
   iniciarJuego();
 }
 
-// ✅ LOGIN VERIFICATION FINAL (CORREGIDO)
-window.addEventListener("DOMContentLoaded", () => {
-  const mantener = localStorage.getItem("mantener") === "true";
-  usuario = localStorage.getItem("usuario");
 
-  if (!usuario || usuario === "Invitado" || !mantener) {
-    sessionStorage.setItem("destino", window.location.pathname);
-    window.location.replace("/programa/login.html");
-  } else {
-    iniciarJuego();
-  }
-});
 </script>
 </body>
 </html>
