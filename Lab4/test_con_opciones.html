@@ -111,24 +111,10 @@
 </div>
 
 <script>
+
 const API_URL = 'https://quiz-backend-5lu1.onrender.com';
-let vidas = 3, tiempo = 0, preguntasRespondidas = 0, totalPreguntas = 20, timer;
-let preguntasCompletas = [];
-let usuario = null;
+const usuario = localStorage.getItem("usuario") || "undefined";
 
-// ✅ VERIFICACIÓN DE LOGIN
-window.addEventListener("DOMContentLoaded", () => {
-  const mantener = localStorage.getItem("mantener") === "true";
-  usuario = localStorage.getItem("usuario");
-
-  if (!usuario || usuario === "Invitado" || !mantener) {
-    const actual = window.location.pathname;
-    sessionStorage.setItem("destino", actual);
-    window.location.replace("/programa/login.html");
-  } else {
-    iniciarJuego();
-  }
-});
 const taxonomia = [ 
 {
             especie: "Rotaria citrina",
@@ -223,7 +209,10 @@ const taxonomia = [
         }
     ];
 
-    function iniciarJuego() {
+let vidas = 3, tiempo = 0, preguntasRespondidas = 0, totalPreguntas = 20, timer;
+let preguntasCompletas = [];
+
+function iniciarJuego() {
   vidas = 3;
   tiempo = 0;
   preguntasRespondidas = 0;
@@ -265,7 +254,7 @@ function generarPreguntasCompletas() {
     if (posibles.filter(p => p.item === copia.item).length < 2) {
       posibles.push(copia);
     }
-    if (posibles.length > 200) break;
+    if (posibles.length > 200) break; // evitar bucle infinito
   }
 
   return posibles
@@ -290,11 +279,9 @@ function generarPreguntasCompletas() {
 function actualizarVidas() {
   document.getElementById("vidas").innerText = "Vidas: " + "❤️".repeat(vidas);
 }
-
 function actualizarProgreso() {
   document.getElementById("progreso").innerText = `Progreso: ${preguntasRespondidas}/${totalPreguntas}`;
 }
-
 function iniciarCronometro() {
   clearInterval(timer);
   timer = setInterval(() => {
@@ -326,10 +313,13 @@ function siguientePregunta() {
   opciones.forEach(op => {
     const btn = document.createElement("button");
     btn.innerText = op;
-    btn.onclick = () => verificar(op, correcta, btn);
+    btn.onclick = () => {
+      verificar(op, correcta, btn);
+    };
     contenedor.appendChild(btn);
   });
 }
+
 
 function desactivarBotones() {
   document.querySelectorAll("#opciones button").forEach(btn => btn.disabled = true);
@@ -337,12 +327,16 @@ function desactivarBotones() {
 
 function verificar(seleccion, correcto, boton) {
   const resultado = document.getElementById("resultado");
+
   if (seleccion === correcto) {
     resultado.innerText = "✔️ Correcto!";
     resultado.style.color = "green";
     preguntasRespondidas++;
     actualizarProgreso();
-    desactivarBotones();
+
+    // ✅ Solo desactivar botones si es correcta
+    document.querySelectorAll("#opciones button").forEach(btn => btn.disabled = true);
+
     setTimeout(siguientePregunta, 1000);
   } else {
     vidas--;
@@ -352,9 +346,11 @@ function verificar(seleccion, correcto, boton) {
     resultado.style.color = "red";
     boton.classList.add('incorrecto');
     boton.disabled = true;
+
     if (vidas <= 0) terminarJuego("☠️ Te has quedado sin vidas.");
   }
 }
+
 
 function terminarJuego(mensaje) {
   clearInterval(timer);
@@ -375,13 +371,13 @@ function terminarJuego(mensaje) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ nombre: usuario, puntaje, tiempo: `${tiempo}s` })
   })
-    .then(() => {
-      document.getElementById("estadoEnvio").innerText = "✅ Puntaje guardado";
-      mostrarRanking(puntaje, usuario);
-    })
-    .catch(() => {
-      document.getElementById("estadoEnvio").innerText = "❌ Error al guardar puntaje";
-    });
+  .then(() => {
+    document.getElementById("estadoEnvio").innerText = "✅ Puntaje guardado";
+    mostrarRanking(puntaje, usuario);
+  })
+  .catch(() => {
+    document.getElementById("estadoEnvio").innerText = "❌ Error al guardar puntaje";
+  });
 
   document.getElementById("botonReiniciar").style.display = "block";
 }
@@ -405,8 +401,8 @@ function mostrarRanking(puntajeUsuario, nombreUsuario) {
         <h3>🏅 Top 10</h3>
         <p>${
           data.findIndex(p => p.nombre === nombreUsuario) + 1 <= 0
-            ? "📉 Estás fuera del top 10"
-            : `📈 Estás en el puesto <strong>${data.findIndex(p => p.nombre === nombreUsuario) + 1}</strong>`
+          ? "📉 Estás fuera del top 10"
+          : `📈 Estás en el puesto <strong>${data.findIndex(p => p.nombre === nombreUsuario) + 1}</strong>`
         }</p>
       `;
       document.getElementById("ranking").appendChild(tabla);
@@ -417,7 +413,7 @@ function reiniciarJuego() {
   iniciarJuego();
 }
 
-
+iniciarJuego();
 </script>
 </body>
 </html>
