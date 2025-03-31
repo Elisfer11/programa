@@ -178,11 +178,17 @@
       document.getElementById("registroModal").style.display = "none";
     }
 
-    // Bloquear entrada directa si ya hay sesión activa
+    // Ocultar login si ya hay sesión activa
     const usuario = localStorage.getItem("usuario");
     if (usuario) {
-      const destino = localStorage.getItem("redirigir_a") || "/index.html";
-      window.location.href = destino;
+      document.getElementById("loginContainer").style.display = "none";
+      document.body.innerHTML += `<div class='container'><h2>Ya has iniciado sesión como <strong>${usuario}</strong></h2><br><button onclick="cerrarSesion()">Cerrar sesión</button></div>`;
+    }
+
+    function cerrarSesion() {
+      localStorage.removeItem("usuario");
+      localStorage.removeItem("mantener");
+      window.location.href = "/login.html";
     }
   </script>
 </body>
