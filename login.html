@@ -52,6 +52,13 @@
     button:hover {
       background-color: #004d40;
     }
+    label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 10px;
+    }
     #mensajeLogin {
       margin-top: 10px;
       font-weight: bold;
@@ -160,6 +167,9 @@
 
         if (res.ok) {
           document.getElementById("mensajeRegistro").innerText = "✅ Usuario registrado correctamente";
+          setTimeout(() => {
+            cerrarRegistro();
+          }, 1000);
         } else {
           document.getElementById("mensajeRegistro").innerText = data.message || "Error al registrar";
         }
@@ -176,6 +186,9 @@
     function cerrarRegistro() {
       document.getElementById("overlay").style.display = "none";
       document.getElementById("registroModal").style.display = "none";
+      document.getElementById("mensajeRegistro").innerText = "";
+      document.getElementById("nuevoUsuario").value = "";
+      document.getElementById("nuevaClave").value = "";
     }
 
     // Ocultar login si ya hay sesión activa
