@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Iniciar Sesión</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to bottom right, #e0f7fa, #ffffff);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      color: #333;
+    }
+    .container {
+      background-color: white;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+    }
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      color: #00796b;
+    }
+    input {
+      width: 80%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #00796b;
+      color: white;
+      padding: 12px 20px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin: 10px 5px;
+    }
+    button:hover {
+      background-color: #004d40;
+    }
+    #mensajeLogin {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Iniciar Sesión</h2>
+    <input type="text" id="username" placeholder="Usuario"><br>
+    <input type="password" id="password" placeholder="Contraseña"><br>
+    <label><input type="checkbox" id="recordar"> Mantener conectado</label><br>
+    <button onclick="login()">Ingresar</button>
+    <button onclick="registrar()">Registrarse</button>
+    <div id="mensajeLogin"></div>
+  </div>
+
+  <script>
+    const API_URL = 'https://quiz-backend-5lu1.onrender.com';
+
+    async function login() {
+      const user = document.getElementById("username").value;
+      const pass = document.getElementById("password").value;
+      const recordar = document.getElementById("recordar").checked;
+
+      if (!user || !pass) {
+        document.getElementById("mensajeLogin").innerText = "Debe completar ambos campos";
+        return;
+      }
+
+      try {
+        const res = await fetch(`${API_URL}/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username: user, password: pass })
+        });
+        const data = await res.json();
+
+        if (res.ok) {
+          localStorage.setItem("usuario", user);
+          if (recordar) localStorage.setItem("mantener", "true");
+
+          // Redirigir a donde el usuario quería ir antes de login
+          const destino = localStorage.getItem("redirigir_a") || "/index.html";
+          localStorage.removeItem("redirigir_a");
+          window.location.href = destino;
+        } else {
+          document.getElementById("mensajeLogin").innerText = data.message || "Error de login";
+        }
+      } catch (err) {
+        document.getElementById("mensajeLogin").innerText = "Error de conexión con el servidor.";
+      }
+    }
+
+    async function registrar() {
+      const user = document.getElementById("username").value;
+      const pass = document.getElementById("password").value;
+
+      if (!user || !pass) {
+        document.getElementById("mensajeLogin").innerText = "Debe completar ambos campos";
+        return;
+      }
+
+      try {
+        const res = await fetch(`${API_URL}/register`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username: user, password: pass })
+        });
+        const data = await res.json();
+
+        if (res.ok) {
+          document.getElementById("mensajeLogin").innerText = "✅ Usuario registrado correctamente";
+        } else {
+          document.getElementById("mensajeLogin").innerText = data.message || "Error al registrar";
+        }
+      } catch (err) {
+        document.getElementById("mensajeLogin").innerText = "Error de conexión con el servidor.";
+      }
+    }
+  </script>
+</body>
+</html>
