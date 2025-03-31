@@ -112,12 +112,11 @@
 
 <script>
 
-// Verificación de login obligatorio al cargar el test competitivo
+// 🔒 Verificación de login obligatorio
 const usuario = localStorage.getItem("usuario");
 const mantener = localStorage.getItem("mantener") === "true";
 
 if (!usuario || usuario === "Invitado" || !mantener) {
-  // Guardar destino y redirigir a login
   sessionStorage.setItem("destino", window.location.pathname);
   window.location.href = "/programa/login.html";
 }
