@@ -100,6 +100,15 @@
         <button onclick="window.location.href='/programa/Lab4/test_clases'">Clases</button>
         <button onclick="window.location.href='/programa/Lab4/test_filos'">Filos</button>
         <button onclick="window.location.href='/programa/Lab4/test_con_opciones.html'">Competitivo(Aún no hay ranking)</button>
+        <button onclick="cerrarSesion()">Cerrar Sesión</button>
     </div>
+
+    <script>
+        function cerrarSesion() {
+          localStorage.removeItem("usuario");
+          localStorage.removeItem("mantener");
+          window.location.reload();
+        }
+      </script>
 </body>
 </html>
