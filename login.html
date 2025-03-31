@@ -75,23 +75,23 @@
 
   <script>
     const API_URL = 'https://quiz-backend-5lu1.onrender.com';
-
+  
     function redirigirDestino() {
       const destino = sessionStorage.getItem("destino") || "/programa/index.html";
       sessionStorage.removeItem("destino");
       window.location.href = destino;
     }
-
+  
     async function login() {
       const user = document.getElementById("username").value;
       const pass = document.getElementById("password").value;
       const recordar = document.getElementById("recordar").checked;
-
+  
       if (!user || !pass) {
         document.getElementById("mensajeLogin").innerText = "Debe completar ambos campos";
         return;
       }
-
+  
       try {
         const res = await fetch(`${API_URL}/login`, {
           method: 'POST',
@@ -99,7 +99,7 @@
           body: JSON.stringify({ username: user, password: pass })
         });
         const data = await res.json();
-
+  
         if (res.ok) {
           localStorage.setItem("usuario", user);
           localStorage.setItem("mantener", recordar ? "true" : "false");
@@ -111,16 +111,16 @@
         document.getElementById("mensajeLogin").innerText = "Error de conexión con el servidor.";
       }
     }
-
+  
     async function registrar() {
       const user = document.getElementById("username").value;
       const pass = document.getElementById("password").value;
-
+  
       if (!user || !pass) {
         document.getElementById("mensajeLogin").innerText = "Debe completar ambos campos";
         return;
       }
-
+  
       try {
         const res = await fetch(`${API_URL}/register`, {
           method: 'POST',
@@ -128,7 +128,7 @@
           body: JSON.stringify({ username: user, password: pass })
         });
         const data = await res.json();
-
+  
         if (res.ok) {
           document.getElementById("mensajeLogin").innerText = "✅ Usuario registrado correctamente";
         } else {
@@ -138,15 +138,16 @@
         document.getElementById("mensajeLogin").innerText = "Error de conexión con el servidor.";
       }
     }
-
+  
     // Redirige automáticamente si ya está logueado y se mantiene
-    window.onload = () => {
+    window.addEventListener("DOMContentLoaded", () => {
       const user = localStorage.getItem("usuario");
       const mantener = localStorage.getItem("mantener") === "true";
       if (user && mantener) {
         redirigirDestino();
       }
-    };
+    });
   </script>
+  
 </body>
 </html>
