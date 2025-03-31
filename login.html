@@ -70,7 +70,6 @@
     <label><input type="checkbox" id="recordar"> Mantener conectado</label><br>
     <button onclick="login()">Ingresar</button>
     <button onclick="registrar()">Registrarse</button>
-    <button onclick="continuarInvitado()">Ingresar como Invitado</button>
     <div id="mensajeLogin"></div>
   </div>
 
@@ -78,7 +77,7 @@
     const API_URL = 'https://quiz-backend-5lu1.onrender.com';
 
     function redirigirDestino() {
-      const destino = sessionStorage.getItem("destino") || "/";
+      const destino = sessionStorage.getItem("destino") || "/programa/index.html";
       sessionStorage.removeItem("destino");
       window.location.href = destino;
     }
@@ -103,7 +102,7 @@
 
         if (res.ok) {
           localStorage.setItem("usuario", user);
-          if (recordar) localStorage.setItem("mantener", "true");
+          localStorage.setItem("mantener", recordar ? "true" : "false");
           redirigirDestino();
         } else {
           document.getElementById("mensajeLogin").innerText = data.message || "Error al iniciar sesión";
@@ -138,12 +137,6 @@
       } catch (err) {
         document.getElementById("mensajeLogin").innerText = "Error de conexión con el servidor.";
       }
-    }
-
-    function continuarInvitado() {
-      localStorage.setItem("usuario", "Invitado");
-      localStorage.setItem("mantener", "false");
-      redirigirDestino();
     }
 
     // Redirige automáticamente si ya está logueado y se mantiene
