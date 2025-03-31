@@ -404,14 +404,18 @@ function reiniciarJuego() {
   iniciarJuego();
 }
 
-// ✅ LOGIN VERIFICATION FINAL
-const mantener = localStorage.getItem("mantener") === "true";
-if (!usuario || usuario === "Invitado" || !mantener) {
-  sessionStorage.setItem("destino", window.location.pathname);
-  window.location.href = "/programa/login.html";
-} else {
-  iniciarJuego();
-}
+// ✅ LOGIN VERIFICATION FINAL (CORREGIDO)
+window.addEventListener("DOMContentLoaded", () => {
+  const mantener = localStorage.getItem("mantener") === "true";
+  usuario = localStorage.getItem("usuario");
+
+  if (!usuario || usuario === "Invitado" || !mantener) {
+    sessionStorage.setItem("destino", window.location.pathname);
+    window.location.replace("/programa/login.html");
+  } else {
+    iniciarJuego();
+  }
+});
 </script>
 </body>
 </html>
