@@ -117,9 +117,9 @@
   const usuario = localStorage.getItem("usuario");
   const mantener = localStorage.getItem("mantener");
   
-  if (!usuario || mantener !== "true") {
-    localStorage.setItem("redirigir_a", "/lab4/test_con_opciones.html");
-    window.location.href = "/index.html";
+  if (!usuario) {
+  localStorage.setItem("redirigir_a", "/lab4/test_con_opciones.html");
+  window.location.href = "/programa/index.html";
   }
 
 const taxonomia = [ 
