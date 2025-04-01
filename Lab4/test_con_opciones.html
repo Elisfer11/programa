@@ -196,13 +196,13 @@ const taxonomia = [
             especie: "Terebratalia transversa",
             imagen: "/programa/Lab4/imagenes/Filo_Brachiopoda-Clase_Rhynchonollata-Terebratalia_transversa.jpg",
             filo: "Brachiopoda",
-            clase: "Rhynchonollata"
+            clase: "Rhynchonellata"
         },
         {
             especie: "Laqueus californionus",
             imagen: "/programa/Lab4/imagenes/Filo_Brachiopoda-Clase_Rhynchonollata-Laqueus_californionus.jpg",
             filo: "Brachiopoda",
-            clase: "Rhynchonollata"
+            clase: "Rhynchonellata"
         },
         {
             clase: "Heteronemertea",
@@ -361,7 +361,10 @@ function verificar(seleccion, correcto, boton) {
 
 function terminarJuego(mensaje) {
   clearInterval(timer);
-  const puntaje = Math.round((preguntasRespondidas * 1000) / (tiempo + 1));
+  const base = preguntasRespondidas / totalPreguntas;
+  const eficiencia = base > 0 ? (preguntasRespondidas / (tiempo + 1)) : 0;
+  const puntaje = Math.round(base * 1000 + eficiencia * 500);
+
   const esUsuarioValido = !!usuario;
 
 
