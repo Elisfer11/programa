@@ -9,7 +9,7 @@
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0; padding: 0;
-      background: linear-gradient(to bottom right, #fff8e1, #ffffff);
+      background: linear-gradient(to bottom right, #e0f7fa, #ffffff);
       color: #333;
       display: flex;
       justify-content: center;
@@ -24,7 +24,7 @@
       width: 90%;
       text-align: center;
     }
-    h2 { font-size: 1.8rem; color: #6d4c41; margin-bottom: 15px; }
+    h2 { font-size: 1.8rem; color: #00796b; margin-bottom: 15px; }
     .top-bar {
       display: flex;
       justify-content: space-around;
@@ -53,18 +53,22 @@
       font-size: 1em; cursor: pointer;
       transition: background-color 0.3s;
     }
-    .opciones button:hover { background-color: #ffe082; }
+    .opciones button:hover { background-color: #dcedc8; }
     .incorrecto { background-color: #f44336 !important; color: white !important; }
     #resultado { font-size: 1.1em; margin: 15px 0; }
     #botonReiniciar { margin-top: 20px; }
     #botonReiniciar button {
-      background-color: #6d4c41; color: white;
+      background-color: #00796b; color: white;
       padding: 10px 20px; font-size: 1rem;
       border: none; border-radius: 8px;
       cursor: pointer; transition: background-color 0.3s ease;
     }
     #botonReiniciar button:hover {
-      background-color: #4e342e;
+      background-color: #004d40;
+    }
+    @media (max-width: 480px) {
+      .container { padding: 20px; }
+      .opciones button { font-size: 0.95rem; padding: 10px; }
     }
   </style>
 </head>
@@ -180,7 +184,12 @@ function siguientePregunta() {
 
   const { org, correcta, opciones } = preguntas[preguntasRespondidas];
 
-  document.getElementById("imagenTest").src = org.imagen;
+  const img = document.getElementById("imagenTest");
+  img.src = "";
+  setTimeout(() => {
+    img.src = org.imagen;
+  }, 50);
+
   document.getElementById("preguntaTexto").innerText = `¿Cuál es el tipo de alimentación de este organismo?`;
   document.getElementById("infoExtra").innerText = `Organismo: ${org.nombre}`;
 
