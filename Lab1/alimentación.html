@@ -93,11 +93,9 @@
 <script>
 const organismos = [
   { nombre: "Reino_Chromista-Filo_Bigyra-Subfilo_Opalozoa-Clase_Opalinea-Género_Zelleriella", alimentacion: "Consume microbiota intestinal" },
-  { nombre: "Reino_Chromista-Filo_Retaria-Infrafilo_Foraminífera-Homotrema", alimentacion: "Depredador de bacterias y eucariontes" },
   { nombre: "Reino_Chromista-Filo_Ciliophora-Especie_Balantidium_coli", alimentacion: "Bacterias, detrito" },
   { nombre: "Reino_Chromista-Filo_Ciliophora-Género_Blepharisma", alimentacion: "Depredador de otros eucariontes" },
-  { nombre: "Reino_Chromista-Filo_Ciliophora-Género_Nyctotherus", alimentacion: "Detrito y bacterias" },
-  { nombre: "Reino_Chromista-Filo_Ciliophora-Género_Paramecium-Reproducción_Asexual", alimentacion: "Alimento en suspensión" },
+  { nombre: "Reino_Chromista-Filo_Ciliophora-Género_Paramecium", alimentacion: "Depredador de otros eucariontes" },
   { nombre: "Reino_Chromista-Filo_Miozoa-Subfilo_Myzozoa-Infrafilo_Apicomplexa-Género_Toxoplasma", alimentacion: "Fluidos de las células del órgano que infecta" },
   { nombre: "Reino_Chromista-Filo_Miozoa-Subfilo_Myzozoa-Infrafilo_Dinoflagellata-Género_Ceratium", alimentacion: "Fotosintético, mixótrofo" },
   { nombre: "Reino_Chromista-Filo_Ochrophyta-Falso_Heliozoo-Género_Actinosphaerium", alimentacion: "Consume materia orgánica particulada" },
@@ -111,27 +109,25 @@ const organismos = [
   { nombre: "Reino_Protozoa-Filo_Amoebozoa-Especie_Entamoeba_histolytica", alimentacion: "Sangre y tejidos" },
   { nombre: "Reino_Protozoa-Filo_Amoebozoa-Género_Amoeba", alimentacion: "Consume bacterias y eucariontes" },
   { nombre: "Reino_Protozoa-Filo_Amoebozoa-Género_Arcella", alimentacion: "Consume bacterias y eucariontes" },
-  { nombre: "Reino_Chromista-Filo_Ciliophora-Género_Paramecium-Reproducción_sexual", alimentacion: "Alimento en suspensión" },
-  { nombre: "Reino_Protozoa-Filo_Metamonada-Especie_Trichomonas_vaginalis", alimentacion: "Fluidos celulares del tracto urogenital" },
+  { nombre: "Reino_Protozoa-Filo_Metamonada-Especie_Trichomonas_vaginalis", alimentacion: "Mucosa intestinal y bacterias" },
   { nombre: "Reino_Protozoa-Filo_Metamonada-Género_Giardia", alimentacion: "Mucosa intestinal y bacterias" },
   { nombre: "Reino_Protozoa-Filo_Metamonada-Género_Tritrichomonas", alimentacion: "Mucosa, glóbulos blancos y glóbulos rojos" },
-  { nombre: "Reino_Protozoa-Filo_Percolozoa-Género_Naeglaria", alimentacion: "Bacterias, levaduras, detritos" },
   { nombre: "Reino_Chromista-Filo_Miozoa-Subfilo_Myzozoa-Infrafilo_Apicomplexa-Género_Gregarina", alimentacion: "Fluidos del intestino en estadio trofozoito" },
   { nombre: "Reino_Chromista-Filo_Miozoa-Subfilo_Myzozoa-Infrafilo_Apicomplexa-Género_Plasmodium", alimentacion: "Fluidos de las células infectadas" },
   { nombre: "Reino_Protozoa-Filo_Amoebozoa-Género_Chaos", alimentacion: "Consume bacterias y eucariontes" },
   { nombre: "Reino_Protozoa-Filo_Amoebozoa-Género_Difflugia", alimentacion: "Consume bacterias y eucariontes" },
   { nombre: "Reino_Protozoa-Filo_Euglenozoa-Género_Leishmania", alimentacion: "Fluidos celulares" },
-  { nombre: "Reino_Protozoa-Filo_Euglenozoa-Género_Trypanosoma", alimentacion: "Plasma sanguíneo" },
+  { nombre: "Reino_Protozoa-Filo_Euglenozoa-Género_Trypanosoma", alimentacion: "Fluidos celulares" },
   { nombre: "Reino_Protozoa-Filo_Euglenozoa-Género_Euglena", alimentacion: "Autótrofa por fotosíntesis o heterótrofa" }
 ];
 
 organismos.forEach(o => o.imagen = `/programa/Lab1/imagenes/${o.nombre}.jpg`);
 
-let vidas = 6, tiempo = 0, preguntasRespondidas = 0, totalPreguntas = 20, timer;
+let vidas = 4, tiempo = 0, preguntasRespondidas = 0, totalPreguntas = 27, timer;
 let preguntas = [];
 
 function iniciarJuego() {
-  vidas = 6;
+  vidas = 4;
   tiempo = 0;
   preguntasRespondidas = 0;
   preguntas = generarPreguntas();
