@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Modo Alimentación</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0; padding: 0;
+      background: linear-gradient(to bottom right, #fff8e1, #ffffff);
+      color: #333;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    .container {
+      background-color: white;
+      margin: 30px 0; padding: 30px 20px;
+      border-radius: 20px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+      max-width: 600px;
+      width: 90%;
+      text-align: center;
+    }
+    h2 { font-size: 1.8rem; color: #6d4c41; margin-bottom: 15px; }
+    .top-bar {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+      font-size: 1.1em;
+    }
+    #imagenTest {
+      width: 100%; max-width: 350px;
+      border-radius: 10px; margin: 10px auto;
+    }
+    #infoExtra {
+      margin: 10px 0; font-size: 0.95em;
+    }
+    #preguntaTexto {
+      font-weight: bold; margin: 15px 0; font-size: 1.1em;
+    }
+    .opciones {
+      display: flex; flex-direction: column; gap: 10px;
+      margin-bottom: 20px;
+    }
+    .opciones button {
+      background-color: #f0f0f0; color: #333;
+      padding: 12px; border: none; border-radius: 10px;
+      font-size: 1em; cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .opciones button:hover { background-color: #ffe082; }
+    .incorrecto { background-color: #f44336 !important; color: white !important; }
+    #resultado { font-size: 1.1em; margin: 15px 0; }
+    #botonReiniciar { margin-top: 20px; }
+    #botonReiniciar button {
+      background-color: #6d4c41; color: white;
+      padding: 10px 20px; font-size: 1rem;
+      border: none; border-radius: 8px;
+      cursor: pointer; transition: background-color 0.3s ease;
+    }
+    #botonReiniciar button:hover {
+      background-color: #4e342e;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>¿Cómo se alimenta este organismo?</h2>
+    <div class="top-bar">
+      <div id="vidas">Vidas: ❤️❤️❤️❤️❤️❤️</div>
+      <div id="tiempo">Tiempo: 0s</div>
+      <div id="progreso">Progreso: 0/0</div>
+    </div>
+    <img id="imagenTest" src="" alt="Imagen del organismo" />
+    <div id="infoExtra"></div>
+    <div id="preguntaTexto"></div>
+    <div class="opciones" id="opciones"></div>
+    <div id="resultado"></div>
+    <div id="botonReiniciar" style="display: none;">
+      <button onclick="reiniciarJuego()">Volver a jugar</button>
+    </div>
+  </div>
+
+<script>
+const organismos = [
+  { nombre: "Reino_Chromista-Filo_Bigyra-Subfilo_Opalozoa-Clase_Opalinea-Género_Zelleriella", alimentacion: "Consume microbiota intestinal" },
+  { nombre: "Reino_Chromista-Filo_Retaria-Infrafilo_Foraminífera-Homotrema", alimentacion: "Depredador de bacterias y eucariontes" },
+  { nombre: "Reino_Chromista-Filo_Ciliophora-Especie_Balantidium_coli", alimentacion: "Bacterias, detrito" },
+  { nombre: "Reino_Chromista-Filo_Ciliophora-Género_Blepharisma", alimentacion: "Depredador de otros eucariontes" },
+  { nombre: "Reino_Chromista-Filo_Ciliophora-Género_Nyctotherus", alimentacion: "Detrito y bacterias" },
+  { nombre: "Reino_Chromista-Filo_Ciliophora-Género_Paramecium-Reproducción_Asexual", alimentacion: "Alimento en suspensión" },
+  { nombre: "Reino_Chromista-Filo_Miozoa-Subfilo_Myzozoa-Infrafilo_Apicomplexa-Género_Toxoplasma", alimentacion: "Fluidos de las células del órgano que infecta" },
+  { nombre: "Reino_Chromista-Filo_Miozoa-Subfilo_Myzozoa-Infrafilo_Dinoflagellata-Género_Ceratium", alimentacion: "Fotosintético, mixótrofo" },
+  { nombre: "Reino_Chromista-Filo_Ochrophyta-Falso_Heliozoo-Género_Actinosphaerium", alimentacion: "Consume materia orgánica particulada" },
+  { nombre: "Reino_Chromista-Filo_Retaria-Infrafilo_Foraminífera", alimentacion: "Depredador de bacterias y eucariontes" },
+  { nombre: "Reino_Chromista-Filo_Ciliophora-Género_Stentor", alimentacion: "Alimento en suspensión" },
+  { nombre: "Reino_Chromista-Filo_Ciliophora-Género_Vorticella", alimentacion: "Alimento en suspensión" },
+  { nombre: "Reino_Chromista-Filo_Miozoa-Subfilo_Myzozoa-Infrafilo_Apicomplexa-Género_Cyclospora", alimentacion: "Chupa fluidos de las células infectadas" },
+  { nombre: "Reino_Chromista-Filo_Miozoa-Subfilo_Myzozoa-Infrafilo_Apicomplexa-Género_Eimeria", alimentacion: "Chupa fluidos de las células del órgano que infecta" },
+  { nombre: "Reino_Chromista-Filo_Retaria-Infrafilo_Radiolaria", alimentacion: "Depredador de bacterias y eucariontes" },
+  { nombre: "Reino_Protozoa-Filo_Amoebozoa-Especie_Entamoeba_coli", alimentacion: "Partículas" },
+  { nombre: "Reino_Protozoa-Filo_Amoebozoa-Especie_Entamoeba_histolytica", alimentacion: "Sangre y tejidos" },
+  { nombre: "Reino_Protozoa-Filo_Amoebozoa-Género_Amoeba", alimentacion: "Consume bacterias y eucariontes" },
+  { nombre: "Reino_Protozoa-Filo_Amoebozoa-Género_Arcella", alimentacion: "Consume bacterias y eucariontes" },
+  { nombre: "Reino_Chromista-Filo_Ciliophora-Género_Paramecium-Reproducción_sexual", alimentacion: "Alimento en suspensión" },
+  { nombre: "Reino_Protozoa-Filo_Metamonada-Especie_Trichomonas_vaginalis", alimentacion: "Fluidos celulares del tracto urogenital" },
+  { nombre: "Reino_Protozoa-Filo_Metamonada-Género_Giardia", alimentacion: "Mucosa intestinal y bacterias" },
+  { nombre: "Reino_Protozoa-Filo_Metamonada-Género_Tritrichomonas", alimentacion: "Mucosa, glóbulos blancos y glóbulos rojos" },
+  { nombre: "Reino_Protozoa-Filo_Percolozoa-Género_Naeglaria", alimentacion: "Bacterias, levaduras, detritos" },
+  { nombre: "Reino_Chromista-Filo_Miozoa-Subfilo_Myzozoa-Infrafilo_Apicomplexa-Género_Gregarina", alimentacion: "Fluidos del intestino en estadio trofozoito" },
+  { nombre: "Reino_Chromista-Filo_Miozoa-Subfilo_Myzozoa-Infrafilo_Apicomplexa-Género_Plasmodium", alimentacion: "Fluidos de las células infectadas" },
+  { nombre: "Reino_Protozoa-Filo_Amoebozoa-Género_Chaos", alimentacion: "Consume bacterias y eucariontes" },
+  { nombre: "Reino_Protozoa-Filo_Amoebozoa-Género_Difflugia", alimentacion: "Consume bacterias y eucariontes" },
+  { nombre: "Reino_Protozoa-Filo_Euglenozoa-Género_Leishmania", alimentacion: "Fluidos celulares" },
+  { nombre: "Reino_Protozoa-Filo_Euglenozoa-Género_Trypanosoma", alimentacion: "Plasma sanguíneo" },
+  { nombre: "Reino_Protozoa-Filo_Euglenozoa-Género_Euglena", alimentacion: "Autótrofa por fotosíntesis o heterótrofa" }
+];
+
+organismos.forEach(o => o.imagen = `/programa/Lab1/imagenes/${o.nombre}.jpg`);
+
+let vidas = 6, tiempo = 0, preguntasRespondidas = 0, totalPreguntas = 20, timer;
+let preguntas = [];
+
+function iniciarJuego() {
+  vidas = 6;
+  tiempo = 0;
+  preguntasRespondidas = 0;
+  preguntas = generarPreguntas();
+
+  actualizarVidas();
+  actualizarProgreso();
+  document.getElementById("resultado").innerText = "";
+  document.getElementById("botonReiniciar").style.display = "none";
+  document.getElementById("imagenTest").style.display = "block";
+  siguientePregunta();
+  iniciarCronometro();
+}
+
+function generarPreguntas() {
+  return organismos
+    .sort(() => Math.random() - 0.5)
+    .slice(0, totalPreguntas)
+    .map(org => {
+      const correcta = org.alimentacion;
+      const opciones = new Set([correcta]);
+      let intentos = 0;
+      while (opciones.size < 4 && intentos < 20) {
+        const aleatorio = organismos[Math.floor(Math.random() * organismos.length)];
+        opciones.add(aleatorio.alimentacion);
+        intentos++;
+      }
+      return {
+        org, correcta,
+        opciones: Array.from(opciones).sort(() => Math.random() - 0.5)
+      };
+    });
+}
+
+function actualizarVidas() {
+  document.getElementById("vidas").innerText = "Vidas: " + "❤️".repeat(vidas);
+}
+function actualizarProgreso() {
+  document.getElementById("progreso").innerText = `Progreso: ${preguntasRespondidas}/${totalPreguntas}`;
+}
+function iniciarCronometro() {
+  clearInterval(timer);
+  timer = setInterval(() => {
+    tiempo++;
+    document.getElementById("tiempo").innerText = `Tiempo: ${tiempo}s`;
+  }, 1000);
+}
+
+function siguientePregunta() {
+  if (preguntasRespondidas >= preguntas.length) return terminarJuego("🎉 ¡Test finalizado!");
+
+  const { org, correcta, opciones } = preguntas[preguntasRespondidas];
+
+  document.getElementById("imagenTest").src = org.imagen;
+  document.getElementById("preguntaTexto").innerText = `¿Cuál es el tipo de alimentación de este organismo?`;
+  document.getElementById("infoExtra").innerText = `Organismo: ${org.nombre}`;
+
+  const contenedor = document.getElementById("opciones");
+  contenedor.innerHTML = "";
+  opciones.forEach(op => {
+    const btn = document.createElement("button");
+    btn.innerText = op;
+    btn.onclick = () => verificar(op, correcta, btn);
+    contenedor.appendChild(btn);
+  });
+}
+
+function verificar(seleccion, correcto, boton) {
+  const resultado = document.getElementById("resultado");
+
+  if (seleccion === correcto) {
+    resultado.innerText = "✔️ Correcto!";
+    resultado.style.color = "green";
+    preguntasRespondidas++;
+    actualizarProgreso();
+    document.querySelectorAll("#opciones button").forEach(btn => btn.disabled = true);
+    setTimeout(siguientePregunta, 1000);
+  } else {
+    vidas--;
+    tiempo += 3;
+    actualizarVidas();
+    resultado.innerText = "❌ Incorrecto. Intenta de nuevo.";
+    resultado.style.color = "red";
+    boton.classList.add('incorrecto');
+    boton.disabled = true;
+
+    if (vidas <= 0) terminarJuego("☠️ Te has quedado sin vidas.");
+  }
+}
+
+function terminarJuego(mensaje) {
+  clearInterval(timer);
+  const base = preguntasRespondidas / totalPreguntas;
+  const eficiencia = base > 0 ? (preguntasRespondidas / (tiempo + 1)) : 0;
+  const puntaje = Math.round(base * 1000 + eficiencia * 500);
+
+  document.getElementById("resultado").innerHTML = `
+    ${mensaje}<br>
+    ⏱ Tiempo: ${tiempo}s<br>
+    ✅ Resultado: ${preguntasRespondidas}/${totalPreguntas}<br>
+    🏆 Puntaje final: <strong>${puntaje}</strong>`;
+
+  document.getElementById("imagenTest").style.display = "none";
+  document.getElementById("opciones").innerHTML = "";
+  document.getElementById("preguntaTexto").innerText = "";
+  document.getElementById("infoExtra").innerText = "";
+  document.getElementById("botonReiniciar").style.display = "block";
+}
+
+function reiniciarJuego() {
+  iniciarJuego();
+}
+
+iniciarJuego();
+</script>
+</body>
+</html>
