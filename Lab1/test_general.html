@@ -138,6 +138,21 @@ const taxonomia = [
         reproduccion: "Asexual",
         imagen: "/programa/Lab1/imagenes/Reino_Chromista-Filo_Ciliophora-Género_Paramecium-Reproducción_Asexual.jpg"
     },
+
+    {
+        genero: "Paramecium",
+        reino: "Chromista",
+        filo: "Ciliophora",
+        reproduccion: "sexual",
+        imagen: "/programa/Lab1/imagenes/Reino_Chromista-Filo_Ciliophora-Género_Paramecium-Reproducción_sexual.jpg"
+    },
+
+    {
+        genero: "Paramecium",
+        reino: "Chromista",
+        filo: "Ciliophora",
+        imagen: "/programa/Lab1/imagenes/Reino_Chromista-Filo_Ciliophora-Género_Paramecium.jpg"
+    },
     {
         genero: "Toxoplasma",
         reino: "Chromista",
@@ -330,7 +345,7 @@ function iniciarJuego() {
 }
 
 function generarPreguntasCompletas() {
-  const niveles = ["genero", "especie", "clase", "subclase", "familia", "filo"];
+  const niveles = ["genero", "especie", "clase", "subclase", "familia", "filo", "reproduccion"];
   const posibles = [];
 
   taxonomia.forEach(item => {
