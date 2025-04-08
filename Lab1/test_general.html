@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Modo Competitivo</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0; padding: 0;
+      background: linear-gradient(to bottom right, #e0f7fa, #ffffff);
+      color: #333;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    .container {
+      background-color: white;
+      margin: 30px 0; padding: 30px 20px;
+      border-radius: 20px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+      max-width: 600px;
+      width: 90%;
+      text-align: center;
+    }
+    h2 { font-size: 1.8rem; color: #00796b; margin-bottom: 15px; }
+    .top-bar {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+      font-size: 1.1em;
+    }
+    #imagenTest {
+      width: 100%; max-width: 350px;
+      border-radius: 10px; margin: 10px auto;
+    }
+    #infoTaxonomica {
+      display: flex; flex-wrap: wrap;
+      justify-content: center; gap: 5px;
+      margin: 10px 0;
+    }
+    #infoTaxonomica span {
+      background: #e0f2f1; padding: 5px 10px;
+      border-radius: 15px; font-size: 0.9em;
+    }
+    #preguntaTexto {
+      font-weight: bold; margin: 15px 0; font-size: 1.1em;
+    }
+    .opciones {
+      display: flex; flex-direction: column; gap: 10px;
+      margin-bottom: 20px;
+    }
+    .opciones button {
+      background-color: #f0f0f0; color: #333;
+      padding: 12px; border: none; border-radius: 10px;
+      font-size: 1em; cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .opciones button:hover { background-color: #dcedc8; }
+    .incorrecto { background-color: #f44336 !important; color: white !important; }
+    #resultado { font-size: 1.1em; margin: 15px 0; }
+    #botonReiniciar { margin-top: 20px; }
+    #botonReiniciar button {
+      background-color: #00796b; color: white;
+      padding: 10px 20px; font-size: 1rem;
+      border: none; border-radius: 8px;
+      cursor: pointer; transition: background-color 0.3s ease;
+    }
+    #botonReiniciar button:hover {
+      background-color: #004d40;
+    }
+    @media (max-width: 480px) {
+      .container { padding: 20px; }
+      .opciones button { font-size: 0.95rem; padding: 10px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Identifica el Elemento</h2>
+    <div class="top-bar">
+      <div id="vidas">Vidas: ❤️❤️❤️</div>
+      <div id="tiempo">Tiempo: 0s</div>
+      <div id="progreso">Progreso: 0/0</div>
+    </div>
+    <img id="imagenTest" src="" alt="Imagen de prueba" />
+    <div id="infoTaxonomica"></div>
+    <div id="preguntaTexto"></div>
+    <div class="opciones" id="opciones"></div>
+    <div id="resultado"></div>
+    <div id="botonReiniciar" style="display: none;">
+      <button onclick="reiniciarJuego()">Volver a jugar</button>
+    </div>
+  </div>
+
+<script>
+const taxonomia = [
+    {
+        genero: "Zelleriella",
+        reino: "Chromista",
+        filo: "Bigyra",
+        subfilo: "Opalozoa",
+        clase: "Opalinea",
+        imagen: "/programa/Lab1/imagenes/Chromista_Bigyra_Opalozoa_Opalinea_Zelleriella.jpg"
+    },
+    {
+        genero: "Homotrema",
+        reino: "Chromista",
+        filo: "Retaria",
+        infrafilo: "Foraminífera",
+        imagen: "/programa/Lab1/imagenes/Chromista_Retaria_Foraminifera_Homotrema.jpg"
+    },
+    {
+        especie: "Balantidium coli",
+        reino: "Chromista",
+        filo: "Ciliophora",
+        imagen: "/programa/Lab1/imagenes/Chromista_Ciliophora_Balantidium_coli.jpg"
+    },
+    {
+        genero: "Blepharisma",
+        reino: "Chromista",
+        filo: "Ciliophora",
+        imagen: "/programa/Lab1/imagenes/Chromista_Ciliophora_Blepharisma.jpg"
+    },
+    {
+        genero: "Nyctotherus",
+        reino: "Chromista",
+        filo: "Ciliophora",
+        imagen: "/programa/Lab1/imagenes/Chromista_Ciliophora_Nyctotherus.jpg"
+    },
+    {
+        genero: "Paramecium",
+        reino: "Chromista",
+        filo: "Ciliophora",
+        reproduccion: "Asexual",
+        imagen: "/programa/Lab1/imagenes/Chromista_Ciliophora_Paramecium_Asexual.jpg"
+    },
+    {
+        genero: "Toxoplasma",
+        reino: "Chromista",
+        filo: "Miozoa",
+        subfilo: "Myzozoa",
+        infrafilo: "Apicomplexa",
+        imagen: "/programa/Lab1/imagenes/Chromista_Miozoa_Myzozoa_Apicomplexa_Toxoplasma.jpg"
+    },
+    {
+        genero: "Ceratium",
+        reino: "Chromista",
+        filo: "Miozoa",
+        subfilo: "Myzozoa",
+        infrafilo: "Dinoflagellata",
+        imagen: "/programa/Lab1/imagenes/Chromista_Miozoa_Myzozoa_Dinoflagellata_Ceratium.jpg"
+    },
+    {
+        genero: "Actinosphaerium",
+        reino: "Chromista",
+        filo: "Ochrophyta",
+        grupo: "Falso Heliozoo",
+        imagen: "/programa/Lab1/imagenes/Chromista_Ochrophyta_Falso_Heliozoo_Actinosphaerium.jpg"
+    },
+    {
+        infrafilo: "Foraminífera",
+        reino: "Chromista",
+        filo: "Retaria",
+        imagen: "/programa/Lab1/imagenes/Chromista_Retaria_Foraminifera.jpg"
+    },
+    {
+        genero: "Stentor",
+        reino: "Chromista",
+        filo: "Ciliophora",
+        imagen: "/programa/Lab1/imagenes/Chromista_Ciliophora_Stentor.jpg"
+    },
+    {
+        genero: "Vorticella",
+        reino: "Chromista",
+        filo: "Ciliophora",
+        imagen: "/programa/Lab1/imagenes/Chromista_Ciliophora_Vorticella.jpg"
+    },
+    {
+        genero: "Cyclospora",
+        reino: "Chromista",
+        filo: "Miozoa",
+        subfilo: "Myzozoa",
+        infrafilo: "Apicomplexa",
+        imagen: "/programa/Lab1/imagenes/Chromista_Miozoa_Myzozoa_Apicomplexa_Cyclospora.jpg"
+    },
+    {
+        genero: "Eimeria",
+        reino: "Chromista",
+        filo: "Miozoa",
+        subfilo: "Myzozoa",
+        infrafilo: "Apicomplexa",
+        imagen: "/programa/Lab1/imagenes/Chromista_Miozoa_Myzozoa_Apicomplexa_Eimeria.jpg"
+    },
+    {
+        infrafilo: "Radiolaria",
+        reino: "Chromista",
+        filo: "Retaria",
+        imagen: "/programa/Lab1/imagenes/Chromista_Retaria_Radiolaria.jpg"
+    },
+    {
+        especie: "Entamoeba coli",
+        reino: "Protozoa",
+        filo: "Amoebozoa",
+        imagen: "/programa/Lab1/imagenes/Protozoa_Amoebozoa_Entamoeba_coli.jpg"
+    },
+    {
+        especie: "Entamoeba histolytica",
+        reino: "Protozoa",
+        filo: "Amoebozoa",
+        imagen: "/programa/Lab1/imagenes/Protozoa_Amoebozoa_Entamoeba_histolytica.jpg"
+    },
+    {
+        genero: "Amoeba",
+        reino: "Protozoa",
+        filo: "Amoebozoa",
+        imagen: "/programa/Lab1/imagenes/Protozoa_Amoebozoa_Amoeba.jpg"
+    },
+    {
+        genero: "Arcella",
+        reino: "Protozoa",
+        filo: "Amoebozoa",
+        imagen: "/programa/Lab1/imagenes/Protozoa_Amoebozoa_Arcella.jpg"
+    },
+    {
+        genero: "Paramecium",
+        reino: "Chromista",
+        filo: "Ciliophora",
+        reproduccion: "Sexual",
+        imagen: "/programa/Lab1/imagenes/Chromista_Ciliophora_Paramecium_Sexual.jpg"
+    },
+    {
+        especie: "Trichomonas vaginalis",
+        reino: "Protozoa",
+        filo: "Metamonada",
+        imagen: "/programa/Lab1/imagenes/Protozoa_Metamonada_Trichomonas_vaginalis.jpg"
+    },
+    {
+        genero: "Giardia",
+        reino: "Protozoa",
+        filo: "Metamonada",
+        imagen: "/programa/Lab1/imagenes/Protozoa_Metamonada_Giardia.jpg"
+    },
+    {
+        genero: "Tritrichomonas",
+        reino: "Protozoa",
+        filo: "Metamonada",
+        imagen: "/programa/Lab1/imagenes/Protozoa_Metamonada_Tritrichomonas.jpg"
+    },
+    {
+        genero: "Naeglaria",
+        reino: "Protozoa",
+        filo: "Percolozoa",
+        imagen: "/programa/Lab1/imagenes/Protozoa_Percolozoa_Naeglaria.jpg"
+    },
+    {
+        genero: "Gregarina",
+        reino: "Chromista",
+        filo: "Miozoa",
+        subfilo: "Myzozoa",
+        infrafilo: "Apicomplexa",
+        imagen: "/programa/Lab1/imagenes/Chromista_Miozoa_Myzozoa_Apicomplexa_Gregarina.jpg"
+    },
+    {
+        genero: "Plasmodium",
+        reino: "Chromista",
+        filo: "Miozoa",
+        subfilo: "Myzozoa",
+        infrafilo: "Apicomplexa",
+        imagen: "/programa/Lab1/imagenes/Chromista_Miozoa_Myzozoa_Apicomplexa_Plasmodium.jpg"
+    },
+    {
+        genero: "Chaos",
+        reino: "Protozoa",
+        filo: "Amoebozoa",
+        imagen: "/programa/Lab1/imagenes/Protozoa_Amoebozoa_Chaos.jpg"
+    },
+    {
+        genero: "Difflugia",
+        reino: "Protozoa",
+        filo: "Amoebozoa",
+        imagen: "/programa/Lab1/imagenes/Protozoa_Amoebozoa_Difflugia.jpg"
+    },
+    {
+        genero: "Leishmania",
+        reino: "Protozoa",
+        filo: "Euglenozoa",
+        imagen: "/programa/Lab1/imagenes/Protozoa_Euglenozoa_Leishmania.jpg"
+    },
+    {
+        genero: "Trypanosoma",
+        reino: "Protozoa",
+        filo: "Euglenozoa",
+        imagen: "/programa/Lab1/imagenes/Protozoa_Euglenozoa_Trypanosoma.jpg"
+    },
+    {
+        genero: "Euglena",
+        reino: "Protozoa",
+        filo: "Euglenozoa",
+        imagen: "/programa/Lab1/imagenes/Protozoa_Euglenozoa_Euglena.jpg"
+    }
+];
+
+
+let vidas = 3, tiempo = 0, preguntasRespondidas = 0, totalPreguntas = 20, timer;
+let preguntasCompletas = [];
+
+function iniciarJuego() {
+  vidas = 3;
+  tiempo = 0;
+  preguntasRespondidas = 0;
+  preguntasCompletas = generarPreguntasCompletas();
+
+  if (!preguntasCompletas || preguntasCompletas.length < totalPreguntas) {
+    alert("❌ No se pudieron generar suficientes preguntas.");
+    return;
+  }
+
+  actualizarVidas();
+  actualizarProgreso();
+  document.getElementById("resultado").innerText = "";
+  document.getElementById("botonReiniciar").style.display = "none";
+  document.getElementById("imagenTest").style.display = "block";
+  siguientePregunta();
+  iniciarCronometro();
+}
+
+function generarPreguntasCompletas() {
+  const niveles = ["genero", "especie", "clase", "subclase", "familia", "filo"];
+  const posibles = [];
+
+  taxonomia.forEach(item => {
+    const disponibles = niveles.filter(n => item[n]);
+    const usados = new Set();
+    while (usados.size < Math.min(2, disponibles.length)) {
+      const nivel = disponibles[Math.floor(Math.random() * disponibles.length)];
+      if (!usados.has(nivel)) {
+        posibles.push({ item, nivel });
+        usados.add(nivel);
+      }
+    }
+  });
+
+  while (posibles.length < totalPreguntas) {
+    const copia = posibles[Math.floor(Math.random() * posibles.length)];
+    if (posibles.filter(p => p.item === copia.item).length < 2) {
+      posibles.push(copia);
+    }
+    if (posibles.length > 200) break;
+  }
+
+  return posibles
+    .sort(() => Math.random() - 0.5)
+    .slice(0, totalPreguntas)
+    .map(({ item, nivel }) => {
+      const correcta = item[nivel];
+      const opciones = new Set([correcta]);
+      let intentos = 0;
+      while (opciones.size < 4 && intentos < 20) {
+        const aleatorio = taxonomia[Math.floor(Math.random() * taxonomia.length)];
+        if (aleatorio[nivel]) opciones.add(aleatorio[nivel]);
+        intentos++;
+      }
+      return {
+        item, nivel, correcta,
+        opciones: Array.from(opciones).sort(() => Math.random() - 0.5)
+      };
+    });
+}
+
+function actualizarVidas() {
+  document.getElementById("vidas").innerText = "Vidas: " + "❤️".repeat(vidas);
+}
+function actualizarProgreso() {
+  document.getElementById("progreso").innerText = `Progreso: ${preguntasRespondidas}/${totalPreguntas}`;
+}
+function iniciarCronometro() {
+  clearInterval(timer);
+  timer = setInterval(() => {
+    tiempo++;
+    document.getElementById("tiempo").innerText = `Tiempo: ${tiempo}s`;
+  }, 1000);
+}
+
+function siguientePregunta() {
+  document.getElementById("resultado").innerText = "";
+  if (preguntasRespondidas >= totalPreguntas) return terminarJuego("🎉 ¡Has completado el test!");
+
+  const { item, nivel, correcta, opciones } = preguntasCompletas[preguntasRespondidas];
+
+  document.getElementById("imagenTest").src = item.imagen;
+  document.getElementById("preguntaTexto").innerText = `¿Cuál es ${nivel.toUpperCase()} de esta imagen?`;
+
+  const info = [];
+  if (nivel !== 'filo' && item.filo) info.push(`Filo: ${item.filo}`);
+  if (nivel !== 'clase' && item.clase) info.push(`Clase: ${item.clase}`);
+  if (nivel !== 'subclase' && item.subclase) info.push(`Subclase: ${item.subclase}`);
+  if (nivel !== 'familia' && item.familia) info.push(`Familia: ${item.familia}`);
+  if (nivel !== 'genero' && item.genero) info.push(`Género: ${item.genero}`);
+  if (nivel !== 'especie' && item.especie) info.push(`Especie: ${item.especie}`);
+  document.getElementById("infoTaxonomica").innerHTML = info.map(i => `<span>${i}</span>`).join("");
+
+  const contenedor = document.getElementById("opciones");
+  contenedor.innerHTML = "";
+  opciones.forEach(op => {
+    const btn = document.createElement("button");
+    btn.innerText = op;
+    btn.onclick = () => verificar(op, correcta, btn);
+    contenedor.appendChild(btn);
+  });
+}
+
+function verificar(seleccion, correcto, boton) {
+  const resultado = document.getElementById("resultado");
+
+  if (seleccion === correcto) {
+    resultado.innerText = "✔️ Correcto!";
+    resultado.style.color = "green";
+    preguntasRespondidas++;
+    actualizarProgreso();
+    document.querySelectorAll("#opciones button").forEach(btn => btn.disabled = true);
+    setTimeout(siguientePregunta, 1000);
+  } else {
+    vidas--;
+    tiempo += 3;
+    actualizarVidas();
+    resultado.innerText = "❌ Incorrecto. Intenta de nuevo.";
+    resultado.style.color = "red";
+    boton.classList.add('incorrecto');
+    boton.disabled = true;
+
+    if (vidas <= 0) terminarJuego("☠️ Te has quedado sin vidas.");
+  }
+}
+
+function terminarJuego(mensaje) {
+  clearInterval(timer);
+  const base = preguntasRespondidas / totalPreguntas;
+  const eficiencia = base > 0 ? (preguntasRespondidas / (tiempo + 1)) : 0;
+  const puntaje = Math.round(base * 1000 + eficiencia * 500);
+
+  document.getElementById("resultado").innerHTML = `
+    ${mensaje}<br>
+    ⏱ Tiempo: ${tiempo}s<br>
+    ✅ Resultado: ${preguntasRespondidas}/${totalPreguntas}<br>
+    🏆 Puntaje final: <strong>${puntaje}</strong>`;
+
+  document.getElementById("imagenTest").style.display = "none";
+  document.getElementById("opciones").innerHTML = "";
+  document.getElementById("preguntaTexto").innerText = "";
+  document.getElementById("botonReiniciar").style.display = "block";
+}
+
+function reiniciarJuego() {
+  iniciarJuego();
+}
+
+iniciarJuego();
+</script>
+</body>
+</html>
