@@ -182,9 +182,14 @@
         correctas++;
         document.getElementById("resultado").innerText = "✔️ Correcto!";
         document.getElementById("resultado").style.color = "green";
+        actual++;
+        setTimeout(mostrarPregunta, 1500);
       } else {
-        document.getElementById("resultado").innerText = `❌ Incorrecto. Era: ${preguntas[actual].familia}`;
+        document.getElementById("resultado").innerText = `❌ Incorrecto. Era: ${preguntas[actual].familia}. Reiniciando...`;
         document.getElementById("resultado").style.color = "red";
+        actual = 0;
+        correctas = 0;
+  setTimeout(mostrarPregunta, 2000);
       }
       actual++;
       setTimeout(mostrarPregunta, 1500);
