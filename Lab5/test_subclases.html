@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Test de Subclases</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f4f4;
+      max-width: 700px;
+      margin: 30px auto;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      text-align: center;
+    }
+    h2 {
+      margin-bottom: 20px;
+    }
+    img {
+      width: 100%;
+      max-width: 450px;
+      margin: 20px 0;
+      border-radius: 10px;
+    }
+    input[type="text"] {
+      padding: 10px;
+      font-size: 1em;
+      width: 80%;
+      margin-bottom: 15px;
+    }
+    button {
+      margin-top: 10px;
+      padding: 12px 24px;
+      font-size: 1em;
+      border: none;
+      border-radius: 8px;
+      background-color: #eee;
+      color: #333;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background-color: #ddd;
+    }
+    #resultado {
+      margin-top: 20px;
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+    #contador {
+      margin: 10px;
+      font-size: 1.2em;
+    }
+  </style>
+</head>
+<body>
+  <h2>Test de Subclases</h2>
+  <div id="contador">Pregunta 0/0</div>
+  <img id="imagen" src="" alt="Imagen de prueba">
+  <div>
+    <input type="text" id="respuesta" placeholder="Escribe la subclase..." onkeypress="if(event.key === 'Enter') verificarRespuesta()">
+    <br>
+    <button onclick="verificarRespuesta()">Enviar</button>
+  </div>
+  <div id="resultado"></div>
+  <script>
+    const preguntas = [
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Patellogastropoda-Familia_Lottiidae-Lottia.jpg", subclase: "Patellogastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Neritiomorpha-Familia_Neritidae-Theodoxus.jpg", subclase: "Neritiomorpha" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Neritiomorpha-Familia_Neritidae-Vitta.jpg", subclase: "Neritiomorpha" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Neritiomorpha-Familia_Neritidae-Neritina.jpg", subclase: "Neritiomorpha" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Neritiomorpha-Familia_Neritidae-Nerita.jpg", subclase: "Neritiomorpha" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Vetigastropoda-Familia_Haliotidae-Haliotis.jpg", subclase: "Vetigastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Vetigastropoda-Familia_Turbinidae-Turbo.jpg", subclase: "Vetigastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Vetigastropoda-Familia_Turbinidae-Astralium.jpg", subclase: "Vetigastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Vetigastropoda-Familia_Turbinidae-Lithopoma.jpg", subclase: "Vetigastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Vetigastropoda-Familia_Tegulidae-Tegula.jpg", subclase: "Vetigastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Vetigastropoda-Familia_Tegulidae-Cittarium.jpg", subclase: "Vetigastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Vetigastropoda-Familia_Fissurellidae-Fissurela.jpg", subclase: "Vetigastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Littorinimorpha-Familia_Littorinidae-Littoraria.jpg", subclase: "Caenogastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Littorinimorpha-Familia_Littorinidae-Echinolittorina.jpg", subclase: "Caenogastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Littorinimorpha-Familia_Naticidae-Natica.jpg", subclase: "Caenogastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Littorinimorpha-Familia_Naticidae-Polinices_uber.jpg", subclase: "Caenogastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Littorinimorpha-Familia_Ficidae-Ficus.jpg", subclase: "Caenogastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Littorinimorpha-Familia_Cassidae-Cassis.jpg", subclase: "Caenogastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Littorinimorpha-Familia_Bursidae-Bursa.jpg", subclase: "Caenogastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Littorinimorpha-Familia_Personidae-Distorsio.jpg", subclase: "Caenogastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Littorinimorpha-Familia_Tonnidae-Tonna.jpg", subclase: "Caenogastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Littorinimorpha-Familia_Tonnidae-Malea.jpg", subclase: "Caenogastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Littorinimorpha-Familia_Strombidae-Aliger_gigas.jpg", subclase: "Caenogastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Littorinimorpha-Familia_Strombidae-Titanostrombus_galeatus.jpg", subclase: "Caenogastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Littorinimorpha-Familia_Strombidae-Lobatus_peruvianus.jpg", subclase: "Caenogastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Littorinimorpha-Familia_Cypraeidae-Macrocypraea.jpg", subclase: "Caenogastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Littorinimorpha-Familia_Cypraeidae-Cypraea.jpg", subclase: "Caenogastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Littorinimorpha-Familia_Ovulidae-Jenneria_pustulata.jpg", subclase: "Caenogastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Littorinimorpha-Familia_Ovulidae-Cyphoma.jpg", subclase: "Caenogastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Littorinimorpha-Familia_Calyptraeidae-Calyptrea.jpg", subclase: "Caenogastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Littorinimorpha-Familia_Calyptraeidae-Crucibulum.jpg", subclase: "Caenogastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Littorinimorpha-Familia_Calyptraeidae-Crepidula.jpg", subclase: "Caenogastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Littorinimorpha-Familia_Vermetidae-Vermetus.jpg", subclase: "Caenogastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Littorinimorpha-Familia_Caecidae-Caecum.jpg", subclase: "Caenogastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Architaenioglossa-Familia_Ampullaridae-Pomacea.jpg", subclase: "Caenogastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Superfamilia_Cerithioidea-Familia_Cerithiidae.jpg", subclase: "Caenogastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Superfamilia_Cerithioidea-Familia_Potamididae.jpg", subclase: "Caenogastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Superfamilia_Cerithioidea-Familia_Batillariidae-Rhinocoryne_humboldtii.jpg", subclase: "Caenogastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Superfamilia_Cerithioidea-Familia_Turritellidae.jpg", subclase: "Caenogastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Superfamilia_Cerithioidea-Familia_Planaxidae-Planaxis.jpg", subclase: "Caenogastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Neogastropoda-Familia_Pisaniidae-Solenosteria.jpg", subclase: "Caenogastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Neogastropoda-Familia_Columbellidae-Columbella.jpg", subclase: "Caenogastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Neogastropoda-Familia_Columbellidae-Anachis.jpg", subclase: "Caenogastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Neogastropoda-Familia_Fasciolariidae-Pleuroploca.jpg", subclase: "Caenogastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Neogastropoda-Familia_Fasciolariidae-Leucozonia.jpg", subclase: "Caenogastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Neogastropoda-Familia_Fasciolariidae-Opeatostoma.jpg", subclase: "Caenogastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Neogastropoda-Familia_Melongenidae-Melongena.jpg", subclase: "Caenogastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Neogastropoda-Familia_Nassariidae-Phrontis_luteostoma.jpg", subclase: "Caenogastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Neogastropoda-Familia_Nassariidae-Nassarius.jpg", subclase: "Caenogastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Neogastropoda-Familia_Cancellaridae.jpg", subclase: "Caenogastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Neogastropoda-Familia_Conidae-Conus.jpg", subclase: "Caenogastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Neogastropoda-Familia_Terebridae-Oxymeris.jpg", subclase: "Caenogastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Neogastropoda-Familia_Terebridae-Terebra.jpg", subclase: "Caenogastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Neogastropoda-Familia_Turridae-Gemmula.jpg", subclase: "Caenogastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Neogastropoda-Familia_Turridae-Polystira.jpg", subclase: "Caenogastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Neogastropoda-Familia_Harpidae.jpg", subclase: "Caenogastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Neogastropoda-Familia_Muricidae-Murex.jpg", subclase: "Caenogastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Neogastropoda-Familia_Muricidae-Hexaples.jpg", subclase: "Caenogastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Neogastropoda-Familia_Muricidae-Plicopurpura.jpg", subclase: "Caenogastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Neogastropoda-Familia_Muricidae-Stramonita.jpg", subclase: "Caenogastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Neogastropoda-Familia_Muricidae-Acanthais.jpg", subclase: "Caenogastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Neogastropoda-Familia_Muricidae-Vasula.jpg", subclase: "Caenogastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Neogastropoda-Familia_Olividae-Agaronia.jpg", subclase: "Caenogastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Neogastropoda-Familia_Olividae-Oliva.jpg", subclase: "Caenogastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Neogastropoda-Familia_Olividae-Olivella.jpg", subclase: "Caenogastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Neogastropoda-Familia_Turbinellidae-Vasum.jpg", subclase: "Caenogastropoda" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Heterobranchia-Familia_Architectonicidae.jpg", subclase: "Heterobranchia" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Heterobranchia-Infraclase_Euthyneura-Orden_Cephalaspidea-Familia_Bullidae-Bulla.jpg", subclase: "Heterobranchia" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Heterobranchia-Infraclase_Euthyneura-Orden_Aplysiida-Familia_Aplysiidae-Dolabrifera.jpg", subclase: "Heterobranchia" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Heterobranchia-Infraclase_Euthyneura-Orden_Aplysiida-Familia_Aplysiidae-Aplysia.jpg", subclase: "Heterobranchia" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Heterobranchia-Infraclase_Euthyneura-Orden_Sacoglossa-Familia_Plakobranchidae-Elysia.jpg", subclase: "Heterobranchia" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Heterobranchia-Infraclase_Pulmonata-Familia_Siphonariidae-Siphonaria.jpg", subclase: "Heterobranchia" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Heterobranchia-Infraclase_Pulmonata-Orden_Stylommatophora-Familia_Limacidae.jpg", subclase: "Heterobranchia" },
+].sort(() => Math.random() - 0.5);
+
+
+    let actual = 0;
+    let correctas = 0;
+
+    function normalizar(texto) {
+      return texto
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/\p{Diacritic}/gu, "")
+        .replace(/ph/g, "f")
+        .replace(/y/g, "i")
+        .replace(/s$/g, "")
+        .trim();
+    }
+
+    function mostrarPregunta() {
+      if (actual >= preguntas.length) {
+        document.getElementById("resultado").innerText = `✅ Resultado final: ${correctas}/${preguntas.length}`;
+        document.getElementById("imagen").style.display = "none";
+        document.getElementById("respuesta").style.display = "none";
+        return;
+      }
+      document.getElementById("imagen").src = preguntas[actual].imagen;
+      document.getElementById("contador").innerText = `Pregunta ${actual + 1}/${preguntas.length}`;
+      document.getElementById("respuesta").value = "";
+      document.getElementById("resultado").innerText = "";
+    }
+
+    function verificarRespuesta() {
+      const userInput = normalizar(document.getElementById("respuesta").value);
+      const correcta = normalizar(preguntas[actual].subclase);
+      const correcto = compararConMargen(userInput, correcta);
+
+      if (correcto) {
+        correctas++;
+        document.getElementById("resultado").innerText = "✔️ Correcto!";
+        document.getElementById("resultado").style.color = "green";
+      } else {
+        document.getElementById("resultado").innerText = `❌ Incorrecto. Era: ${preguntas[actual].subclase}`;
+        document.getElementById("resultado").style.color = "red";
+      }
+      actual++;
+      setTimeout(mostrarPregunta, 1500);
+    }
+
+    function compararConMargen(a, b) {
+      const distancia = levenshtein(a, b);
+      const largoMax = Math.max(a.length, b.length);
+      return distancia <= 1 && largoMax > 3;
+    }
+
+    function levenshtein(a, b) {
+      const dp = Array.from({ length: a.length + 1 }, () => Array(b.length + 1).fill(0));
+      for (let i = 0; i <= a.length; i++) dp[i][0] = i;
+      for (let j = 0; j <= b.length; j++) dp[0][j] = j;
+      for (let i = 1; i <= a.length; i++) {
+        for (let j = 1; j <= b.length; j++) {
+          dp[i][j] = Math.min(
+            dp[i - 1][j] + 1,
+            dp[i][j - 1] + 1,
+            dp[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)
+          );
+        }
+      }
+      return dp[a.length][b.length];
+    }
+
+    mostrarPregunta();
+  </script>
+</body>
+</html>
