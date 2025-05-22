@@ -174,25 +174,23 @@
     }
 
     function verificarRespuesta() {
-      const userInput = normalizar(document.getElementById("respuesta").value);
-      const correcta = normalizar(preguntas[actual].familia);
-      const correcto = compararConMargen(userInput, correcta);
+  const userInput = normalizar(document.getElementById("respuesta").value);
+  const correcta = normalizar(preguntas[actual].familia);
+  const correcto = compararConMargen(userInput, correcta);
 
       if (correcto) {
-        correctas++;
-        document.getElementById("resultado").innerText = "✔️ Correcto!";
-        document.getElementById("resultado").style.color = "green";
-        actual++;
-        setTimeout(mostrarPregunta, 1500);
-      } else {
-        document.getElementById("resultado").innerText = `❌ Incorrecto. Era: ${preguntas[actual].familia}. Reiniciando...`;
-        document.getElementById("resultado").style.color = "red";
-        actual = 0;
-        correctas = 0;
-  setTimeout(mostrarPregunta, 2000);
+    correctas++;
+    document.getElementById("resultado").innerText = "✔️ Correcto!";
+    document.getElementById("resultado").style.color = "green";
+    actual++;
+    setTimeout(mostrarPregunta, 1500);
+ } else {
+    document.getElementById("resultado").innerText = `❌ Incorrecto. Era: ${preguntas[actual].familia}. Reiniciando...`;
+    document.getElementById("resultado").style.color = "red";
+    actual = 0;
+    correctas = 0;
+    setTimeout(mostrarPregunta, 2000);
       }
-      actual++;
-      setTimeout(mostrarPregunta, 1500);
     }
 
     function compararConMargen(a, b) {
