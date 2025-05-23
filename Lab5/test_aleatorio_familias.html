@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Test Aleatorio de Familias</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f4f4;
+      max-width: 700px;
+      margin: 30px auto;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      text-align: center;
+    }
+    h2 {
+      margin-bottom: 20px;
+    }
+    img {
+      width: 100%;
+      max-width: 450px;
+      margin: 20px 0;
+      border-radius: 10px;
+    }
+    input[type="text"] {
+      padding: 10px;
+      font-size: 1em;
+      width: 80%;
+      margin-bottom: 15px;
+    }
+    button {
+      margin-top: 10px;
+      padding: 12px 24px;
+      font-size: 1em;
+      border: none;
+      border-radius: 8px;
+      background-color: #eee;
+      color: #333;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background-color: #ddd;
+    }
+    #resultado {
+      margin-top: 20px;
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+    #contador {
+      margin: 10px;
+      font-size: 1.2em;
+    }
+  </style>
+</head>
+<body>
+  <h2>Test Aleatorio de Familias</h2>
+  <div id="contador">Pregunta 0/0</div>
+  <img id="imagen" src="" alt="Imagen de prueba">
+  <div>
+    <input type="text" id="respuesta" placeholder="Escribe la respuesta..." onkeypress="if(event.key === 'Enter') verificarRespuesta()">
+    <br>
+    <button onclick="verificarRespuesta()">Enviar</button>
+  </div>
+  <div id="resultado"></div>
+  <script>
+    let preguntas = [
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Neogastropoda-Familia_Pisaniidae-Solenosteria.jpg", respuesta: "Pisaniidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Heterobranchia-Infraclase_Euthyneura-Orden_Cephalaspidea-Familia_Bullidae-Bulla.jpg", respuesta: "Bullidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Neritiomorpha-Familia_Neritidae-Neritina.jpg", respuesta: "Neritidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Littorinimorpha-Familia_Strombidae-Aliger_gigas.jpg", respuesta: "Strombidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Heterobranchia-Infraclase_Pulmonata-Familia_Siphonariidae-Siphonaria.jpg", respuesta: "Siphonariidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Littorinimorpha-Familia_Littorinidae-Littoraria.jpg", respuesta: "Littorinidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Littorinimorpha-Familia_Cassidae-Cassis.jpg", respuesta: "Cassidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Neogastropoda-Familia_Turbinellidae-Vasum.jpg", respuesta: "Turbinellidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Neogastropoda-Familia_Harpidae.jpg", respuesta: "Harpidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Superfamilia_Cerithioidea-Familia_Batillariidae-Rhinocoryne_humboldtii.jpg", respuesta: "Batillariidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Neogastropoda-Familia_Nassariidae-Phrontis_luteostoma.jpg", respuesta: "Nassariidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Littorinimorpha-Familia_Cypraeidae-Macrocypraea.jpg", respuesta: "Cypraeidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Neogastropoda-Familia_Olividae-Oliva.jpg", respuesta: "Olividae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Vetigastropoda-Familia_Fissurellidae-Fissurela.jpg", respuesta: "Fissurellidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Littorinimorpha-Familia_Naticidae-Natica.jpg", respuesta: "Naticidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Neogastropoda-Familia_Muricidae-Stramonita.jpg", respuesta: "Muricidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Superfamilia_Cerithioidea-Familia_Cerithiidae.jpg", respuesta: "Cerithiidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Neogastropoda-Familia_Muricidae-Acanthais.jpg", respuesta: "Muricidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Vetigastropoda-Familia_Turbinidae-Astralium.jpg", respuesta: "Turbinidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Neogastropoda-Familia_Turridae-Polystira.jpg", respuesta: "Turridae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Neogastropoda-Familia_Conidae-Conus.jpg", respuesta: "Conidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Littorinimorpha-Familia_Bursidae-Bursa.jpg", respuesta: "Bursidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Littorinimorpha-Familia_Strombidae-Lobatus_peruvianus.jpg", respuesta: "Strombidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Neritiomorpha-Familia_Neritidae-Vitta.jpg", respuesta: "Neritidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Neogastropoda-Familia_Melongenidae-Melongena.jpg", respuesta: "Melongenidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Vetigastropoda-Familia_Haliotidae-Haliotis.jpg", respuesta: "Haliotidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Littorinimorpha-Familia_Vermetidae-Vermetus.jpg", respuesta: "Vermetidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Neogastropoda-Familia_Fasciolariidae-Opeatostoma.jpg", respuesta: "Fasciolariidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Neogastropoda-Familia_Muricidae-Hexaples.jpg", respuesta: "Muricidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Littorinimorpha-Familia_Naticidae-Polinices_uber.jpg", respuesta: "Naticidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Littorinimorpha-Familia_Tonnidae-Tonna.jpg", respuesta: "Tonnidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Neritiomorpha-Familia_Neritidae-Theodoxus.jpg", respuesta: "Neritidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Heterobranchia-Infraclase_Euthyneura-Orden_Sacoglossa-Familia_Plakobranchidae-Elysia.jpg", respuesta: "Plakobranchidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Neogastropoda-Familia_Muricidae-Plicopurpura.jpg", respuesta: "Muricidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Littorinimorpha-Familia_Strombidae-Titanostrombus_galeatus.jpg", respuesta: "Strombidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Littorinimorpha-Familia_Calyptraeidae-Crucibulum.jpg", respuesta: "Calyptraeidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Littorinimorpha-Familia_Personidae-Distorsio.jpg", respuesta: "Personidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Neogastropoda-Familia_Nassariidae-Nassarius.jpg", respuesta: "Nassariidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Vetigastropoda-Familia_Tegulidae-Cittarium.jpg", respuesta: "Tegulidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Littorinimorpha-Familia_Caecidae-Caecum.jpg", respuesta: "Caecidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Neogastropoda-Familia_Olividae-Agaronia.jpg", respuesta: "Olividae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Neogastropoda-Familia_Olividae-Olivella.jpg", respuesta: "Olividae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Neogastropoda-Familia_Muricidae-Vasula.jpg", respuesta: "Muricidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Neogastropoda-Familia_Fasciolariidae-Leucozonia.jpg", respuesta: "Fasciolariidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Heterobranchia-Infraclase_Euthyneura-Orden_Aplysiida-Familia_Aplysiidae-Aplysia.jpg", respuesta: "Aplysiidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Littorinimorpha-Familia_Ficidae-Ficus.jpg", respuesta: "Ficidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Neogastropoda-Familia_Cancellaridae.jpg", respuesta: "Cancellaridae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Superfamilia_Cerithioidea-Familia_Potamididae.jpg", respuesta: "Potamididae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Vetigastropoda-Familia_Turbinidae-Turbo.jpg", respuesta: "Turbinidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Polyplacophora-Familia_Ischnochitonidae-Stenoplax.jpg", respuesta: "Ischnochitonidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Vetigastropoda-Familia_Tegulidae-Tegula.jpg", respuesta: "Tegulidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Vetigastropoda-Familia_Turbinidae-Lithopoma.jpg", respuesta: "Turbinidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Littorinimorpha-Familia_Tonnidae-Malea.jpg", respuesta: "Tonnidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Superfamilia_Cerithioidea-Familia_Turritellidae.jpg", respuesta: "Turritellidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Littorinimorpha-Familia_Calyptraeidae-Calyptrea.jpg", respuesta: "Calyptraeidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Polyplacophora-Familia_Acanthochitonidae-Cryptochiton_stellery.jpg", respuesta: "Acanthochitonidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Neogastropoda-Familia_Turridae-Gemmula.jpg", respuesta: "Turridae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Neogastropoda-Familia_Terebridae-Oxymeris.jpg", respuesta: "Terebridae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Littorinimorpha-Familia_Cypraeidae-Cypraea.jpg", respuesta: "Cypraeidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Heterobranchia-Infraclase_Pulmonata-Orden_Stylommatophora-Familia_Limacidae.jpg", respuesta: "Limacidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Heterobranchia-Familia_Architectonicidae.jpg", respuesta: "Architectonicidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Neogastropoda-Familia_Columbellidae-Anachis.jpg", respuesta: "Columbellidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Neogastropoda-Familia_Columbellidae-Columbella.jpg", respuesta: "Columbellidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Neogastropoda-Familia_Fasciolariidae-Pleuroploca.jpg", respuesta: "Fasciolariidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Neritiomorpha-Familia_Neritidae-Nerita.jpg", respuesta: "Neritidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Littorinimorpha-Familia_Calyptraeidae-Crepidula.jpg", respuesta: "Calyptraeidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Polyplacophora-Familia_Chitonidae-Chiton_stokesii.jpg", respuesta: "Chitonidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Littorinimorpha-Familia_Ovulidae-Cyphoma.jpg", respuesta: "Ovulidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Superfamilia_Cerithioidea-Familia_Planaxidae-Planaxis.jpg", respuesta: "Planaxidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Patellogastropoda-Familia_Lottiidae-Lottia.jpg", respuesta: "Lottiidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Heterobranchia-Infraclase_Euthyneura-Orden_Aplysiida-Familia_Aplysiidae-Dolabrifera.jpg", respuesta: "Aplysiidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Littorinimorpha-Familia_Littorinidae-Echinolittorina.jpg", respuesta: "Littorinidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Architaenioglossa-Familia_Ampullaridae-Pomacea.jpg", respuesta: "Ampullaridae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Neogastropoda-Familia_Muricidae-Murex.jpg", respuesta: "Muricidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Littorinimorpha-Familia_Ovulidae-Jenneria_pustulata.jpg", respuesta: "Ovulidae" },
+  { imagen: "/programa/Lab5/imagenes/Clase_Gastropoda-Subclase_Caenogastropoda-Orden_Neogastropoda-Familia_Terebridae-Terebra.jpg", respuesta: "Terebridae" },
+];
+
+
+    let actual = 0;
+    let correctas = 0;
+
+    function normalizar(texto) {
+      return texto
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/\p{Diacritic}/gu, "")
+        .replace(/ph/g, "f")
+        .replace(/y/g, "i")
+        .replace(/s$/g, "")
+        .trim();
+    }
+
+    function mostrarPregunta() {
+      if (actual >= preguntas.length) {
+        document.getElementById("resultado").innerText = `✅ Resultado final: ${correctas}/${preguntas.length}`;
+        document.getElementById("imagen").style.display = "none";
+        document.getElementById("respuesta").style.display = "none";
+        return;
+      }
+      document.getElementById("imagen").src = preguntas[actual].imagen;
+      document.getElementById("contador").innerText = `Pregunta ${actual + 1}/${preguntas.length}`;
+      document.getElementById("respuesta").value = "";
+      document.getElementById("resultado").innerText = "";
+    }
+
+    function verificarRespuesta() {
+      const userInput = normalizar(document.getElementById("respuesta").value);
+      const correcta = normalizar(preguntas[actual].respuesta);
+      const correcto = compararConMargen(userInput, correcta);
+
+      if (correcto) {
+        correctas++;
+        document.getElementById("resultado").innerText = "✔️ Correcto!";
+        document.getElementById("resultado").style.color = "green";
+        actual++;
+        setTimeout(mostrarPregunta, 1500);
+      } else {
+        document.getElementById("resultado").innerText = `❌ Incorrecto. Era: ${preguntas[actual].respuesta}. Reiniciando...`;
+        document.getElementById("resultado").style.color = "red";
+        actual = 0;
+        correctas = 0;
+        preguntas = preguntas.sort(() => Math.random() - 0.5);
+        setTimeout(mostrarPregunta, 2000);
+      }
+    }
+
+    function compararConMargen(a, b) {
+      const distancia = levenshtein(a, b);
+      const largoMax = Math.max(a.length, b.length);
+      return distancia <= 1 && largoMax > 3;
+    }
+
+    function levenshtein(a, b) {
+      const dp = Array.from({ length: a.length + 1 }, () => Array(b.length + 1).fill(0));
+      for (let i = 0; i <= a.length; i++) dp[i][0] = i;
+      for (let j = 0; j <= b.length; j++) dp[0][j] = j;
+      for (let i = 1; i <= a.length; i++) {
+        for (let j = 1; j <= b.length; j++) {
+          dp[i][j] = Math.min(
+            dp[i - 1][j] + 1,
+            dp[i][j - 1] + 1,
+            dp[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)
+          );
+        }
+      }
+      return dp[a.length][b.length];
+    }
+
+    mostrarPregunta();
+  </script>
+</body>
+</html>
