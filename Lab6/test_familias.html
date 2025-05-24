@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Test de Familias (Cephalopoda y Bivalvia)</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f4f4;
+      max-width: 700px;
+      margin: 30px auto;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      text-align: center;
+    }
+    h2 {
+      margin-bottom: 20px;
+    }
+    img {
+      width: 100%;
+      max-width: 450px;
+      margin: 20px 0;
+      border-radius: 10px;
+    }
+    input[type="text"] {
+      padding: 10px;
+      font-size: 1em;
+      width: 80%;
+      margin-bottom: 15px;
+    }
+    button {
+      margin-top: 10px;
+      padding: 12px 24px;
+      font-size: 1em;
+      border: none;
+      border-radius: 8px;
+      background-color: #eee;
+      color: #333;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background-color: #ddd;
+    }
+    #resultado {
+      margin-top: 20px;
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+    #contador {
+      margin: 10px;
+      font-size: 1.2em;
+    }
+  </style>
+</head>
+<body>
+  <h2>Test de Familias (Cephalopoda y Bivalvia)</h2>
+  <div id="contador">Pregunta 0/0</div>
+  <img id="imagen" src="" alt="Imagen de prueba">
+  <div>
+    <input type="text" id="respuesta" placeholder="Escribe la familia..." onkeypress="if(event.key === 'Enter') verificarRespuesta()">
+    <br>
+    <button onclick="verificarRespuesta()">Enviar</button>
+  </div>
+  <div id="resultado"></div>
+  <script>
+    const preguntas = [
+  { imagen: "/programa/Lab6/imagenes/Clase_Cephalopoda-Subclase_Nautiloidea-Familia_Nautilidae.jpg", respuesta: "Nautilidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Cephalopoda-Subclase_Coloidea-Orden_Myopsida-Familia_Loliginidae-Loligo.jpg", respuesta: "Loliginidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Cephalopoda-Subclase_Coloidea-Orden_Octopoda-Familia_Octopodidae-Octopus.jpg", respuesta: "Octopodidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Cephalopoda-Subclase_Coloidea-Orden_Octopoda-Familia_Argonautidae-Argonauta.jpg", respuesta: "Argonautidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Pteriomorphia-Orden_Arcida-Familia_Arcidae-Arca.jpg", respuesta: "Arcidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Pteriomorphia-Orden_Arcida-Familia_Arcidae-Barbatia.jpg", respuesta: "Arcidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Pteriomorphia-Orden_Arcida-Familia_Arcidae-Anadara_similis.jpg", respuesta: "Arcidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Pteriomorphia-Orden_Arcida-Familia_Arcidae-Anadara_tuberculosa.jpg", respuesta: "Arcidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Pteriomorphia-Orden_Arcida-Familia_Arcidae-Larkinia_grandis.jpg", respuesta: "Arcidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Pteriomorphia-Orden_Mytilida-Familia_Mytilidae-Mytilus.jpg", respuesta: "Mytilidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Pteriomorphia-Orden_Mytilida-Familia_Mytilidae-Mytella.jpg", respuesta: "Mytilidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Pteriomorphia-Orden_Mytilida-Familia_Mytilidae-Brachiodontes_puntarenensis.jpg", respuesta: "Mytilidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Pteriomorphia-Orden_Mytilida-Familia_Mytilidae-Leisolenus.jpg", respuesta: "Mytilidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Pteriomorphia-Orden_Mytiloida-Familia_Modiolidae-Modiolus.jpg", respuesta: "Modiolidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Pteriomorphia-Orden_Pectinida-Familia_Spondylidae-Spondilus_limbatus.jpg", respuesta: "Spondylidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Pteriomorphia-Orden_Pectinida-Familia_Pectinidae.jpg", respuesta: "Pectinidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Pteriomorphia-Orden_Ostreoida-Familia_Ostreidae.jpg", respuesta: "Ostreidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Pteriomorphia-Orden_Ostreoida-Familia_Gryphaeidae-Hyotissa_hyotis.jpg", respuesta: "Gryphaeidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Pteriomorphia-Orden_Ostreoida-Familia_Pteriidae-Pinctada_mazatlanica.jpg", respuesta: "Pteriidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Pteriomorphia-Orden_Ostreoida-Familia_Isognomonidae-Isognomon.jpg", respuesta: "Isognomonidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Pteriomorphia-Orden_Ostreoida-Familia_Pinnidae.jpg", respuesta: "Pinnidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Subclase_Paleoheterodonta-Orden_Unionoida-Familia_Mycetopodidae-Anodontites.jpg", respuesta: "Mycetopodidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Heteroconchia-Orden_Carditida-Familia_Carditidae-Carditemera.jpg", respuesta: "Carditidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Heteroconchia-Orden_Myida-Familia_Pholadidae.jpg", respuesta: "Pholadidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Heteroconchia-Orden_Myida-Familia_Teredinidae-Teredo.jpg", respuesta: "Teredinidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Heteroconchia-Orden_Licinida-Familia_Lucinidae.jpg", respuesta: "Lucinidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Heteroconchia-Orden_Venerida-Familia_Chamidae-Chama.jpg", respuesta: "Chamidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Heteroconchia-Orden_Venerida-Familia_Veneridae-Megapitaria_aurantiaca.jpg", respuesta: "Veneridae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Heteroconchia-Orden_Venerida-Familia_Veneridae-Periglypta_multicostata.jpg", respuesta: "Veneridae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Heteroconchia-Orden_Venerida-Familia_Veneridae-Iliochione_subrugosa.jpg", respuesta: "Veneridae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Heteroconchia-Orden_Venerida-Familia_Veneridae-Leukoma_asperrima.jpg", respuesta: "Veneridae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Heteroconchia-Orden_Venerida-Familia_Cyrenoididae.jpg", respuesta: "Cyrenoididae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Heteroconchia-Orden_Cardiida-Familia_Cardiidae-Trachycardium_procerum.jpg", respuesta: "Cardiidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Heteroconchia-Orden_Cardiida-Familia_Solecurtidae-Tagelus.jpg", respuesta: "Solecurtidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Heteroconchia-Orden_Cardiida-Familia_Donacidae-Donax.jpg", respuesta: "Donacidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Heteroconchia-Orden_Cardiida-Familia_Tellinidae-Tellina.jpg", respuesta: "Tellinidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Heteroconchia-Orden_Cardiida-Familia_Tellinidae-Eurytellina.jpg", respuesta: "Tellinidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Scaphopoda-Orden_Dentaliida-Familia_Dentaliidae-Dentalium.jpg", respuesta: "Dentaliidae" },
+];
+
+
+    let actual = 0;
+    let correctas = 0;
+
+    function normalizar(texto) {
+      return texto
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/\p{Diacritic}/gu, "")
+        .replace(/ph/g, "f")
+        .replace(/y/g, "i")
+        .replace(/s$/g, "")
+        .trim();
+    }
+
+    function mostrarPregunta() {
+      if (actual >= preguntas.length) {
+        document.getElementById("resultado").innerText = `✅ Resultado final: ${correctas}/${preguntas.length}`;
+        document.getElementById("imagen").style.display = "none";
+        document.getElementById("respuesta").style.display = "none";
+        return;
+      }
+      document.getElementById("imagen").src = preguntas[actual].imagen;
+      document.getElementById("contador").innerText = `Pregunta ${actual + 1}/${preguntas.length}`;
+      document.getElementById("respuesta").value = "";
+      document.getElementById("resultado").innerText = "";
+    }
+
+    function verificarRespuesta() {
+      const userInput = normalizar(document.getElementById("respuesta").value);
+      const correcta = normalizar(preguntas[actual].respuesta);
+      const correcto = compararConMargen(userInput, correcta);
+
+      if (correcto) {
+        correctas++;
+        document.getElementById("resultado").innerText = "✔️ Correcto!";
+        document.getElementById("resultado").style.color = "green";
+        actual++;
+        setTimeout(mostrarPregunta, 1500);
+      } else {
+        document.getElementById("resultado").innerText = `❌ Incorrecto. Era: ${preguntas[actual].respuesta}. Reiniciando...`;
+        document.getElementById("resultado").style.color = "red";
+        actual = 0;
+        correctas = 0;
+        setTimeout(mostrarPregunta, 2000);
+      }
+    }
+
+    function compararConMargen(a, b) {
+      const distancia = levenshtein(a, b);
+      const largoMax = Math.max(a.length, b.length);
+      return distancia <= 1 && largoMax > 3;
+    }
+
+    function levenshtein(a, b) {
+      const dp = Array.from({ length: a.length + 1 }, () => Array(b.length + 1).fill(0));
+      for (let i = 0; i <= a.length; i++) dp[i][0] = i;
+      for (let j = 0; j <= b.length; j++) dp[0][j] = j;
+      for (let i = 1; i <= a.length; i++) {
+        for (let j = 1; j <= b.length; j++) {
+          dp[i][j] = Math.min(
+            dp[i - 1][j] + 1,
+            dp[i][j - 1] + 1,
+            dp[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)
+          );
+        }
+      }
+      return dp[a.length][b.length];
+    }
+
+    mostrarPregunta();
+  </script>
+</body>
+</html>
