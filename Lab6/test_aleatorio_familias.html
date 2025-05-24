@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Test de Familias (Cephalopoda y Bivalvia)</title>
+  <title>Test Aleatorio de Familias (Cephalopoda y Bivalvia)</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -56,7 +56,7 @@
   </style>
 </head>
 <body>
-  <h2>Test de Familias (Cephalopoda y Bivalvia)</h2>
+  <h2>Test Aleatorio de Familias (Cephalopoda y Bivalvia)</h2>
   <div id="contador">Pregunta 0/0</div>
   <img id="imagen" src="" alt="Imagen de prueba">
   <div>
@@ -66,47 +66,48 @@
   </div>
   <div id="resultado"></div>
   <script>
-    const preguntas = [
-  { imagen: "/programa/Lab6/imagenes/Clase_Cephalopoda-Subclase_Nautiloidea-Familia_Nautilidae.jpg", respuesta: "Nautilidae" },
-  { imagen: "/programa/Lab6/imagenes/Clase_Cephalopoda-Subclase_Coloidea-Orden_Myopsida-Familia_Loliginidae-Loligo.jpg", respuesta: "Loliginidae" },
-  { imagen: "/programa/Lab6/imagenes/Clase_Cephalopoda-Subclase_Coloidea-Orden_Octopoda-Familia_Octopodidae-Octopus.jpg", respuesta: "Octopodidae" },
-  { imagen: "/programa/Lab6/imagenes/Clase_Cephalopoda-Subclase_Coloidea-Orden_Octopoda-Familia_Argonautidae-Argonauta.jpg", respuesta: "Argonautidae" },
-  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Pteriomorphia-Orden_Arcida-Familia_Arcidae-Arca.jpg", respuesta: "Arcidae" },
+    let preguntas = [
   { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Pteriomorphia-Orden_Arcida-Familia_Arcidae-Barbatia.jpg", respuesta: "Arcidae" },
-  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Pteriomorphia-Orden_Arcida-Familia_Arcidae-Anadara_similis.jpg", respuesta: "Arcidae" },
-  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Pteriomorphia-Orden_Arcida-Familia_Arcidae-Anadara_tuberculosa.jpg", respuesta: "Arcidae" },
-  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Pteriomorphia-Orden_Arcida-Familia_Arcidae-Larkinia_grandis.jpg", respuesta: "Arcidae" },
-  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Pteriomorphia-Orden_Mytilida-Familia_Mytilidae-Mytilus.jpg", respuesta: "Mytilidae" },
-  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Pteriomorphia-Orden_Mytilida-Familia_Mytilidae-Mytella.jpg", respuesta: "Mytilidae" },
-  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Pteriomorphia-Orden_Mytilida-Familia_Mytilidae-Brachiodontes_puntarenensis.jpg", respuesta: "Mytilidae" },
-  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Pteriomorphia-Orden_Mytilida-Familia_Mytilidae-Leisolenus.jpg", respuesta: "Mytilidae" },
-  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Pteriomorphia-Orden_Mytiloida-Familia_Modiolidae-Modiolus.jpg", respuesta: "Modiolidae" },
-  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Pteriomorphia-Orden_Pectinida-Familia_Spondylidae-Spondilus_limbatus.jpg", respuesta: "Spondylidae" },
-  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Pteriomorphia-Orden_Pectinida-Familia_Pectinidae.jpg", respuesta: "Pectinidae" },
-  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Pteriomorphia-Orden_Ostreoida-Familia_Ostreidae.jpg", respuesta: "Ostreidae" },
-  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Pteriomorphia-Orden_Ostreoida-Familia_Gryphaeidae-Hyotissa_hyotis.jpg", respuesta: "Gryphaeidae" },
-  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Pteriomorphia-Orden_Ostreoida-Familia_Pteriidae-Pinctada_mazatlanica.jpg", respuesta: "Pteriidae" },
   { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Pteriomorphia-Orden_Ostreoida-Familia_Isognomonidae-Isognomon.jpg", respuesta: "Isognomonidae" },
   { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Pteriomorphia-Orden_Ostreoida-Familia_Pinnidae.jpg", respuesta: "Pinnidae" },
-  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Subclase_Paleoheterodonta-Orden_Unionoida-Familia_Mycetopodidae-Anodontites.jpg", respuesta: "Mycetopodidae" },
-  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Heteroconchia-Orden_Carditida-Familia_Carditidae-Carditemera.jpg", respuesta: "Carditidae" },
-  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Heteroconchia-Orden_Myida-Familia_Pholadidae.jpg", respuesta: "Pholadidae" },
-  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Heteroconchia-Orden_Myida-Familia_Teredinidae-Teredo.jpg", respuesta: "Teredinidae" },
-  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Heteroconchia-Orden_Licinida-Familia_Lucinidae.jpg", respuesta: "Lucinidae" },
-  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Heteroconchia-Orden_Venerida-Familia_Chamidae-Chama.jpg", respuesta: "Chamidae" },
-  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Heteroconchia-Orden_Venerida-Familia_Veneridae-Megapitaria_aurantiaca.jpg", respuesta: "Veneridae" },
-  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Heteroconchia-Orden_Venerida-Familia_Veneridae-Periglypta_multicostata.jpg", respuesta: "Veneridae" },
-  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Heteroconchia-Orden_Venerida-Familia_Veneridae-Iliochione_subrugosa.jpg", respuesta: "Veneridae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Pteriomorphia-Orden_Pectinida-Familia_Pectinidae.jpg", respuesta: "Pectinidae" },
   { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Heteroconchia-Orden_Venerida-Familia_Veneridae-Leukoma_asperrima.jpg", respuesta: "Veneridae" },
   { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Heteroconchia-Orden_Venerida-Familia_Cyrenoididae.jpg", respuesta: "Cyrenoididae" },
-  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Heteroconchia-Orden_Cardiida-Familia_Cardiidae-Trachycardium_procerum.jpg", respuesta: "Cardiidae" },
-  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Heteroconchia-Orden_Cardiida-Familia_Solecurtidae-Tagelus.jpg", respuesta: "Solecurtidae" },
-  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Heteroconchia-Orden_Cardiida-Familia_Donacidae-Donax.jpg", respuesta: "Donacidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Subclase_Paleoheterodonta-Orden_Unionoida-Familia_Mycetopodidae-Anodontites.jpg", respuesta: "Mycetopodidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Pteriomorphia-Orden_Mytilida-Familia_Mytilidae-Brachiodontes_puntarenensis.jpg", respuesta: "Mytilidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Pteriomorphia-Orden_Arcida-Familia_Arcidae-Larkinia_grandis.jpg", respuesta: "Arcidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Heteroconchia-Orden_Venerida-Familia_Chamidae-Chama.jpg", respuesta: "Chamidae" },
   { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Heteroconchia-Orden_Cardiida-Familia_Tellinidae-Tellina.jpg", respuesta: "Tellinidae" },
-  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Heteroconchia-Orden_Cardiida-Familia_Tellinidae-Eurytellina.jpg", respuesta: "Tellinidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Heteroconchia-Orden_Cardiida-Familia_Solecurtidae-Tagelus.jpg", respuesta: "Solecurtidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Pteriomorphia-Orden_Ostreoida-Familia_Ostreidae.jpg", respuesta: "Ostreidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Cephalopoda-Subclase_Coloidea-Orden_Octopoda-Familia_Argonautidae-Argonauta.jpg", respuesta: "Argonautidae" },
   { imagen: "/programa/Lab6/imagenes/Clase_Scaphopoda-Orden_Dentaliida-Familia_Dentaliidae-Dentalium.jpg", respuesta: "Dentaliidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Pteriomorphia-Orden_Mytiloida-Familia_Modiolidae-Modiolus.jpg", respuesta: "Modiolidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Pteriomorphia-Orden_Ostreoida-Familia_Gryphaeidae-Hyotissa_hyotis.jpg", respuesta: "Gryphaeidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Heteroconchia-Orden_Cardiida-Familia_Tellinidae-Eurytellina.jpg", respuesta: "Tellinidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Pteriomorphia-Orden_Pectinida-Familia_Spondylidae-Spondilus_limbatus.jpg", respuesta: "Spondylidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Heteroconchia-Orden_Myida-Familia_Pholadidae.jpg", respuesta: "Pholadidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Cephalopoda-Subclase_Coloidea-Orden_Octopoda-Familia_Octopodidae-Octopus.jpg", respuesta: "Octopodidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Heteroconchia-Orden_Venerida-Familia_Veneridae-Iliochione_subrugosa.jpg", respuesta: "Veneridae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Heteroconchia-Orden_Licinida-Familia_Lucinidae.jpg", respuesta: "Lucinidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Pteriomorphia-Orden_Mytilida-Familia_Mytilidae-Leisolenus.jpg", respuesta: "Mytilidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Heteroconchia-Orden_Cardiida-Familia_Cardiidae-Trachycardium_procerum.jpg", respuesta: "Cardiidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Pteriomorphia-Orden_Arcida-Familia_Arcidae-Arca.jpg", respuesta: "Arcidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Cephalopoda-Subclase_Nautiloidea-Familia_Nautilidae.jpg", respuesta: "Nautilidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Heteroconchia-Orden_Carditida-Familia_Carditidae-Carditemera.jpg", respuesta: "Carditidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Pteriomorphia-Orden_Mytilida-Familia_Mytilidae-Mytilus.jpg", respuesta: "Mytilidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Pteriomorphia-Orden_Mytilida-Familia_Mytilidae-Mytella.jpg", respuesta: "Mytilidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Pteriomorphia-Orden_Ostreoida-Familia_Pteriidae-Pinctada_mazatlanica.jpg", respuesta: "Pteriidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Pteriomorphia-Orden_Arcida-Familia_Arcidae-Anadara_tuberculosa.jpg", respuesta: "Arcidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Cephalopoda-Subclase_Coloidea-Orden_Myopsida-Familia_Loliginidae-Loligo.jpg", respuesta: "Loliginidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Pteriomorphia-Orden_Arcida-Familia_Arcidae-Anadara_similis.jpg", respuesta: "Arcidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Heteroconchia-Orden_Venerida-Familia_Veneridae-Periglypta_multicostata.jpg", respuesta: "Veneridae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Heteroconchia-Orden_Cardiida-Familia_Donacidae-Donax.jpg", respuesta: "Donacidae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Heteroconchia-Orden_Venerida-Familia_Veneridae-Megapitaria_aurantiaca.jpg", respuesta: "Veneridae" },
+  { imagen: "/programa/Lab6/imagenes/Clase_Bivalvia-Infraclase_Heteroconchia-Orden_Myida-Familia_Teredinidae-Teredo.jpg", respuesta: "Teredinidae" },
 ];
 
+    preguntas = preguntas.sort(() => Math.random() - 0.5);
 
     let actual = 0;
     let correctas = 0;
@@ -151,6 +152,7 @@
         document.getElementById("resultado").style.color = "red";
         actual = 0;
         correctas = 0;
+        preguntas = preguntas.sort(() => Math.random() - 0.5);
         setTimeout(mostrarPregunta, 2000);
       }
     }
