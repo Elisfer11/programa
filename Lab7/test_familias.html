@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Test de Familias - Annelida</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f4f4;
+      max-width: 700px;
+      margin: 30px auto;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      text-align: center;
+    }
+    h2 {
+      margin-bottom: 20px;
+    }
+    img {
+      width: 100%;
+      max-width: 450px;
+      margin: 20px 0;
+      border-radius: 10px;
+    }
+    input[type="text"] {
+      padding: 10px;
+      font-size: 1em;
+      width: 80%;
+      margin-bottom: 15px;
+    }
+    button {
+      margin-top: 10px;
+      padding: 12px 24px;
+      font-size: 1em;
+      border: none;
+      border-radius: 8px;
+      background-color: #eee;
+      color: #333;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background-color: #ddd;
+    }
+    #resultado {
+      margin-top: 20px;
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+    #contador {
+      margin: 10px;
+      font-size: 1.2em;
+    }
+  </style>
+</head>
+<body>
+  <h2>Test de Familias - Annelida</h2>
+  <div id="contador">Pregunta 0/0</div>
+  <img id="imagen" src="" alt="Imagen de prueba">
+  <div>
+    <input type="text" id="respuesta" placeholder="Escribe la familia..." onkeypress="if(event.key === 'Enter') verificarRespuesta()">
+    <br>
+    <button onclick="verificarRespuesta()">Enviar</button>
+  </div>
+  <div id="resultado"></div>
+  <script>
+    let preguntas = [
+  { imagen: "/programa/Lab7/imagenes/Clado_Paleoannelida-Familia_Oweniidae.jpg", respuesta: "Oweniidae" },
+  { imagen: "/programa/Lab7/imagenes/Clado_Paleoannelida-Familia_Magelonidae.jpg", respuesta: "Magelonidae" },
+  { imagen: "/programa/Lab7/imagenes/Clado_Chaetopteriformia-Familia_Chaetopteridae.jpg", respuesta: "Chaetopteridae" },
+  { imagen: "/programa/Lab7/imagenes/Familia_Amphinomidae.jpg", respuesta: "Amphinomidae" },
+  { imagen: "/programa/Lab7/imagenes/Clase_Sipuncula-Familia_Phascolosomatidae-Phascolosoma.jpg", respuesta: "Phascolosomatidae" },
+  { imagen: "/programa/Lab7/imagenes/Clase_Sipuncula-Familia_Antillesomatidae-Antillesoma.jpg", respuesta: "Antillesomatidae" },
+  { imagen: "/programa/Lab7/imagenes/Clase_Sipuncula-Familia_Sipunculidae-Gusanos_sipuncúlidos.jpg", respuesta: "Sipunculidae" },
+  { imagen: "/programa/Lab7/imagenes/Clado_Pleistoannelida-Subclase_Errantia-Orden_Eunicida-Familia_Eunicidae.jpg", respuesta: "Eunicidae" },
+  { imagen: "/programa/Lab7/imagenes/Clado_Pleistoannelida-Subclase_Errantia-Orden_Eunicida-Familia_Onuphidae.jpg", respuesta: "Onuphidae" },
+  { imagen: "/programa/Lab7/imagenes/Clado_Pleistoannelida-Subclase_Errantia-Orden_Eunicida-Familia_Lumbrineridae.jpg", respuesta: "Lumbrineridae" },
+  { imagen: "/programa/Lab7/imagenes/Clado_Pleistoannelida-Subclase_Errantia-Orden_Eunicida-Familia_Oenonidae.jpg", respuesta: "Oenonidae" },
+  { imagen: "/programa/Lab7/imagenes/Clado_Pleistoannelida-Sublcase_Errantia-Orden_Phyllodocida-Familia_Polynoidae.jpg", respuesta: "Polynoidae" },
+  { imagen: "/programa/Lab7/imagenes/Clado_Pleistoannelida-Sublcase_Errantia-Orden_Phyllodocida-Familia_Iphionidae.jpg", respuesta: "Iphionidae" },
+  { imagen: "/programa/Lab7/imagenes/Clado_Pleistoannelida-Sublcase_Errantia-Orden_Phyllodocida-Familia_Syllidae.jpg", respuesta: "Syllidae" },
+  { imagen: "/programa/Lab7/imagenes/Clado_Pleistoannelida-Sublcase_Errantia-Orden_Phyllodocida-Familia_Nereididae.jpg", respuesta: "Nereididae" },
+  { imagen: "/programa/Lab7/imagenes/Clado_Pleistoannelida-Sublcase_Errantia-Orden_Phyllodocida-Familia_Phyllodocidae.jpg", respuesta: "Phyllodocidae" },
+  { imagen: "/programa/Lab7/imagenes/Clado_Pleistoannelida-Sublcase_Errantia-Orden_Phyllodocida-Familia_Glyceridae.jpg", respuesta: "Glyceridae" },
+  { imagen: "/programa/Lab7/imagenes/Clado_Pleistoannelida-Sublcase_Errantia-Orden_Phyllodocida-Familia_Nepthyidae.jpg", respuesta: "Nepthyidae" },
+  { imagen: "/programa/Lab7/imagenes/Clado_Pleistoannelida-Sublase_Sedentaria-Orden_Sabellida-Familia_Sabellariidae.jpg", respuesta: "Sabellariidae" },
+  { imagen: "/programa/Lab7/imagenes/Clado_Pleistoannelida-Sublase_Sedentaria-Orden_Sabellida-Familia_Sabellidae.jpg", respuesta: "Sabellidae" },
+  { imagen: "/programa/Lab7/imagenes/Clado_Pleistoannelida-Sublase_Sedentaria-Orden_Sabellida-Familia_Serpullidae.jpg", respuesta: "Serpullidae" },
+  { imagen: "/programa/Lab7/imagenes/Clado_Pleistoannelida-Sublase_Sedentaria-Orden_Sabellida-Familia_Siboglinidae.jpg", respuesta: "Siboglinidae" },
+  { imagen: "/programa/Lab7/imagenes/Clado_Pleistoannelida-Sublase_Sedentaria-Orden_Spionida-Familia_Spionidae.jpg", respuesta: "Spionidae" },
+  { imagen: "/programa/Lab7/imagenes/Clado_Pleistoannelida-Sublase_Sedentaria-Clado_Terebelliformia-Familia_Terebellidae.jpg", respuesta: "Terebellidae" },
+  { imagen: "/programa/Lab7/imagenes/Clado_Pleistoannelida-Sublase_Sedentaria-Clado_Terebelliformia-Familia_Cirratullidae.jpg", respuesta: "Cirratullidae" },
+  { imagen: "/programa/Lab7/imagenes/Clado_Pleistoannelida-Sublase_Sedentaria-Clado_Terebelliformia-Familia_Pectinariidae.jpg", respuesta: "Pectinariidae" },
+  { imagen: "/programa/Lab7/imagenes/Clado_Capitellida-Familia_Echiuridae.jpg", respuesta: "Echiuridae" },
+  { imagen: "/programa/Lab7/imagenes/Clase_Polychaeta-Subclase_Sedentaria-Infraclase_Scolecida-Familia_Capitellidae.jpg", respuesta: "Capitellidae" },
+  { imagen: "/programa/Lab7/imagenes/Subclase_Sedentaria-Clado_Clitellata-Lombrices.jpg", respuesta: "Clitellata" },
+  { imagen: "/programa/Lab7/imagenes/Subclase_Sedentaria-Clado_Clitellata-Clado_Hirudinoidea.jpg", respuesta: "Hirudinoidea" },
+  { imagen: "/programa/Lab7/imagenes/Subclase_Sedentaria-Clado_Clitellata-Clado_Hirudinoidea-Familia_Glosiphonidae.jpg", respuesta: "Glosiphonidae" },
+  { imagen: "/programa/Lab7/imagenes/Subclase_Sedentaria-Clado_Clitellata-Clado_Hirudinoidea-Orden_Arhynchobdellidae.jpg", respuesta: "Arhynchobdellidae" },
+];
+
+    let actual = 0;
+    let correctas = 0;
+
+    function normalizar(texto) {
+      return texto
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/\p{Diacritic}/gu, "")
+        .replace(/ph/g, "f")
+        .replace(/y/g, "i")
+        .replace(/s$/g, "")
+        .trim();
+    }
+
+    function mostrarPregunta() {
+      if (actual >= preguntas.length) {
+        document.getElementById("resultado").innerText = `✅ Resultado final: ${correctas}/${preguntas.length}`;
+        document.getElementById("imagen").style.display = "none";
+        document.getElementById("respuesta").style.display = "none";
+        return;
+      }
+      document.getElementById("imagen").src = preguntas[actual].imagen;
+      document.getElementById("contador").innerText = `Pregunta ${actual + 1}/${preguntas.length}`;
+      document.getElementById("respuesta").value = "";
+      document.getElementById("resultado").innerText = "";
+    }
+
+    function verificarRespuesta() {
+      const userInput = normalizar(document.getElementById("respuesta").value);
+      const correcta = normalizar(preguntas[actual].respuesta);
+      const correcto = compararConMargen(userInput, correcta);
+
+      if (correcto) {
+        correctas++;
+        document.getElementById("resultado").innerText = "✔️ Correcto!";
+        document.getElementById("resultado").style.color = "green";
+        actual++;
+        setTimeout(mostrarPregunta, 1500);
+      } else {
+        document.getElementById("resultado").innerText = `❌ Incorrecto. Era: ${preguntas[actual].respuesta}. Reiniciando...`;
+        document.getElementById("resultado").style.color = "red";
+        actual = 0;
+        correctas = 0;
+        setTimeout(mostrarPregunta, 2000);
+      }
+    }
+
+    function compararConMargen(a, b) {
+      const distancia = levenshtein(a, b);
+      const largoMax = Math.max(a.length, b.length);
+      return distancia <= 1 && largoMax > 3;
+    }
+
+    function levenshtein(a, b) {
+      const dp = Array.from({ length: a.length + 1 }, () => Array(b.length + 1).fill(0));
+      for (let i = 0; i <= a.length; i++) dp[i][0] = i;
+      for (let j = 0; j <= b.length; j++) dp[0][j] = j;
+      for (let i = 1; i <= a.length; i++) {
+        for (let j = 1; j <= b.length; j++) {
+          dp[i][j] = Math.min(
+            dp[i - 1][j] + 1,
+            dp[i][j - 1] + 1,
+            dp[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)
+          );
+        }
+      }
+      return dp[a.length][b.length];
+    }
+
+    mostrarPregunta();
+  </script>
+</body>
+</html>
