@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Test Annelida (Aleatorio Fix)</title>
+  <title>Test Aleatorio de Familias (Annelida)</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -56,50 +56,53 @@
   </style>
 </head>
 <body>
-  <h2>Test Annelida (Aleatorio Fix)</h2>
+  <h2>Test Aleatorio de Familias (Annelida)</h2>
   <div id="contador">Pregunta 0/0</div>
   <img id="imagen" src="" alt="Imagen de prueba">
   <div>
-    <input type="text" id="respuesta" placeholder="Escribe la respuesta..." onkeypress="if(event.key === 'Enter') verificarRespuesta()">
+    <input type="text" id="respuesta" placeholder="Escribe la familia..." onkeypress="if(event.key === 'Enter') verificarRespuesta()">
     <br>
     <button onclick="verificarRespuesta()">Enviar</button>
   </div>
   <div id="resultado"></div>
   <script>
     let preguntas = [
-  { imagen: "/programa/Lab7/imagenes/Clado_Pleistoannelida-Sublase_Sedentaria-Orden_Sabellida-Familia_Serpullidae.jpg", respuesta: "Serpullidae" },
-  { imagen: "/programa/Lab7/imagenes/Subclase_Sedentaria-Clado_Clitellata-Lombrices.jpg", respuesta: "Clitellata" },
-  { imagen: "/programa/Lab7/imagenes/Clado_Pleistoannelida-Sublase_Sedentaria-Orden_Sabellida-Familia_Siboglinidae.jpg", respuesta: "Siboglinidae" },
-  { imagen: "/programa/Lab7/imagenes/Clase_Sipuncula-Familia_Antillesomatidae-Antillesoma.jpg", respuesta: "Antillesomatidae" },
-  { imagen: "/programa/Lab7/imagenes/Clado_Pleistoannelida-Sublase_Sedentaria-Clado_Terebelliformia-Familia_Pectinariidae.jpg", respuesta: "Pectinariidae" },
-  { imagen: "/programa/Lab7/imagenes/Clado_Pleistoannelida-Sublcase_Errantia-Orden_Phyllodocida-Familia_Syllidae.jpg", respuesta: "Syllidae" },
-  { imagen: "/programa/Lab7/imagenes/Subclase_Sedentaria-Clado_Clitellata-Clado_Hirudinoidea.jpg", respuesta: "Hirudinoidea" },
-  { imagen: "/programa/Lab7/imagenes/Clado_Pleistoannelida-Sublcase_Errantia-Orden_Phyllodocida-Familia_Glyceridae.jpg", respuesta: "Glyceridae" },
-  { imagen: "/programa/Lab7/imagenes/Clado_Pleistoannelida-Sublcase_Errantia-Orden_Phyllodocida-Familia_Polynoidae.jpg", respuesta: "Polynoidae" },
   { imagen: "/programa/Lab7/imagenes/Clado_Pleistoannelida-Sublase_Sedentaria-Orden_Sabellida-Familia_Sabellidae.jpg", respuesta: "Sabellidae" },
-  { imagen: "/programa/Lab7/imagenes/Clado_Pleistoannelida-Subclase_Errantia-Orden_Eunicida-Familia_Lumbrineridae.jpg", respuesta: "Lumbrineridae" },
-  { imagen: "/programa/Lab7/imagenes/Clase_Polychaeta-Subclase_Sedentaria-Infraclase_Scolecida-Familia_Capitellidae.jpg", respuesta: "Capitellidae" },
-  { imagen: "/programa/Lab7/imagenes/Clado_Pleistoannelida-Sublase_Sedentaria-Clado_Terebelliformia-Familia_Cirratullidae.jpg", respuesta: "Cirratullidae" },
-  { imagen: "/programa/Lab7/imagenes/Clase_Sipuncula-Familia_Sipunculidae-Gusanos_sipuncúlidos.jpg", respuesta: "Sipunculidae" },
-  { imagen: "/programa/Lab7/imagenes/Clado_Pleistoannelida-Sublase_Sedentaria-Orden_Sabellida-Familia_Sabellariidae.jpg", respuesta: "Sabellariidae" },
-  { imagen: "/programa/Lab7/imagenes/Clado_Pleistoannelida-Subclase_Errantia-Orden_Eunicida-Familia_Onuphidae.jpg", respuesta: "Onuphidae" },
-  { imagen: "/programa/Lab7/imagenes/Subclase_Sedentaria-Clado_Clitellata-Clado_Hirudinoidea-Orden_Arhynchobdellidae.jpg", respuesta: "Arhynchobdellidae" },
-  { imagen: "/programa/Lab7/imagenes/Clado_Pleistoannelida-Sublcase_Errantia-Orden_Phyllodocida-Familia_Nepthyidae.jpg", respuesta: "Nepthyidae" },
-  { imagen: "/programa/Lab7/imagenes/Clado_Paleoannelida-Familia_Oweniidae.jpg", respuesta: "Oweniidae" },
-  { imagen: "/programa/Lab7/imagenes/Clado_Pleistoannelida-Subclase_Errantia-Orden_Eunicida-Familia_Eunicidae.jpg", respuesta: "Eunicidae" },
-  { imagen: "/programa/Lab7/imagenes/Subclase_Sedentaria-Clado_Clitellata-Clado_Hirudinoidea-Familia_Glosiphonidae.jpg", respuesta: "Glosiphonidae" },
-  { imagen: "/programa/Lab7/imagenes/Clado_Pleistoannelida-Sublase_Sedentaria-Orden_Spionida-Familia_Spionidae.jpg", respuesta: "Spionidae" },
-  { imagen: "/programa/Lab7/imagenes/Clado_Capitellida-Familia_Echiuridae.jpg", respuesta: "Echiuridae" },
-  { imagen: "/programa/Lab7/imagenes/Clado_Pleistoannelida-Subclase_Errantia-Orden_Eunicida-Familia_Oenonidae.jpg", respuesta: "Oenonidae" },
-  { imagen: "/programa/Lab7/imagenes/Clado_Pleistoannelida-Sublase_Sedentaria-Clado_Terebelliformia-Familia_Terebellidae.jpg", respuesta: "Terebellidae" },
-  { imagen: "/programa/Lab7/imagenes/Clado_Pleistoannelida-Sublcase_Errantia-Orden_Phyllodocida-Familia_Iphionidae.jpg", respuesta: "Iphionidae" },
-  { imagen: "/programa/Lab7/imagenes/Clado_Chaetopteriformia-Familia_Chaetopteridae.jpg", respuesta: "Chaetopteridae" },
-  { imagen: "/programa/Lab7/imagenes/Clado_Paleoannelida-Familia_Magelonidae.jpg", respuesta: "Magelonidae" },
+  { imagen: "/programa/Lab7/imagenes/Clado_Pleistoannelida-Sublase_Sedentaria-Orden_Sabellida-Familia_Serpullidae.jpg", respuesta: "Serpullidae" },
   { imagen: "/programa/Lab7/imagenes/Clado_Pleistoannelida-Sublcase_Errantia-Orden_Phyllodocida-Familia_Nereididae.jpg", respuesta: "Nereididae" },
+  { imagen: "/programa/Lab7/imagenes/Clado_Pleistoannelida-Sublase_Sedentaria-Clado_Terebelliformia-Familia_Cirratullidae.jpg", respuesta: "Cirratullidae" },
+  { imagen: "/programa/Lab7/imagenes/Clado_Chaetopteriformia-Familia_Chaetopteridae.jpg", respuesta: "Chaetopteridae" },
+  { imagen: "/programa/Lab7/imagenes/Clado_Pleistoannelida-Sublase_Sedentaria-Orden_Spionida-Familia_Spionidae.jpg", respuesta: "Spionidae" },
+  { imagen: "/programa/Lab7/imagenes/Clado_Pleistoannelida-Sublase_Sedentaria-Orden_Sabellida-Familia_Siboglinidae.jpg", respuesta: "Siboglinidae" },
+  { imagen: "/programa/Lab7/imagenes/Clado_Pleistoannelida-Sublcase_Errantia-Orden_Phyllodocida-Familia_Polynoidae.jpg", respuesta: "Polynoidae" },
+  { imagen: "/programa/Lab7/imagenes/Clado_Pleistoannelida-Sublcase_Errantia-Orden_Phyllodocida-Familia_Glyceridae.jpg", respuesta: "Glyceridae" },
+  { imagen: "/programa/Lab7/imagenes/Clado_Paleoannelida-Familia_Magelonidae.jpg", respuesta: "Magelonidae" },
+  { imagen: "/programa/Lab7/imagenes/Clado_Pleistoannelida-Sublcase_Errantia-Orden_Phyllodocida-Familia_Syllidae.jpg", respuesta: "Syllidae" },
+  { imagen: "/programa/Lab7/imagenes/Clado_Pleistoannelida-Subclase_Errantia-Orden_Eunicida-Familia_Eunicidae.jpg", respuesta: "Eunicidae" },
+  { imagen: "/programa/Lab7/imagenes/Subclase_Sedentaria-Clado_Clitellata-Clado_Hirudinoidea-Orden_Arhynchobdellidae.jpg", respuesta: "Arhynchobdellidae" },
+  { imagen: "/programa/Lab7/imagenes/Clase_Sipuncula-Familia_Antillesomatidae-Antillesoma.jpg", respuesta: "Antillesomatidae" },
+  { imagen: "/programa/Lab7/imagenes/Subclase_Sedentaria-Clado_Clitellata-Lombrices.jpg", respuesta: "Clitellata" },
   { imagen: "/programa/Lab7/imagenes/Clado_Pleistoannelida-Sublcase_Errantia-Orden_Phyllodocida-Familia_Phyllodocidae.jpg", respuesta: "Phyllodocidae" },
+  { imagen: "/programa/Lab7/imagenes/Clado_Pleistoannelida-Sublcase_Errantia-Orden_Phyllodocida-Familia_Iphionidae.jpg", respuesta: "Iphionidae" },
+  { imagen: "/programa/Lab7/imagenes/Clado_Pleistoannelida-Subclase_Errantia-Orden_Eunicida-Familia_Oenonidae.jpg", respuesta: "Oenonidae" },
+  { imagen: "/programa/Lab7/imagenes/Clado_Pleistoannelida-Sublcase_Errantia-Orden_Phyllodocida-Familia_Nepthyidae.jpg", respuesta: "Nepthyidae" },
+  { imagen: "/programa/Lab7/imagenes/Clado_Capitellida-Familia_Echiuridae.jpg", respuesta: "Echiuridae" },
+  { imagen: "/programa/Lab7/imagenes/Clado_Pleistoannelida-Sublase_Sedentaria-Clado_Terebelliformia-Familia_Pectinariidae.jpg", respuesta: "Pectinariidae" },
+  { imagen: "/programa/Lab7/imagenes/Clado_Pleistoannelida-Sublase_Sedentaria-Clado_Terebelliformia-Familia_Terebellidae.jpg", respuesta: "Terebellidae" },
+  { imagen: "/programa/Lab7/imagenes/Clase_Sipuncula-Familia_Sipunculidae-Gusanos_sipuncúlidos.jpg", respuesta: "Sipunculidae" },
+  { imagen: "/programa/Lab7/imagenes/Clase_Polychaeta-Subclase_Sedentaria-Infraclase_Scolecida-Familia_Capitellidae.jpg", respuesta: "Capitellidae" },
+  { imagen: "/programa/Lab7/imagenes/Subclase_Sedentaria-Clado_Clitellata-Clado_Hirudinoidea-Familia_Glosiphonidae.jpg", respuesta: "Glosiphonidae" },
+  { imagen: "/programa/Lab7/imagenes/Clado_Pleistoannelida-Subclase_Errantia-Orden_Eunicida-Familia_Onuphidae.jpg", respuesta: "Onuphidae" },
+  { imagen: "/programa/Lab7/imagenes/Subclase_Sedentaria-Clado_Clitellata-Clado_Hirudinoidea.jpg", respuesta: "Hirudinoidea" },
   { imagen: "/programa/Lab7/imagenes/Clase_Sipuncula-Familia_Phascolosomatidae-Phascolosoma.jpg", respuesta: "Phascolosomatidae" },
+  { imagen: "/programa/Lab7/imagenes/Clado_Paleoannelida-Familia_Oweniidae.jpg", respuesta: "Oweniidae" },
+  { imagen: "/programa/Lab7/imagenes/Clado_Pleistoannelida-Sublase_Sedentaria-Orden_Sabellida-Familia_Sabellariidae.jpg", respuesta: "Sabellariidae" },
   { imagen: "/programa/Lab7/imagenes/Familia_Amphinomidae.jpg", respuesta: "Amphinomidae" },
+  { imagen: "/programa/Lab7/imagenes/Clado_Pleistoannelida-Subclase_Errantia-Orden_Eunicida-Familia_Lumbrineridae.jpg", respuesta: "Lumbrineridae" },
 ];
+
+
+    preguntas = preguntas.sort(() => Math.random() - 0.5);
 
     let actual = 0;
     let correctas = 0;
@@ -144,6 +147,7 @@
         document.getElementById("resultado").style.color = "red";
         actual = 0;
         correctas = 0;
+        preguntas = preguntas.sort(() => Math.random() - 0.5);
         setTimeout(mostrarPregunta, 2000);
       }
     }
