@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Hexápoda - Lab11</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f4f4;
+      max-width: 700px;
+      margin: 30px auto;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      text-align: center;
+    }
+    h2 {
+      margin-bottom: 20px;
+    }
+    img {
+      width: 100%;
+      max-width: 450px;
+      margin: 20px 0;
+      border-radius: 10px;
+    }
+    input[type="text"] {
+      padding: 10px;
+      font-size: 1em;
+      width: 80%;
+      margin-bottom: 15px;
+    }
+    button {
+      margin-top: 10px;
+      padding: 12px 24px;
+      font-size: 1em;
+      border: none;
+      border-radius: 8px;
+      background-color: #eee;
+      color: #333;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background-color: #ddd;
+    }
+    #resultado {
+      margin-top: 20px;
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+    #contador {
+      margin: 10px;
+      font-size: 1.2em;
+    }
+    #suborden, #nombreExtra {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h2>Test Hexápoda - Lab11</h2>
+  <div id="contador">Pregunta 0/0</div>
+  <img id="imagen" src="" alt="Imagen de prueba">
+  <div>
+    <input type="text" id="orden" placeholder="Escribe el orden..." onkeypress="if(event.key === 'Enter') verificarRespuesta()">
+    <input type="text" id="suborden" placeholder="Escribe el suborden..." onkeypress="if(event.key === 'Enter') verificarRespuesta()">
+    <input type="text" id="nombreExtra" placeholder="Nombre sin rango..." onkeypress="if(event.key === 'Enter') verificarRespuesta()">
+    <br>
+    <button onclick="verificarRespuesta()">Enviar</button>
+  </div>
+  <div id="resultado"></div>
+
+  <script>
+    const preguntasOriginal = [
+      { imagen: "/programa/Lab11/imagenes/Orden_Collembola.jpg", orden: "Collembola" },
+      { imagen: "/programa/Lab11/imagenes/Orden_Diplura.jpg", orden: "Diplura" },
+      { imagen: "/programa/Lab11/imagenes/Orden_Zygentoma.jpg", orden: "Zygentoma" },
+      { imagen: "/programa/Lab11/imagenes/Orden_Ephemeroptera.jpg", orden: "Ephemeroptera" },
+      { imagen: "/programa/Lab11/imagenes/Orden_Odonata-Suborden_Zygoptera.jpg", orden: "Odonata", suborden: "Zygoptera" },
+      { imagen: "/programa/Lab11/imagenes/Orden_Odonata-Suborden_Anisoptera.jpg", orden: "Odonata", suborden: "Anisoptera" },
+      { imagen: "/programa/Lab11/imagenes/Orden_Plecoptera.jpg", orden: "Plecoptera" },
+      { imagen: "/programa/Lab11/imagenes/Orden_Blattodea-Suborden_Blattaria.jpg", orden: "Blattodea", suborden: "Blattaria" },
+      { imagen: "/programa/Lab11/imagenes/Orden_Blattodea-Suborden_Isoptera.jpg", orden: "Blattodea", suborden: "Isoptera" },
+      { imagen: "/programa/Lab11/imagenes/Orden_Mantodea.jpg", orden: "Mantodea" },
+      { imagen: "/programa/Lab11/imagenes/Orden_Phasmida.jpg", orden: "Phasmida" },
+      { imagen: "/programa/Lab11/imagenes/Orden_Dermaptera.jpg", orden: "Dermaptera" },
+      { imagen: "/programa/Lab11/imagenes/Orden_Orthoptera.jpg", orden: "Orthoptera" },
+      { imagen: "/programa/Lab11/imagenes/Orden_Embioptera.jpg", orden: "Embioptera" },
+      { imagen: "/programa/Lab11/imagenes/Orden_Thysanoptera.jpg", orden: "Thysanoptera" },
+      { imagen: "/programa/Lab11/imagenes/Orden_Hemiptera-Suborden_Heteroptera.jpg", orden: "Hemiptera", suborden: "Heteroptera" },
+      { imagen: "/programa/Lab11/imagenes/Orden_Hemiptera-Suborden_Auchenorrhyncha.jpg", orden: "Hemiptera", suborden: "Auchenorrhyncha" },
+      { imagen: "/programa/Lab11/imagenes/Orden_Hemiptera-Suborden_Sternorrhyncha.jpg", orden: "Hemiptera", suborden: "Sternorrhyncha" },
+      { imagen: "/programa/Lab11/imagenes/Orden_Psocodea-Psocoptera.jpg", orden: "Psocodea", nombre: "Psocoptera" },
+      { imagen: "/programa/Lab11/imagenes/Orden_Psocodea-Phthiraptera.jpg", orden: "Psocodea", nombre: "Phthiraptera" },
+    ];
+
+    function mezclar(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    const preguntas = [...preguntasOriginal];
+    mezclar(preguntas);
+
+    let actual = 0;
+    let correctas = 0;
+
+    function normalizar(texto) {
+      return texto.toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, "").trim();
+    }
+
+    function mostrarPregunta() {
+      if (actual >= preguntas.length) {
+        document.getElementById("resultado").innerText = `✅ Resultado final: ${correctas}/${preguntas.length}`;
+        document.getElementById("imagen").style.display = "none";
+        document.getElementById("orden").style.display = "none";
+        document.getElementById("suborden").style.display = "none";
+        document.getElementById("nombreExtra").style.display = "none";
+        return;
+      }
+      const pregunta = preguntas[actual];
+      document.getElementById("imagen").src = pregunta.imagen;
+      document.getElementById("contador").innerText = `Pregunta ${actual + 1}/${preguntas.length}`;
+      document.getElementById("orden").value = "";
+      document.getElementById("suborden").value = "";
+      document.getElementById("nombreExtra").value = "";
+
+      document.getElementById("suborden").style.display = pregunta.suborden ? "inline-block" : "none";
+      document.getElementById("nombreExtra").style.display = pregunta.nombre ? "inline-block" : "none";
+      document.getElementById("resultado").innerText = "";
+    }
+
+    function verificarRespuesta() {
+      const pregunta = preguntas[actual];
+      const orden = normalizar(document.getElementById("orden").value);
+      const ordenCorrecto = normalizar(pregunta.orden);
+      const suborden = pregunta.suborden ? normalizar(document.getElementById("suborden").value) : null;
+      const subordenCorrecto = pregunta.suborden ? normalizar(pregunta.suborden) : null;
+      const nombreExtra = pregunta.nombre ? normalizar(document.getElementById("nombreExtra").value) : null;
+      const nombreExtraCorrecto = pregunta.nombre ? normalizar(pregunta.nombre) : null;
+
+      const ordenOK = orden === ordenCorrecto;
+      const subordenOK = suborden === subordenCorrecto || subordenCorrecto === null;
+      const nombreOK = nombreExtra === nombreExtraCorrecto || nombreExtraCorrecto === null;
+
+      if (ordenOK && subordenOK && nombreOK) {
+        correctas++;
+        document.getElementById("resultado").innerText = "✔️ Correcto!";
+        document.getElementById("resultado").style.color = "green";
+        actual++;
+        setTimeout(mostrarPregunta, 1500);
+      } else {
+        document.getElementById("resultado").innerText = `❌ Incorrecto. Reiniciando...`;
+        document.getElementById("resultado").style.color = "red";
+        actual = 0;
+        correctas = 0;
+        mezclar(preguntas);
+        setTimeout(mostrarPregunta, 2000);
+      }
+    }
+
+    mostrarPregunta();
+  </script>
+</body>
+</html>
