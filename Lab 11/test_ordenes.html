@@ -1,0 +1,112 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Test de Hexápodos - Lab11</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 700px;
+      margin: auto;
+      padding: 20px;
+    }
+    img {
+      max-width: 100%;
+      border: 1px solid #ccc;
+      margin-bottom: 15px;
+    }
+    input, button {
+      padding: 10px;
+      margin: 5px 0;
+      width: 100%;
+      font-size: 16px;
+    }
+    #resultado {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h2>Test de Hexápodos - Lab11</h2>
+  <div id="contador">Pregunta 1</div>
+  <img id="imagen" src="" alt="Imagen de insecto">
+  <div>
+    <input type="text" id="inputOrden" placeholder="Escribe el orden">
+    <input type="text" id="inputSuborden" placeholder="Escribe el suborden (si aplica)">
+    <input type="text" id="inputSinRango" placeholder="Escribe el nombre sin rango (si aplica)">
+    <button onclick="verificarRespuesta()">Enviar</button>
+  </div>
+  <div id="resultado"></div>
+  <script>
+    const preguntas = [
+      { imagen: "/programa/Lab11/imagenes/Orden_Collembola.jpg", orden: "Collembola", suborden: "", sinRango: "" },
+      { imagen: "/programa/Lab11/imagenes/Orden_Diplura.jpg", orden: "Diplura", suborden: "", sinRango: "" },
+      { imagen: "/programa/Lab11/imagenes/Orden_Zygentoma.jpg", orden: "Zygentoma", suborden: "", sinRango: "" },
+      { imagen: "/programa/Lab11/imagenes/Orden_Ephemeroptera.jpg", orden: "Ephemeroptera", suborden: "", sinRango: "" },
+      { imagen: "/programa/Lab11/imagenes/Orden_Odonata-Suborden_Zygoptera.jpg", orden: "Odonata", suborden: "Zygoptera", sinRango: "" },
+      { imagen: "/programa/Lab11/imagenes/Orden_Odonata-Suborden_Anisoptera.jpg", orden: "Odonata", suborden: "Anisoptera", sinRango: "" },
+      { imagen: "/programa/Lab11/imagenes/Orden_Plecoptera.jpg", orden: "Plecoptera", suborden: "", sinRango: "" },
+      { imagen: "/programa/Lab11/imagenes/Orden_Blattodea-Suborden_Blattaria.jpg", orden: "Blattodea", suborden: "Blattaria", sinRango: "" },
+      { imagen: "/programa/Lab11/imagenes/Orden_Blattodea-Suborden_Isoptera.jpg", orden: "Blattodea", suborden: "Isoptera", sinRango: "" },
+      { imagen: "/programa/Lab11/imagenes/Orden_Mantodea.jpg", orden: "Mantodea", suborden: "", sinRango: "" },
+      { imagen: "/programa/Lab11/imagenes/Orden_Phasmida.jpg", orden: "Phasmida", suborden: "", sinRango: "" },
+      { imagen: "/programa/Lab11/imagenes/Orden_Dermaptera.jpg", orden: "Dermaptera", suborden: "", sinRango: "" },
+      { imagen: "/programa/Lab11/imagenes/Orden_Orthoptera.jpg", orden: "Orthoptera", suborden: "", sinRango: "" },
+      { imagen: "/programa/Lab11/imagenes/Orden_Embioptera.jpg", orden: "Embioptera", suborden: "", sinRango: "" },
+      { imagen: "/programa/Lab11/imagenes/Orden_Thysanoptera.jpg", orden: "Thysanoptera", suborden: "", sinRango: "" },
+      { imagen: "/programa/Lab11/imagenes/Orden_Hemiptera-Suborden_Heteroptera.jpg", orden: "Hemiptera", suborden: "Heteroptera", sinRango: "" },
+      { imagen: "/programa/Lab11/imagenes/Orden_Hemiptera-Suborden_Auchenorrhyncha.jpg", orden: "Hemiptera", suborden: "Auchenorrhyncha", sinRango: "" },
+      { imagen: "/programa/Lab11/imagenes/Orden_Hemiptera-Suborden_Sternorrhyncha.jpg", orden: "Hemiptera", suborden: "Sternorrhyncha", sinRango: "" },
+      { imagen: "/programa/Lab11/imagenes/Orden_Psocodea-Psocoptera.jpg", orden: "Psocodea", suborden: "", sinRango: "Psocoptera" },
+      { imagen: "/programa/Lab11/imagenes/Orden_Psocodea-Phthiraptera.jpg", orden: "Psocodea", suborden: "", sinRango: "Phthiraptera" },
+
+    ];
+    let actual = 0;
+
+    function mostrarPregunta() {
+      if (actual >= preguntas.length) {
+        document.getElementById("resultado").innerText = "✅ ¡Completado!";
+        return;
+      }
+      const p = preguntas[actual];
+      document.getElementById("imagen").src = p.imagen;
+      document.getElementById("contador").innerText = `Pregunta ${actual + 1} de ${preguntas.length}`;
+      document.getElementById("inputOrden").value = "";
+      document.getElementById("inputSuborden").value = "";
+      document.getElementById("inputSinRango").value = "";
+      document.getElementById("resultado").innerText = "";
+    }
+
+    function normalizar(texto) {
+      return texto.toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, "").trim();
+    }
+
+    function verificarRespuesta() {
+      const p = preguntas[actual];
+      const orden = normalizar(document.getElementById("inputOrden").value);
+      const suborden = normalizar(document.getElementById("inputSuborden").value);
+      const sinRango = normalizar(document.getElementById("inputSinRango").value);
+
+      const correctoOrden = orden === normalizar(p.orden);
+      const correctoSuborden = normalizar(p.suborden) === "" || suborden === normalizar(p.suborden);
+      const correctoSinRango = normalizar(p.sinRango) === "" || sinRango === normalizar(p.sinRango);
+
+      if (correctoOrden && correctoSuborden && correctoSinRango) {
+        document.getElementById("resultado").innerText = "✔️ Correcto";
+        document.getElementById("resultado").style.color = "green";
+        actual++;
+        setTimeout(mostrarPregunta, 1000);
+      } else {
+        document.getElementById("resultado").innerText = `❌ Incorrecto. Reiniciando...`;
+        document.getElementById("resultado").style.color = "red";
+        actual = 0;
+        setTimeout(mostrarPregunta, 2000);
+      }
+    }
+
+    mostrarPregunta();
+  </script>
+</body>
+</html>
