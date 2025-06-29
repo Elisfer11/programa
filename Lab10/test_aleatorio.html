@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Test Lab10 (Aleatorio)</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f4f4;
+      max-width: 700px;
+      margin: 30px auto;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      text-align: center;
+    }
+    img {
+      width: 100%;
+      max-width: 450px;
+      margin: 20px 0;
+      border-radius: 10px;
+    }
+    input[type="text"] {
+      padding: 10px;
+      font-size: 1em;
+      width: 80%;
+      margin-bottom: 15px;
+    }
+    button {
+      margin-top: 10px;
+      padding: 12px 24px;
+      font-size: 1em;
+      border: none;
+      border-radius: 8px;
+      background-color: #eee;
+      color: #333;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background-color: #ddd;
+    }
+    #resultado {
+      margin-top: 20px;
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+    #contador {
+      margin: 10px;
+      font-size: 1.2em;
+    }
+  </style>
+</head>
+<body>
+  <h2>Test Lab10 (Aleatorio)</h2>
+  <div id="contador">Pregunta 0/0</div>
+  <img id="imagen" src="" alt="Imagen de prueba">
+  <div>
+    <input type="text" id="respuesta" placeholder="Escribe el nombre..." onkeypress="if(event.key === 'Enter') verificarRespuesta()">
+    <br>
+    <button onclick="verificarRespuesta()">Enviar</button>
+  </div>
+  <div id="resultado"></div>
+  <script>
+    const preguntas = 
+[{"imagen": "/programa/Lab10/imagenes/Trilobitomorpha.jpg", "nombre": "Trilobitomorpha"}, {"imagen": "/programa/Lab10/imagenes/Clase_Pycnogonida.jpg", "nombre": "Pycnogonida"}, {"imagen": "/programa/Lab10/imagenes/Clado_Acariformes.jpg", "nombre": "Acariformes"}, {"imagen": "/programa/Lab10/imagenes/Orden_Schizomida.jpg", "nombre": "Schizomida"}, {"imagen": "/programa/Lab10/imagenes/Orden_Opiliones.jpg", "nombre": "Opiliones"}, {"imagen": "/programa/Lab10/imagenes/Orden_Solpugida.jpg", "nombre": "Solpugida"}, {"imagen": "/programa/Lab10/imagenes/Orden_Amblypygi.jpg", "nombre": "Amblypygi"}, {"imagen": "/programa/Lab10/imagenes/Clase_Diplopoda.jpg", "nombre": "Diplopoda"}, {"imagen": "/programa/Lab10/imagenes/Orden_Araneae.jpg", "nombre": "Araneae"}, {"imagen": "/programa/Lab10/imagenes/Orden_Pseudoscorpionida.jpg", "nombre": "Pseudoscorpionida"}, {"imagen": "/programa/Lab10/imagenes/Clase_Symphylla.jpg", "nombre": "Symphylla"}, {"imagen": "/programa/Lab10/imagenes/Clado_Parasitiformes-Orden-Ixodida-suborden_Metastigmata.jpg", "nombre": "Parasitiformes"}, {"imagen": "/programa/Lab10/imagenes/Clase_Chilopoda.jpg", "nombre": "Chilopoda"}, {"imagen": "/programa/Lab10/imagenes/Orden_Uropygi.jpg", "nombre": "Uropygi"}, {"imagen": "/programa/Lab10/imagenes/Orden_Scorpiones.jpg", "nombre": "Scorpiones"}, {"imagen": "/programa/Lab10/imagenes/Orden_Xiphosura.jpg", "nombre": "Xiphosura"}, {"imagen": "/programa/Lab10/imagenes/Orden_Ricinulei.jpg", "nombre": "Ricinulei"}];
+
+    let actual = 0;
+    let correctas = 0;
+
+    function normalizar(texto) {
+      return texto.toLowerCase()
+        .normalize("NFD")
+        .replace(/\p{Diacritic}/gu, "")
+        .replace(/ph/g, "f")
+        .replace(/y/g, "i")
+        .replace(/s$/g, "")
+        .trim();
+    }
+
+    function mostrarPregunta() {
+      if (actual >= preguntas.length) {
+        document.getElementById("resultado").innerText = `✅ Resultado final: ${correctas}/${preguntas.length}`;
+        document.getElementById("imagen").style.display = "none";
+        document.getElementById("respuesta").style.display = "none";
+        return;
+      }
+      document.getElementById("imagen").src = preguntas[actual].imagen;
+      document.getElementById("contador").innerText = `Pregunta ${actual + 1}/${preguntas.length}`;
+      document.getElementById("respuesta").value = "";
+      document.getElementById("resultado").innerText = "";
+    }
+
+    function verificarRespuesta() {
+      const userInput = normalizar(document.getElementById("respuesta").value);
+      const correcta = normalizar(preguntas[actual].nombre);
+      const correcto = compararConMargen(userInput, correcta);
+
+      if (correcto) {
+        correctas++;
+        document.getElementById("resultado").innerText = "✔️ Correcto!";
+        document.getElementById("resultado").style.color = "green";
+        actual++;
+        setTimeout(mostrarPregunta, 1500);
+      } else {
+        document.getElementById("resultado").innerText = `❌ Incorrecto. Era: ${preguntas[actual].nombre}. Reiniciando...`;
+        document.getElementById("resultado").style.color = "red";
+        actual = 0;
+        correctas = 0;
+        setTimeout(mostrarPregunta, 2000);
+      }
+    }
+
+    function compararConMargen(a, b) {
+      const distancia = levenshtein(a, b);
+      const largoMax = Math.max(a.length, b.length);
+      return distancia <= 1 && largoMax > 3;
+    }
+
+    function levenshtein(a, b) {
+      const dp = Array.from({ length: a.length + 1 }, () => Array(b.length + 1).fill(0));
+      for (let i = 0; i <= a.length; i++) dp[i][0] = i;
+      for (let j = 0; j <= b.length; j++) dp[0][j] = j;
+      for (let i = 1; i <= a.length; i++) {
+        for (let j = 1; j <= b.length; j++) {
+          dp[i][j] = Math.min(
+            dp[i - 1][j] + 1,
+            dp[i][j - 1] + 1,
+            dp[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)
+          );
+        }
+      }
+      return dp[a.length][b.length];
+    }
+
+    mostrarPregunta();
+  </script>
+</body>
+</html>
